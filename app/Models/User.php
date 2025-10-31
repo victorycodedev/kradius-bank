@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
@@ -54,6 +55,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'date_of_birth',
+        'address',
+        'city',
+        'state',
+        'country',
+        'postal_code',
+        'kyc_status',
+        'kyc_document_type',
+        'kyc_document_number',
+        'kyc_document_path',
+        'profile_photo_path',
+        'biometric_enabled',
+        'two_factor_enabled',
+        'account_status',
     ];
 
     /**
@@ -66,6 +82,7 @@ class User extends Authenticatable
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
+        'transaction_pin',
     ];
 
     /**
@@ -78,6 +95,11 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
+            'biometric_enabled' => 'boolean',
+            'two_factor_enabled' => 'boolean',
+            'last_login_at' => 'datetime',
+            'locked_until' => 'datetime',
         ];
     }
 
@@ -91,5 +113,87 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    // public function setTransactionPinAttribute($value)
+    // {
+    //     $this->attributes['transaction_pin'] = Hash::make($value);
+    // }
+
+    public function verifyTransactionPin($pin)
+    {
+        return Hash::check($pin, $this->transaction_pin);
+    }
+
+    // Relationships
+    public function accounts()
+    {
+        return $this->hasMany(UserAccount::class);
+    }
+
+    public function primaryAccount()
+    {
+        return $this->hasOne(UserAccount::class)->where('is_primary', true);
+    }
+
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
+    public function beneficiaries()
+    {
+        return $this->hasMany(Beneficiary::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function loginHistories()
+    {
+        return $this->hasMany(LoginHistory::class);
+    }
+
+    public function securityQuestions()
+    {
+        return $this->hasMany(SecurityQuestion::class);
+    }
+
+    public function billPayments()
+    {
+        return $this->hasMany(BillPayment::class);
+    }
+
+    public function pushSubscriptions()
+    {
+        return $this->hasMany(PushSubscription::class);
+    }
+
+    public function disputes()
+    {
+        return $this->hasMany(Dispute::class);
+    }
+
+    public function verificationCodes()
+    {
+        return $this->hasMany(UserVerificationCode::class);
+    }
+
+    // Helper methods
+    public function isAccountLocked()
+    {
+        return $this->locked_until && $this->locked_until->isFuture();
+    }
+
+    public function isKycVerified()
+    {
+        return $this->kyc_status === 'verified';
+    }
+
+    public function isActive()
+    {
+        return $this->account_status === 'active';
     }
 }
