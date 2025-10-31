@@ -1,0 +1,21 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - routes/
+        - config/
+        - database/
+    
+    # Level 0 = basic, Level 9 = strictest
+    level: 5
+    
+    ignoreErrors:
+        # Add patterns for errors you want to ignore
+    
+    excludePaths:
+        - ./*/*/FileToBeExcluded.php
+
+    universalObjectCratesClasses:
+        - Illuminate\Http\Resources\Json\JsonResource
