@@ -3,12 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property int $id
@@ -41,36 +50,17 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone_number',
-        'date_of_birth',
-        'address',
-        'city',
-        'state',
-        'country',
-        'postal_code',
-        'kyc_status',
-        'kyc_document_type',
-        'kyc_document_number',
-        'kyc_document_path',
-        'profile_photo_path',
-        'biometric_enabled',
-        'two_factor_enabled',
-        'account_status',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -126,17 +116,17 @@ class User extends Authenticatable
     }
 
     // Relationships
-    public function accounts()
+    public function accounts(): HasMany
     {
         return $this->hasMany(UserAccount::class);
     }
 
-    public function primaryAccount()
+    public function primaryAccount(): HasOne
     {
         return $this->hasOne(UserAccount::class)->where('is_primary', true);
     }
 
-    public function cards()
+    public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
     }
@@ -146,27 +136,27 @@ class User extends Authenticatable
         return $this->hasMany(Beneficiary::class);
     }
 
-    public function notifications()
+    public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
     }
 
-    public function loginHistories()
+    public function loginHistories(): HasMany
     {
         return $this->hasMany(LoginHistory::class);
     }
 
-    public function securityQuestions()
+    public function securityQuestions(): HasMany
     {
         return $this->hasMany(SecurityQuestion::class);
     }
 
-    public function billPayments()
+    public function billPayments(): HasMany
     {
         return $this->hasMany(BillPayment::class);
     }
 
-    public function pushSubscriptions()
+    public function pushSubscriptions(): HasMany
     {
         return $this->hasMany(PushSubscription::class);
     }
@@ -176,7 +166,7 @@ class User extends Authenticatable
         return $this->hasMany(Dispute::class);
     }
 
-    public function verificationCodes()
+    public function verificationCodes(): HasMany
     {
         return $this->hasMany(UserVerificationCode::class);
     }
@@ -195,5 +185,30 @@ class User extends Authenticatable
     public function isActive()
     {
         return $this->account_status === 'active';
+    }
+
+    public function fullname(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->first_name . ' ' . $this->last_name);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return !$this->hasRole('User');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatars')
+            ->singleFile();
+
+        // $this->addMediaCollection('signature')
+        //     ->singleFile();
+
+        // $this->addMediaCollection('documents');
+
+        // $this->addMediaCollection('staff_documents');
+
+        // $this->addMediaCollection('parents_guardians_avatar')
     }
 }
