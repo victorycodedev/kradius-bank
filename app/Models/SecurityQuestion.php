@@ -15,19 +15,20 @@ class SecurityQuestion extends Model
     ];
 
     protected $hidden = [
-        'answer',
+        // 'answer',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'answer' => 'encrypted',
+        ];
+    }
 
     // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Mutators
-    public function setAnswerAttribute($value)
-    {
-        $this->attributes['answer'] = Hash::make(strtolower($value));
     }
 
     public function verifyAnswer($answer)

@@ -75,10 +75,10 @@ class UsersTable
                         'danger' => 'closed',
                     ]),
 
-                IconColumn::make('biometric_enabled')
-                    ->label('Biometric')
-                    ->boolean()
-                    ->toggleable(),
+                // IconColumn::make('biometric_enabled')
+                //     ->label('Biometric')
+                //     ->boolean()
+                //     ->toggleable(),
 
                 IconColumn::make('two_factor_enabled')
                     ->label('2FA')

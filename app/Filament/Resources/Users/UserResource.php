@@ -21,10 +21,10 @@ use Illuminate\Database\Query\Builder;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static ?string $recordTitleAttribute = 'firstname';
+    // protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
+    protected static string | \UnitEnum | null $navigationGroup = 'Account Management';
+    protected static ?int $navigationSort = 1;
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

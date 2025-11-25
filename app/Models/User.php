@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
-        'transaction_pin',
+        // 'pin',
     ];
 
     /**
@@ -84,12 +84,12 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'date_of_birth' => 'date',
+            'date_of_birth' => 'datetime',
             'biometric_enabled' => 'boolean',
             'two_factor_enabled' => 'boolean',
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
+            'pin' => 'encrypted',
         ];
     }
 
@@ -112,7 +112,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
 
     public function verifyTransactionPin($pin)
     {
-        return Hash::check($pin, $this->transaction_pin);
+        return decrypt($this->pin) === $pin;
     }
 
     // Relationships
@@ -168,7 +168,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
 
     public function verificationCodes(): HasMany
     {
-        return $this->hasMany(UserVerificationCode::class);
+        return $this->hasMany(UserVerificationCode::class, 'user_id');
     }
 
     // Helper methods

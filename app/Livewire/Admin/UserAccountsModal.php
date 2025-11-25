@@ -149,8 +149,7 @@ class UserAccountsModal extends Component implements HasSchemas, HasActions
                     ->title('Account limits updated')
                     ->send();
             })
-            ->modalHeading('Edit Account Limits')
-            ->modalWidth('md');
+            ->modalHeading('Edit Account Limits');
     }
 
     public function setPrimaryAction(): Action
