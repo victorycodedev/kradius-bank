@@ -64,6 +64,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Account Management')
                     ->icon(Heroicon::UserGroup),
+                NavigationGroup::make()
+                    ->label('Settings')
+                    ->icon(Heroicon::Cog8Tooth),
             ]);
     }
 }

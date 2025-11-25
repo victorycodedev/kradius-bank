@@ -324,38 +324,38 @@ class UserInfolist
                     ->collapsible(),
 
                 // Disputes
-                Section::make('Disputes')
-                    ->description('Transaction disputes raised by user')
-                    ->schema([
-                        RepeatableEntry::make('disputes')
-                            ->label('')
-                            ->schema([
-                                Grid::make(3)
-                                    ->schema([
-                                        TextEntry::make('reason')
-                                            ->weight(FontWeight::Bold),
+                // Section::make('Disputes')
+                //     ->description('Transaction disputes raised by user')
+                //     ->schema([
+                //         RepeatableEntry::make('disputes')
+                //             ->label('')
+                //             ->schema([
+                //                 Grid::make(3)
+                //                     ->schema([
+                //                         TextEntry::make('reason')
+                //                             ->weight(FontWeight::Bold),
 
-                                        TextEntry::make('status')
-                                            ->badge()
-                                            ->color(fn($state) => match ($state) {
-                                                'resolved' => 'success',
-                                                'pending' => 'warning',
-                                                'investigating' => 'info',
-                                                'rejected' => 'danger',
-                                            }),
+                //                         TextEntry::make('status')
+                //                             ->badge()
+                //                             ->color(fn($state) => match ($state) {
+                //                                 'resolved' => 'success',
+                //                                 'pending' => 'warning',
+                //                                 'investigating' => 'info',
+                //                                 'rejected' => 'danger',
+                //                             }),
 
-                                        TextEntry::make('created_at')
-                                            ->label('Raised On')
-                                            ->date('d M, Y'),
+                //                         TextEntry::make('created_at')
+                //                             ->label('Raised On')
+                //                             ->date('d M, Y'),
 
-                                        TextEntry::make('description')
-                                            ->columnSpanFull()
-                                            ->color('gray'),
-                                    ]),
-                            ])
-                            ->contained(false),
-                    ])
-                    ->collapsible(),
+                //                         TextEntry::make('description')
+                //                             ->columnSpanFull()
+                //                             ->color('gray'),
+                //                     ]),
+                //             ])
+                //             ->contained(false),
+                //     ])
+                //     ->collapsible(),
 
                 // Login History
                 Section::make('Recent Login Activity')
