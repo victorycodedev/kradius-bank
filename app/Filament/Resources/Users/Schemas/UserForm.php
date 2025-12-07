@@ -131,8 +131,8 @@ class UserForm
                                         Toggle::make('two_factor_enabled')
                                             ->label('Two-Factor Authentication')
                                             ->inline(false)
-                                            ->default(fn(Model $record): bool => $record->two_factor_secret !== null)
-                                            ->disabled(fn(Model $record): bool => $record->two_factor_secret !== null)
+                                            // ->default(fn(Model $record): bool => $record->two_factor_secret !== null)
+                                            // ->disabled(fn(Model $record): bool => $record->two_factor_secret !== null)
                                             ->onIcon(Heroicon::CheckCircle)
                                             ->offIcon(Heroicon::XCircle),
 
@@ -429,6 +429,20 @@ class UserForm
                                     ]),
                             ])
                             ->visibleOn('edit'),
+                        // Tab::make('Notifications')
+                        //     ->icon(Heroicon::Bell)
+                        //     ->badge(fn($record) => $record?->notifications()->count())
+                        //     ->schema([
+                        //         Repeater::make('notifications')
+                        //             ->relationship('notifications')
+                        //             ->schema([])
+                        //             ->columns(1)
+                        //             ->defaultItems(0)
+                        //             ->addActionLabel('Add Beneficiary')
+                        //             ->collapsible()
+                        //             ->itemLabel(fn(array $state): ?string => $state['account_name'] ?? 'Beneficiary'),
+                        //     ])
+                        //     ->visibleOn('edit'),
                     ])
                     ->columnSpanFull(),
             ]);
