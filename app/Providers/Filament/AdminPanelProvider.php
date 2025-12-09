@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\Settings;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -60,10 +61,40 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarWidth('17.5rem')
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->globalSearch(false)
+            ->topbar(true)
+            ->sidebarWidth('17.5rem')
+            ->profile(isSimple: false)
+            ->revealablePasswords()
+            ->passwordReset()
+            ->brandLogo(
+                function () {
+                    $settings = Settings::get();
+                    $url = $settings->getFirstMediaUrl('logo', 'optimized');
+                    return $url;
+                }
+            )
+            ->favicon(
+                function () {
+                    $settings = Settings::get();
+                    $url = $settings->getFirstMediaUrl('favicon', 'ico');
+                    return $url;
+                }
+            )
+            ->colors(function () {
+                $settings = Settings::get();
+                return [
+                    'primary' => $settings->primary_color,
+                    // 'gray' => $settings->secondary_color,
+                ];
+            })
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Account Management')
                     ->icon(Heroicon::UserGroup),
+                NavigationGroup::make()
+                    ->label('Loan Management')
+                    ->icon(Heroicon::Banknotes),
                 NavigationGroup::make()
                     ->label('Settings')
                     ->icon(Heroicon::Cog8Tooth),

@@ -197,6 +197,64 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         return !$this->hasRole('User');
     }
 
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function reviewedLoans(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'reviewed_by');
+    }
+
+    // Helper methods for loan eligibility
+    public function canApplyForLoan()
+    {
+        $settings = LoanSetting::get();
+
+        // Check if loan applications are enabled
+        if (!$settings->loan_applications_enabled) {
+            return false;
+        }
+
+        // Check account age
+        $accountAgeDays = now()->diffInDays($this->created_at);
+        if ($accountAgeDays < $settings->min_account_age_days) {
+            return false;
+        }
+
+        // Check minimum balance
+        $primaryAccount = $this->primaryAccount;
+        if ($primaryAccount && $primaryAccount->balance < $settings->min_account_balance) {
+            return false;
+        }
+
+        // Check maximum active loans
+        $activeLoans = $this->loans()
+            ->whereIn('status', ['approved', 'disbursed', 'active'])
+            ->count();
+
+        if ($activeLoans >= $settings->max_active_loans_per_user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getActiveLoanCount(): int
+    {
+        return $this->loans()
+            ->whereIn('status', ['approved', 'disbursed', 'active'])
+            ->count();
+    }
+
+    public function getTotalLoanDebt(): float
+    {
+        return $this->loans()
+            ->whereIn('status', ['disbursed', 'active'])
+            ->sum('outstanding_balance');
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatars')
