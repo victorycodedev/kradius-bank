@@ -207,8 +207,30 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         return $this->hasMany(Loan::class, 'reviewed_by');
     }
 
+    // In app/Models/User.php
+
+    public function investments(): HasMany
+    {
+        return $this->hasMany(Investment::class);
+    }
+
+    public function activeInvestments(): HasMany
+    {
+        return $this->hasMany(Investment::class)->where('status', 'active');
+    }
+
+    public function totalInvestedAmount(): float
+    {
+        return $this->investments()->sum('amount');
+    }
+
+    public function totalProfitEarned(): float
+    {
+        return $this->investments()->sum('total_profit_paid');
+    }
+
     // Helper methods for loan eligibility
-    public function canApplyForLoan()
+    public function canApplyForLoan(): bool
     {
         $settings = LoanSetting::get();
 

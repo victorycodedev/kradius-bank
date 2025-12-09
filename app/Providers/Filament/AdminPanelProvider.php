@@ -96,6 +96,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Loan Management')
                     ->icon(Heroicon::Banknotes),
                 NavigationGroup::make()
+                    ->label('Stock Trading')
+                    ->icon(Heroicon::ChartBarSquare),
+                NavigationGroup::make()
                     ->label('Settings')
                     ->icon(Heroicon::Cog8Tooth),
             ]);

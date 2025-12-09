@@ -54,6 +54,11 @@ class Investment extends Model
                 $investment->reference_number = 'INV' . strtoupper(Str::random(10));
             }
         });
+
+        static::deleting(function ($investment) {
+            $investment->transactions()->delete();
+            $investment->profits()->delete();
+        });
     }
 
     // Relationships

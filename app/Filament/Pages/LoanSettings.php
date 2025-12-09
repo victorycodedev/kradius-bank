@@ -95,6 +95,7 @@ class LoanSettings extends Page implements HasSchemas
 
     public function save(): void
     {
+        $this->validate();
         $loadSettings = LoanSetting::find(1);
         $loadSettings->update($this->form->getState());
 
