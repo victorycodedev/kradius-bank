@@ -1,66 +1,67 @@
 <x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <div class="screen register-screen">
+        <div class="auth-header">
+            {{-- <a href="{{ route('login') }}" class="back-btn">
+                <i class="bi bi-arrow-left"></i>
+            </a> --}}
+            <h1>Create Account</h1>
+            <p>Sign up to get started</p>
+        </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="auth-form">
             @csrf
+            <div class="form-group">
+                <x-form.input label="Full Name" name="name" required autofocus placeholder="Enter your full name" />
+            </div>
 
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
+            <div class="form-group">
+                <x-form.input name="email" label="Email" required autofocus autocomplete="email"
+                    placeholder="eg email@example.com" />
+            </div>
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+            <div class="form-group">
+                <x-form.input type="tel" name="phone_number" label="Phone Number" required
+                    placeholder="eg +1 123 456 789" />
+            </div>
 
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
+            <div class="form-group">
+                <label class="form-label fw-semibold">Password</label>
+                <div class="password-input">
+                    <input :type="showPassword ? 'text' : 'password'" class="form-control" name="password"
+                        placeholder="Create a password" required>
+                    <button type="button" @click="showPassword = !showPassword" class="password-toggle">
+                        <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <div class="text-danger small mt-2">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
+            <div class="form-group">
+                <label class="form-label fw-semibold">Confirm Password</label>
+                <div class="password-input">
+                    <input :type="showConfirmPassword ? 'text' : 'password'" class="form-control"
+                        name="password_confirmation" placeholder="Confirm your password" required>
+                    <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="password-toggle">
+                        <i :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                    </button>
+                </div>
+            </div>
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Create account') }}
-                </flux:button>
+            <label class="checkbox-label mb-3">
+                <input type="checkbox" x-model="agreeTerms" required>
+                <span>I agree to the <a href="#" class="link">Terms & Conditions</a></span>
+            </label>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">Create Account</button>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ route('login') }}" class="link">Login</a></p>
             </div>
         </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
-        </div>
     </div>
 </x-layouts.auth>

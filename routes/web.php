@@ -1,5 +1,12 @@
 <?php
 
+use App\Livewire\MobileApp\Screen\Deposit;
+use App\Livewire\MobileApp\Screen\Home;
+use App\Livewire\MobileApp\Screen\Loan;
+use App\Livewire\MobileApp\Screen\More;
+use App\Livewire\MobileApp\Screen\Payments;
+use App\Livewire\MobileApp\Screen\StockInvestment;
+use App\Livewire\MobileApp\Screen\Transfer;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -11,9 +18,23 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', Home::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware([
+    'auth',
+    'verified',
+])
+    ->group(function () {
+        Route::get('dashboard', Home::class)->name('dashboard');
+        Route::get('transfer', Transfer::class)->name('transfer');
+        Route::get('loans', Loan::class)->name('loans');
+        Route::get('payments', Payments::class)->name('payments');
+        Route::get('more', More::class)->name('more');
+        Route::get('deposit', Deposit::class)->name('deposit');
+        Route::get('stock-investment', StockInvestment::class)->name('stock');
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

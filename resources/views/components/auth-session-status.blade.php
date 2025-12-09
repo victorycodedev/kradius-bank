@@ -1,9 +1,8 @@
-@props([
-    'status',
-])
+@props(['status'])
 
 @if ($status)
-    <div {{ $attributes->merge(['class' => 'font-medium text-sm text-green-600']) }}>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ $status }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
