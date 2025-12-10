@@ -21,7 +21,8 @@
         </div>
     </div>
 
-    <div :class="darkMode ? 'dark-mode' : ''" class="app-container" id="app-wrapper">
+    {{-- <div :class="darkMode ? 'dark-mode' : ''" class="app-container" id="app-wrapper"> --}}
+    <div x-data="bankingApp()" :class="darkMode ? 'dark-mode' : ''" class="app-container" id="app-wrapper">
         {{ $slot }}
     </div>
 
@@ -50,6 +51,7 @@
         // Run on resize (if someone rotates or resizes window)
         window.addEventListener("resize", checkDevice);
     </script>
+    <script src="{{ asset('mobileui/scripts.js') }}"></script>
 </body>
 
 </html>

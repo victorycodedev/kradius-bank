@@ -118,6 +118,7 @@
                         {{ ucfirst($transaction->transaction_type) }} • {{ $transaction->created_at->format('g:i A') }}
                     </p>
                 </div>
+
                 <div @class([
                     'transaction-amount',
                     'positive' => in_array($transaction->transaction_type, [

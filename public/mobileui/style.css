@@ -71,6 +71,10 @@
     --spacing-2xl: 24px;
     --spacing-3xl: 30px;
     --spacing-4xl: 40px;
+    --spacing-5xl: 50px;
+    --spacing-6xl: 60px;
+    --spacing-7xl: 70px;
+    --spacing-8xl: 80px;
     --spacing-base: 10px;
 
     /* Border Radius */
@@ -210,7 +214,7 @@ body {
 
 .screen {
     min-height: 100vh;
-    padding: var(--spacing-xl);
+    /* padding: 0; */
     display: flex;
     flex-direction: column;
 }
@@ -325,6 +329,10 @@ body {
 .register-screen {
     justify-content: flex-start;
     padding-top: 60px;
+    padding-bottom: 60px;
+    overflow-y: auto;
+    padding-left: var(--spacing-xl);
+    padding-right: var(--spacing-xl);
 }
 
 .auth-header {
@@ -363,6 +371,10 @@ body {
 
 .auth-form {
     flex: 1;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-xl);
 }
 
 .form-group label {
@@ -449,6 +461,24 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--accent-red);
+    border: none;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: transform var(--transition-fast);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+}
+
+.btn-block {
+    width: 100%;
 }
 
 .btn-outline-secondary {
@@ -2836,4 +2866,61 @@ body {
 
 .transaction-skeleton .skeleton-line.short {
     width: 60%;
+}
+
+/* More screen List */
+.menu-item-container {
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-bottom: 120px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast);
+}
+
+.menu-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.dark-mode .menu-item {
+    background: var(--dark-bg-primary);
+    color: var(--dark-text-primary);
+    box-shadow: none;
+}
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.menu-left i {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}
+
+.menu-item span {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.dark-mode .menu-item span {
+    color: var(--dark-text-primary);
+}
+
+.menu-arrow {
+    font-size: 1.1rem;
+    color: #999;
 }

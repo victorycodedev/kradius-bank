@@ -53,7 +53,7 @@
             </div>
 
             <label class="checkbox-label mb-3">
-                <input type="checkbox" x-model="agreeTerms" required>
+                <input type="checkbox" required>
                 <span>I agree to the <a href="#" class="link">Terms & Conditions</a></span>
             </label>
 
