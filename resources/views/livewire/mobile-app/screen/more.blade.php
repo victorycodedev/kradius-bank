@@ -1,4 +1,4 @@
 <div class="screen">
 
-    <livewire:mobile-app.bottom-nav />
+    <livewire:mobile-app.component.bottom-nav />
 </div>

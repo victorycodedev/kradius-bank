@@ -96,36 +96,79 @@
             </div>
         @endif
     </div>
-
-    <!-- Task Section -->
+    <!-- Recent Transactions Section -->
     <div class="task-section">
         <h3>Recent Transactions</h3>
-        @forelse($recentTransactions as $transaction)
+        @forelse ($recentTransactions as $transaction)
             <div class="transaction-item">
-                <div class="transaction-avatar"></div>
+                <div class="transaction-avatar" @style([
+                    'background: linear-gradient(135deg, #ff416c, #ff4b2b)' => $transaction->transaction_type === 'debit' || $transaction->transaction_type === 'withdrawal',
+                    'background: linear-gradient(135deg, #00C853, #00E676)' => $transaction->transaction_type === 'credit' || $transaction->transaction_type === 'deposit',
+                    'background: linear-gradient(135deg, #667eea, #764ba2)' => $transaction->transaction_type === 'transfer',
+                ])>
+                    <div class="transaction-icon">
+                        @switch($transaction->transaction_type)
+                            @case('credit')
+                                <i class="bi bi-arrow-down-left"></i>
+                            @break
+
+                            @case('debit')
+                                <i class="bi bi-arrow-up-right"></i>
+                            @break
+
+                            @case('transfer')
+                                <i class="bi bi-arrow-left-right"></i>
+                            @break
+
+                            @case('withdrawal')
+                                <i class="bi bi-cash-stack"></i>
+                            @break
+
+                            @case('deposit')
+                                <i class="bi bi-wallet2"></i>
+                            @break
+
+                            @default
+                                <i class="bi bi-currency-dollar"></i>
+                        @endswitch
+                    </div>
+                </div>
                 <div class="transaction-details">
-                    <h4>{{ Str::limit($transaction->description ?? 'Transaction', 30) }}</h4>
-                    <p>
-                        {{ ucfirst($transaction->transaction_type) }} •
-                        {{ $transaction->created_at->format('M j, g:i A') }}
+                    <h4>{{ $transaction->description ?? 'Transaction' }}</h4>
+                    <p>{{ ucfirst($transaction->transaction_type) }} • {{ $transaction->created_at->format('g:i A') }}
                     </p>
                 </div>
-                <div
-                    class="transaction-amount {{ $transaction->transaction_type === 'credit' ? 'positive' : 'negative' }}">
-                    {{ $transaction->transaction_type === 'credit' ? '+' : '-' }}
-                    {{ Number::currency($transaction->amount, $transaction->currency) }}
+                <div @class([
+                    'transaction-amount',
+                    'positive' => in_array($transaction->transaction_type, [
+                        'credit',
+                        'deposit',
+                    ]),
+                    'negative' => in_array($transaction->transaction_type, [
+                        'debit',
+                        'withdrawal',
+                    ]),
+                ])>
+                    @if (in_array($transaction->transaction_type, ['credit', 'deposit']))
+                        + {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                    @else
+                        - {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                    @endif
                 </div>
             </div>
-        @empty
-            <div class="text-center py-4">
-                <p class="text-muted">No transactions yet</p>
-            </div>
-        @endforelse
+            @empty
+                <div class="text-center py-4">
+                    <p class="text-muted">No recent transactions</p>
+                </div>
+            @endforelse
+            @if ($recentTransactions->count() > 0)
+                <div class="text-center mt-3 text-dark pb-3">
+                    <a class="py-1 px-4 rounded shadow view-all-btn" href="{{ route('payments') }}" wire:navigate>
+                        View all
+                    </a>
+                </div>
+            @endif
+        </div>
 
-        @if ($recentTransactions->count() > 0)
-            <button class="view-all-btn">View all</button>
-        @endif
+        <livewire:mobile-app.component.bottom-nav />
     </div>
-
-    <livewire:mobile-app.bottom-nav />
-</div>

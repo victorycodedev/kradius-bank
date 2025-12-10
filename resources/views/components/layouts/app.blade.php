@@ -9,10 +9,24 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('mobileui/style.css') }}">
+
+    <style>
+        :root {
+            --bs-primary: {{ $configuration->primary_color }};
+            --primary-color: {{ $configuration->primary_color }};
+            --secondary-color: {{ $configuration->secondary_color }};
+            --accent-color: {{ $configuration->accent_color }};
+            --bg-secondary: {{ $configuration->secondary_color }};
+            /* --text-primary: {{ $configuration->primary_color }}; */
+            --text-secondary: {{ $configuration->secondary_color }};
+            /* --font-family: {{ $configuration->font_family }}; */
+        }
+    </style>
+
+    @stack('styles')
 </head>
 
 <body>
-
     <div id="mobile-only-message" style="display:none;">
         <div class="mobile-warning">
             <h2>Mobile Device Required</h2>
@@ -30,6 +44,8 @@
 
     @flasher_render()
     <script src="{{ asset('mobileui/scripts.js') }}"></script>
+
+    @stack('scripts')
 </body>
 
 </html>

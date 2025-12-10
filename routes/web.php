@@ -2,6 +2,7 @@
 
 use App\Livewire\MobileApp\Screen\Deposit;
 use App\Livewire\MobileApp\Screen\Home;
+use App\Livewire\MobileApp\Screen\InvestmentDetails;
 use App\Livewire\MobileApp\Screen\Loan;
 use App\Livewire\MobileApp\Screen\More;
 use App\Livewire\MobileApp\Screen\Payments;
@@ -34,6 +35,8 @@ Route::middleware([
         Route::get('more', More::class)->name('more');
         Route::get('deposit', Deposit::class)->name('deposit');
         Route::get('stock-investment', StockInvestment::class)->name('stock');
+        Route::get('investment/{id}', InvestmentDetails::class)
+            ->name('investment-detail');
     });
 
 Route::middleware(['auth'])->group(function () {
