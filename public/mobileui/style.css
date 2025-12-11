@@ -595,9 +595,9 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-lg) var(--spacing-xl);
-    position: sticky;
+    /* position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 100; */
 }
 
 .icon-btn {
@@ -4950,4 +4950,569 @@ body {
     background: var(--dark-bg-tertiary);
     border-color: var(--dark-bg-tertiary);
     color: var(--dark-text-secondary);
+}
+/* Cards Screen Styles */
+.cards-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f9fafb;
+    padding-bottom: 100px;
+}
+
+.dark-mode .cards-screen {
+    background: #0f0f0f;
+}
+
+.add-card-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #667eea;
+    color: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+
+.add-card-btn:active {
+    transform: scale(0.95);
+}
+
+/* Cards Container */
+.cards-container {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Card Item */
+.card-item {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Credit Card Visual */
+.credit-card {
+    position: relative;
+    padding: 24px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.credit-card.visa {
+    background: linear-gradient(135deg, #1a1f71 0%, #2a3eb1 100%);
+}
+
+.credit-card.mastercard {
+    background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+}
+
+.credit-card.amex {
+    background: linear-gradient(135deg, #006fcf 0%, #0097d6 100%);
+}
+
+.credit-card.blocked {
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-brand-name {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-type-badge {
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.card-chip {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #333;
+    margin: 12px 0;
+}
+
+.card-number {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-family: "Courier New", monospace;
+    margin: 16px 0;
+}
+
+.card-footer-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.card-holder,
+.card-expiry {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.card-blocked-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.card-blocked-overlay i {
+    font-size: 48px;
+}
+
+.card-blocked-overlay span {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Card Details Section */
+.card-details-section {
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dark-mode .card-details-section {
+    background: #1a1a1a;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.dark-mode .detail-row {
+    border-bottom-color: #1f2937;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.dark-mode .detail-label {
+    color: #9ca3af;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.dark-mode .detail-value {
+    color: #f9fafb;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.dark-mode .status-badge.success {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+.status-badge.danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.dark-mode .status-badge.danger {
+    background: #7f1d1d;
+    color: #fca5a5;
+}
+
+/* Card Actions */
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.act-btn {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.act-btn.success {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.act-btn.danger {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.act-btn:active {
+    transform: scale(0.98);
+}
+
+/* Form Styles */
+.add-card-form,
+.delete-card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+}
+
+.card-info-box {
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.dark-mode .card-info-box {
+    background: #111827;
+}
+
+.card-info-box p {
+    margin: 8px 0;
+    color: #374151;
+}
+
+.dark-mode .card-info-box p {
+    color: #d1d5db;
+}
+
+.card-info-box strong {
+    color: #111827;
+}
+
+.dark-mode .card-info-box strong {
+    color: #f9fafb;
+}
+
+.btn-danger {
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #ef4444;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s;
+}
+
+.btn-danger:active {
+    transform: scale(0.98);
+}
+
+.btn-danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* Profile Screen Styles */
+.profile-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f9fafb;
+    padding-bottom: 100px;
+}
+
+.dark-mode .profile-screen {
+    background: #0f0f0f;
+}
+
+/* Profile Container */
+.profile-container {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Profile Avatar Section */
+.profile-avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    margin: 16px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .profile-avatar-section {
+    background: #1a1a1a;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-text {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.profile-avatar-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.dark-mode .profile-avatar-section h2 {
+    color: #f9fafb;
+}
+
+.profile-avatar-section p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.dark-mode .profile-avatar-section p {
+    color: #9ca3af;
+}
+
+/* Profile Section */
+.profile-section {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dark-mode .profile-section {
+    background: #1a1a1a;
+}
+
+.profile-section .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 8px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.dark-mode .profile-section .section-title {
+    color: #f9fafb;
+    border-bottom-color: #374151;
+}
+
+/* Form Field */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.dark-mode .form-label {
+    color: #d1d5db;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #111827;
+    transition: all 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input:disabled,
+.form-input[readonly] {
+    background: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.dark-mode .form-input {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+}
+
+.dark-mode .form-input:focus {
+    border-color: #667eea;
+}
+
+.dark-mode .form-input:disabled,
+.dark-mode .form-input[readonly] {
+    background: #111827;
+    color: #6b7280;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.dark-mode .form-hint {
+    color: #9ca3af;
+}
+
+.form-error {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #dc2626;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Profile Actions */
+.profile-actions {
+    padding: 0 0 20px 0;
+}
+
+.btn-save-profile {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-save-profile:active {
+    transform: scale(0.98);
+}
+
+.btn-save-profile:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-save-profile:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

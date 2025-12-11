@@ -6,12 +6,14 @@ use App\Livewire\MobileApp\Screen\InvestmentDetails;
 use App\Livewire\MobileApp\Screen\Loan;
 use App\Livewire\MobileApp\Screen\LoanDetail;
 use App\Livewire\MobileApp\Screen\More;
+use App\Livewire\MobileApp\Screen\More\Cards;
+use App\Livewire\MobileApp\Screen\More\Profile;
 use App\Livewire\MobileApp\Screen\Payments;
 use App\Livewire\MobileApp\Screen\StockInvestment;
 use App\Livewire\MobileApp\Screen\Transfer;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
+
 use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -39,12 +41,19 @@ Route::middleware([
         Route::get('stock-investment', StockInvestment::class)->name('stock');
         Route::get('investment/{id}', InvestmentDetails::class)
             ->name('investment-detail');
+
+        Route::prefix('account')
+            ->name('account.')
+            ->group(function () {
+                Route::get('cards', Cards::class)->name('cards');
+                Route::get('profile', Profile::class)->name('profile');
+            });
     });
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
-    Route::get('settings/profile', Profile::class)->name('profile.edit');
+    // Route::get('settings/profile', Profile::class)->name('profile.edit');
     Route::get('settings/password', Password::class)->name('user-password.edit');
     Route::get('settings/appearance', Appearance::class)->name('appearance.edit');
 
