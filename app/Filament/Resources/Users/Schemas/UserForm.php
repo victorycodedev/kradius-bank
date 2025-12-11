@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -13,6 +14,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
@@ -429,20 +431,81 @@ class UserForm
                                     ]),
                             ])
                             ->visibleOn('edit'),
-                        // Tab::make('Notifications')
-                        //     ->icon(Heroicon::Bell)
-                        //     ->badge(fn($record) => $record?->notifications()->count())
-                        //     ->schema([
-                        //         Repeater::make('notifications')
-                        //             ->relationship('notifications')
-                        //             ->schema([])
-                        //             ->columns(1)
-                        //             ->defaultItems(0)
-                        //             ->addActionLabel('Add Beneficiary')
-                        //             ->collapsible()
-                        //             ->itemLabel(fn(array $state): ?string => $state['account_name'] ?? 'Beneficiary'),
-                        //     ])
-                        //     ->visibleOn('edit'),
+                        Tab::make('Deposit Details')
+                            ->icon(Heroicon::Banknotes)
+                            ->schema([
+                                Toggle::make('use_default_deposit_details')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Use Default Deposit Details')
+                                    ->belowContent('If checked, the default deposit details in your settings will be used for deposits.')
+                                    ->default(true),
+                                Section::make('Crypto Deposit Details')
+                                    ->columns(2)
+                                    ->schema([
+                                        Toggle::make('enable_crypto_payment')
+                                            ->onIcon(Heroicon::CheckCircle)
+                                            ->offIcon(Heroicon::XCircle)
+                                            ->label('Enable Crypto Payment')
+                                            ->default(true)
+                                            ->columnSpanFull()
+                                            ->live(),
+                                        Select::make('coin')
+                                            ->options([
+                                                'USDT' => 'USDT',
+                                                'BUSD' => 'BUSD',
+                                                'DAI' => 'DAI',
+                                                'BTC' => 'BTC',
+                                                'ETH' => 'ETH',
+                                                'LTC' => 'LTC',
+                                                'DOGE' => 'DOGE',
+                                                'XRP' => 'XRP',
+                                                'SOL' => 'SOL',
+                                                'MATIC' => 'MATIC',
+                                            ])
+                                            ->default('USDT')
+                                            ->required(fn(Get $get) => $get('enable_crypto_payment')),
+                                        TextInput::make('crypto_name')
+                                            ->required(fn(Get $get) => $get('enable_crypto_payment')),
+                                        TextInput::make('network')
+                                            ->default('TRC20')
+                                            ->required(fn(Get $get) => $get('enable_crypto_payment')),
+                                        TextInput::make('wallet_address')
+                                            ->placeholder('eg : 0x1a2b3c4d5e6f7g8h9i0j1ky6z7')
+                                            ->required(fn(Get $get) => $get('enable_crypto_payment')),
+                                        KeyValue::make('more_crypto_attributes')
+                                            ->columnSpanFull()
+                                            ->keyPlaceholder('eg : chain')
+                                            ->valuePlaceholder('eg : tron'),
+                                    ]),
+                                Section::make('Bank Deposit Details')
+                                    ->columns(2)
+                                    ->schema([
+                                        Toggle::make('enable_bank_payment')
+                                            ->onIcon(Heroicon::CheckCircle)
+                                            ->offIcon(Heroicon::XCircle)
+                                            ->label('Enable Bank Payment')
+                                            ->default(true)
+                                            ->columnSpanFull()
+                                            ->live(),
+                                        TextInput::make('account_holder_name')
+                                            ->required(fn(Get $get) => $get('enable_bank_payment')),
+                                        TextInput::make('account_number')
+                                            ->required(fn(Get $get) => $get('enable_bank_payment')),
+                                        TextInput::make('bank_name')
+                                            ->required(fn(Get $get) => $get('enable_bank_payment')),
+                                        TextInput::make('iban')
+                                            ->placeholder('eg:  GB29 NWBK 6016 1012 3456 78'),
+                                        TextInput::make('swift')
+                                            ->placeholder('eg : GB33 NWBK 6016 1012 3456 78'),
+                                        KeyValue::make('more_bank_attributes')
+                                            ->columnSpanFull()
+                                            ->keyPlaceholder('eg : branch')
+                                            ->valuePlaceholder('eg : 123'),
+                                    ])
+
+                            ])
+                            ->visibleOn('edit'),
                     ])
                     ->columnSpanFull(),
             ]);

@@ -55,13 +55,18 @@ class Settings extends Model implements HasMedia
             'api_enabled' => 'boolean',
             'api_requires_authentication' => 'boolean',
             'auto_backup_enabled' => 'boolean',
+            'enable_crypto_payment' => 'boolean',
+            'enable_bank_payment' => 'boolean',
 
             // JSON
             'allowed_id_types' => 'array',
+            'more_bank_attributes' => 'array',
+            'more_crypto_attributes' => 'array',
 
             // Timestamps
             'maintenance_scheduled_at' => 'datetime',
             'maintenance_ends_at' => 'datetime',
+
         ];
     }
 

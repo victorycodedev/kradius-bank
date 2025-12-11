@@ -43,7 +43,10 @@ class Home extends Component
     {
         $recentTransactions = $this->user->accounts()
             ->with(['transactions' => function ($query) {
-                $query->where('status', 'completed')
+                $query->where(function ($q) {
+                    $q->where('status', 'completed')
+                        ->orWhere('status', 'pending_verification');
+                })
                     ->latest()
                     ->limit(10);
             }])

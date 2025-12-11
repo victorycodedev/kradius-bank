@@ -90,6 +90,11 @@ class User extends Authenticatable implements FilamentUser, HasMedia
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
             'pin' => 'encrypted',
+            'use_default_deposit_details' => 'boolean',
+            'more_bank_attributes' => 'array',
+            'more_crypto_attributes' => 'array',
+            'enable_crypto_payment' => 'boolean',
+            'enable_bank_payment' => 'boolean',
         ];
     }
 

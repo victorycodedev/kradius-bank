@@ -74,7 +74,6 @@
     <div class="notification-container" x-data="notificationSliderComponent({{ count($notifications) }})">
         <div class="notification-slider" x-ref="notificationSlider" @touchstart="start($event)"
             @touchmove="move($event)" @touchend="end()" :style="`transform: translateX(-${current * 100}%)`">
-
             @foreach ($notifications as $notification)
                 <div class="notification-banner">
                     <div class="notification-content">
@@ -96,6 +95,7 @@
             </div>
         @endif
     </div>
+
     <!-- Recent Transactions Section -->
     <div class="task-section">
         <h3>Recent Transactions</h3>
@@ -135,7 +135,12 @@
                 </div>
                 <div class="transaction-details">
                     <h4>{{ $transaction->description ?? 'Transaction' }}</h4>
-                    <p>{{ ucfirst($transaction->transaction_type) }} • {{ $transaction->created_at->format('g:i A') }}
+                    <p>
+                        {{ ucfirst($transaction->transaction_type) }} •
+                        {{ $transaction->created_at->format('g:i A') }}
+                        @if ($transaction->status != 'completed')
+                            <i class="bi bi-x-circle-fill text-danger"></i>
+                        @endif
                     </p>
                 </div>
                 <div @class([

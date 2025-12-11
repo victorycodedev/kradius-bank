@@ -49,7 +49,10 @@ class Payments extends Component
         $query = UserAccount::where('user_id', Auth::user()->id)
             ->with(['transactions' => function ($q) {
 
-                $q->where('status', 'completed');
+                $q->where(function ($query) {
+                    $query->where('status', 'completed')
+                        ->orWhere('status', 'pending_verification');
+                });
 
                 // Apply type filter
                 if ($this->filterType !== 'all') {

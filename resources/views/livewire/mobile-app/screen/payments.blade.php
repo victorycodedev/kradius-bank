@@ -116,6 +116,9 @@
                     <h4>{{ $transaction->description ?? 'Transaction' }}</h4>
                     <p>
                         {{ ucfirst($transaction->transaction_type) }} • {{ $transaction->created_at->format('g:i A') }}
+                        @if ($transaction->status != 'completed')
+                            <i class="bi bi-x-circle-fill text-danger"></i>
+                        @endif
                     </p>
                 </div>
 
