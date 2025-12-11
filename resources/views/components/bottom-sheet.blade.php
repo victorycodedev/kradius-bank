@@ -62,7 +62,8 @@
         this.currentY = 0;
     }
 }" x-cloak @keydown.escape.window="close()" x-show="show"
-    @close-bottom-sheet.window="if ($event.detail.id === '{{ $id }}') close()" style="display:none"
+    @close-bottom-sheet.window="if ($event.detail.id === '{{ $id }}') close()"
+    @open-bottom-sheet.window="if ($event.detail.id === '{{ $id }}') show = true" style="display:none"
     class="bottom-sheet-wrapper">
 
     <!-- Backdrop -->

@@ -31,7 +31,7 @@ class EditLoan extends EditRecord
         $this->record->logActivity(
             'updated',
             'Loan details updated by ' . Auth::user()->name,
-            Auth::user()->id(),
+            Auth::user()->id,
             ['changes' => $this->record->getChanges()]
         );
     }

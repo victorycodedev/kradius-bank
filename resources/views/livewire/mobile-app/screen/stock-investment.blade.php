@@ -404,5 +404,5 @@
         </div>
     </div> --}}
 
-    <livewire:mobile-app.component.bottom-nav />
+    {{-- <livewire:mobile-app.component.bottom-nav /> --}}
 </div>
