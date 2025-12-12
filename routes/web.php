@@ -6,7 +6,11 @@ use App\Livewire\MobileApp\Screen\InvestmentDetails;
 use App\Livewire\MobileApp\Screen\Loan;
 use App\Livewire\MobileApp\Screen\LoanDetail;
 use App\Livewire\MobileApp\Screen\More;
+use App\Livewire\MobileApp\Screen\More\About;
+use App\Livewire\MobileApp\Screen\More\Beneficiaries;
+use App\Livewire\MobileApp\Screen\More\Kyc;
 use App\Livewire\MobileApp\Screen\More\Cards;
+use App\Livewire\MobileApp\Screen\More\FaqSupport;
 use App\Livewire\MobileApp\Screen\More\Profile;
 use App\Livewire\MobileApp\Screen\Payments;
 use App\Livewire\MobileApp\Screen\StockInvestment;
@@ -47,6 +51,10 @@ Route::middleware([
             ->group(function () {
                 Route::get('cards', Cards::class)->name('cards');
                 Route::get('profile', Profile::class)->name('profile');
+                Route::get('beneficiaries', Beneficiaries::class)->name('beneficiaries');
+                Route::get('kyc', Kyc::class)->name('kyc');
+                Route::get('faqs-and-support', FaqSupport::class)->name('faqs-and-support');
+                Route::get('about', About::class)->name('about');
             });
     });
 

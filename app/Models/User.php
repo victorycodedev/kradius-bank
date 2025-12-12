@@ -287,13 +287,6 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         $this->addMediaCollection('avatars')
             ->singleFile();
 
-        // $this->addMediaCollection('signature')
-        //     ->singleFile();
-
-        // $this->addMediaCollection('documents');
-
-        // $this->addMediaCollection('staff_documents');
-
-        // $this->addMediaCollection('parents_guardians_avatar')
+        $this->addMediaCollection('kyc_documents');
     }
 }

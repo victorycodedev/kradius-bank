@@ -27,6 +27,7 @@ class TeamResource extends Resource
     // Customize navigation and slug so Filament treats it separately
     protected static ?string $navigationLabel = 'Teams';
     protected static ?string $slug = 'teams'; // importa
+    protected static ?int $navigationSort = 2;
 
     // protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string | UnitEnum | null $navigationGroup = 'Settings';

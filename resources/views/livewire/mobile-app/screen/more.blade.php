@@ -22,7 +22,7 @@
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
 
-        <a href="" class="menu-item text-decoration-none">
+        <a href="{{ route('account.beneficiaries') }}" class="menu-item text-decoration-none">
             <div class="menu-left">
                 <i class="bi bi-people-fill"></i>
                 <span>Beneficiaries</span>
@@ -30,7 +30,7 @@
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
 
-        <a href="" class="menu-item text-decoration-none">
+        <a href="{{ route('account.kyc') }}" class="menu-item text-decoration-none">
             <div class="menu-left">
                 <i class="bi bi-person-vcard-fill"></i>
                 <span>KYC</span>
@@ -46,7 +46,7 @@
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
 
-        <a href="" class="menu-item text-decoration-none">
+        <a href="{{ route('account.faqs-and-support') }}" class="menu-item text-decoration-none">
             <div class="menu-left">
                 <i class="bi bi-chat-dots"></i>
                 <span>FAQs and Support</span>
@@ -54,7 +54,7 @@
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
 
-        <a href="" class="menu-item text-decoration-none">
+        <a href="{{ route('account.about') }}" class="menu-item text-decoration-none">
             <div class="menu-left">
                 <i class="bi bi-info-circle"></i>
                 <span>About</span>
