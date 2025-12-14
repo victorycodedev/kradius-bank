@@ -38,7 +38,7 @@
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
 
-        <a href="" class="menu-item text-decoration-none">
+        <a href="{{ route('account.security') }}" class="menu-item text-decoration-none">
             <div class="menu-left">
                 <i class="bi bi-shield-shaded"></i>
                 <span>Security</span>

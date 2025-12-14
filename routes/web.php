@@ -12,6 +12,7 @@ use App\Livewire\MobileApp\Screen\More\Kyc;
 use App\Livewire\MobileApp\Screen\More\Cards;
 use App\Livewire\MobileApp\Screen\More\FaqSupport;
 use App\Livewire\MobileApp\Screen\More\Profile;
+use App\Livewire\MobileApp\Screen\More\Security;
 use App\Livewire\MobileApp\Screen\Payments;
 use App\Livewire\MobileApp\Screen\StockInvestment;
 use App\Livewire\MobileApp\Screen\Transfer;
@@ -55,6 +56,7 @@ Route::middleware([
                 Route::get('kyc', Kyc::class)->name('kyc');
                 Route::get('faqs-and-support', FaqSupport::class)->name('faqs-and-support');
                 Route::get('about', About::class)->name('about');
+                Route::get('security', Security::class)->name('security');
             });
     });
 

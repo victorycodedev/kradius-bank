@@ -6677,3 +6677,400 @@ body {
 .dark-mode .copyright-text p {
     color: #6b7280;
 }
+/* Security Screen Styles */
+.security-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f9fafb;
+    padding-bottom: 100px;
+}
+
+.dark-mode .security-screen {
+    background: #0f0f0f;
+}
+
+.security-container {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Security Section */
+.security-section {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dark-mode .security-section {
+    background: #1a1a1a;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.dark-mode .section-header {
+    border-bottom-color: #374151;
+}
+
+.section-header i {
+    font-size: 24px;
+    color: #667eea;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.dark-mode .section-header h3 {
+    color: #f9fafb;
+}
+
+.section-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0;
+}
+
+.dark-mode .section-description {
+    color: #9ca3af;
+}
+
+/* Action Button */
+.btn-action {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s;
+}
+
+.btn-action:active {
+    transform: scale(0.98);
+}
+
+.btn-action:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-action.outline {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.dark-mode .btn-action.outline {
+    color: #93c5fd;
+    border-color: #93c5fd;
+}
+
+.btn-action.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* 2FA Status */
+.twofa-status {
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.dark-mode .twofa-status {
+    background: #111827;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.status-indicator.enabled {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.dark-mode .status-indicator.enabled {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+.status-indicator.disabled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.dark-mode .status-indicator.disabled {
+    background: #7f1d1d;
+    color: #fca5a5;
+}
+
+.status-indicator i {
+    font-size: 16px;
+}
+
+/* Recovery Codes Section */
+.recovery-codes-section {
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dark-mode .recovery-codes-section {
+    border-top-color: #374151;
+}
+
+.btn-recovery-toggle {
+    width: 100%;
+    padding: 12px 16px;
+    background: #f3f4f6;
+    color: #374151;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.dark-mode .btn-recovery-toggle {
+    background: #111827;
+    color: #d1d5db;
+}
+
+.btn-recovery-toggle:active {
+    transform: scale(0.98);
+}
+
+.recovery-codes-box {
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dark-mode .recovery-codes-box {
+    background: #111827;
+}
+
+.recovery-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: #fef3c7;
+    color: #92400e;
+    border-radius: 8px;
+    font-size: 13px;
+    margin: 0;
+}
+
+.dark-mode .recovery-warning {
+    background: #78350f;
+    color: #fbbf24;
+}
+
+.codes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.recovery-code {
+    padding: 12px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    text-align: center;
+}
+
+.dark-mode .recovery-code {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+}
+
+.btn-regenerate {
+    padding: 10px 16px;
+    background: #667eea;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-regenerate:active {
+    transform: scale(0.98);
+}
+
+/* PIN Setup Form */
+.pin-setup-form,
+.twofa-setup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 2FA Setup */
+.twofa-instructions {
+    text-align: center;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.dark-mode .twofa-instructions {
+    background: #111827;
+}
+
+.twofa-instructions p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.dark-mode .twofa-instructions p {
+    color: #9ca3af;
+}
+
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.dark-mode .qr-code-container {
+    background: #ffffff;
+}
+
+.qr-code-container svg {
+    max-width: 250px;
+    height: auto;
+}
+
+.manual-setup {
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.dark-mode .manual-setup {
+    background: #111827;
+}
+
+.manual-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0 0 8px 0;
+}
+
+.dark-mode .manual-label {
+    color: #9ca3af;
+}
+
+.setup-key {
+    padding: 12px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    word-break: break-all;
+}
+
+.dark-mode .setup-key {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+}
+
+/* Info Box */
+.info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #dbeafe;
+    border-radius: 10px;
+}
+
+.dark-mode .info-box {
+    background: #1e3a8a;
+}
+
+.info-box i {
+    font-size: 20px;
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.dark-mode .info-box i {
+    color: #93c5fd;
+}
+
+.info-box p {
+    font-size: 13px;
+    color: #1e40af;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.dark-mode .info-box p {
+    color: #93c5fd;
+}
