@@ -233,9 +233,13 @@ class UserForm
                                             ->maxLength(255)
                                             ->placeholder('Document ID number')
                                             ->columnSpanFull(),
+                                        SpatieMediaLibraryFileUpload::make('kyc_document')
+                                            ->collection('kyc_documents')
+                                            ->label('KYC Document')
+                                            ->multiple()
+                                            ->columnSpanFull(),
                                     ]),
                             ]),
-
                         // Tab 4: Cards Management
                         Tab::make('Cards')
                             ->icon(Heroicon::CreditCard)
