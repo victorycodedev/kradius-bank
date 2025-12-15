@@ -57,6 +57,7 @@ class Settings extends Model implements HasMedia
             'auto_backup_enabled' => 'boolean',
             'enable_crypto_payment' => 'boolean',
             'enable_bank_payment' => 'boolean',
+            'transfer_success' => 'boolean',
 
             // JSON
             'allowed_id_types' => 'array',

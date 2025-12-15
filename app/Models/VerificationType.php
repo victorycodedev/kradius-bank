@@ -11,13 +11,11 @@ class VerificationType extends Model
         'name',
         'code',
         'description',
-        'amount',
-        'is_percentage',
-        'order',
+        'order', // order with which the verification types will be shown
         'is_active',
         'is_required',
-        'applies_to',
-        'threshold_amount',
+        'applies_to', // [above_threshold, international, local, all]
+        'threshold_amount', // if applies_to is above_threshold
     ];
 
     protected function casts(): array

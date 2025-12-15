@@ -7074,3 +7074,349 @@ body {
 .dark-mode .info-box p {
     color: #93c5fd;
 }
+
+/* Transfer Screen Styles */
+.transfer-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f9fafb;
+    padding-bottom: 100px;
+}
+
+.dark-mode .transfer-screen {
+    background: #0f0f0f;
+}
+
+/* Progress Steps */
+.transfer-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dark-mode .transfer-progress {
+    background: #1a1a1a;
+    border-bottom-color: #374151;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.dark-mode .step-number {
+    background: #374151;
+    color: #9ca3af;
+}
+
+.progress-step.active .step-number {
+    background: #667eea;
+    color: #ffffff;
+}
+
+.progress-step.completed .step-number {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.progress-step span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.dark-mode .progress-step span {
+    color: #9ca3af;
+}
+
+.progress-line {
+    width: 60px;
+    height: 2px;
+    background: #e5e7eb;
+    margin: 0 8px;
+    transition: all 0.3s;
+}
+
+.dark-mode .progress-line {
+    background: #374151;
+}
+
+.progress-line.active {
+    background: #667eea;
+}
+
+/* Transfer Container */
+.transfer-container {
+    padding: 20px;
+}
+
+.transfer-step {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Transfer Type Toggle */
+.transfer-type-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.dark-mode .transfer-type-toggle {
+    background: #1a1a1a;
+}
+
+.type-btn {
+    padding: 12px;
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dark-mode .type-btn {
+    background: #111827;
+    color: #9ca3af;
+}
+
+.type-btn.active {
+    background: #ede9fe;
+    color: #667eea;
+    border-color: #667eea;
+}
+
+.dark-mode .type-btn.active {
+    background: #312e81;
+    color: #c4b5fd;
+}
+
+/* Account Name Display */
+.account-name-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.account-name-display.found {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.dark-mode .account-name-display.found {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+.account-name-display.not-found {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.dark-mode .account-name-display.not-found {
+    background: #7f1d1d;
+    color: #fca5a5;
+}
+
+/* Verification Card */
+.verification-card {
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.dark-mode .verification-card {
+    background: #1a1a1a;
+}
+
+.verification-card i {
+    font-size: 48px;
+    color: #667eea;
+    margin-bottom: 16px;
+}
+
+.verification-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.dark-mode .verification-card h3 {
+    color: #f9fafb;
+}
+
+.verification-card p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.dark-mode .verification-card p {
+    color: #9ca3af;
+}
+
+.verification-progress {
+    margin-top: 12px;
+    padding: 6px 16px;
+    background: #ede9fe;
+    color: #667eea;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dark-mode .verification-progress {
+    background: #312e81;
+    color: #c4b5fd;
+}
+
+/* Transfer Summary */
+.transfer-summary {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dark-mode .transfer-summary {
+    background: #1a1a1a;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.dark-mode .summary-row {
+    border-bottom-color: #1f2937;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row span {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.dark-mode .summary-row span {
+    color: #9ca3af;
+}
+
+.summary-row strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.dark-mode .summary-row strong {
+    color: #f9fafb;
+}
+
+/* Processing Animation */
+.processing-animation {
+    padding: 60px 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
+.dark-mode .processing-animation {
+    background: #1a1a1a;
+}
+
+.processing-animation h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.dark-mode .processing-animation h3 {
+    color: #f9fafb;
+}
+
+.processing-animation p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.dark-mode .processing-animation p {
+    color: #9ca3af;
+}
+
+/* Form Textarea */
+.form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-family: inherit;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #111827;
+    resize: vertical;
+    transition: all 0.2s;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dark-mode .form-textarea {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+}

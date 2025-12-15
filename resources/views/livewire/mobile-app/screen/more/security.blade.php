@@ -185,7 +185,7 @@
                 <p>Your PIN will be required for transactions and sensitive operations.</p>
             </div>
 
-            <div class="action-buttons">
+            <div class="action-buttons gap-2">
                 <button wire:click="closePinSetup" class="btn-cancel">
                     Cancel
                 </button>
