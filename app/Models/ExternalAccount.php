@@ -15,6 +15,13 @@ class ExternalAccount extends Model
         'metadata',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'metadata' => 'array',
+        ];
+    }
+
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);

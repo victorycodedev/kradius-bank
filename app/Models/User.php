@@ -80,6 +80,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
      *
      * @return array<string, string>
      */
+
     protected function casts(): array
     {
         return [
@@ -116,7 +117,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     //     $this->attributes['transaction_pin'] = Hash::make($value);
     // }
 
-    public function verifyTransactionPin($pin)
+    public function verifyTransactionPin($pin): bool
     {
         return decrypt($this->pin) === $pin;
     }

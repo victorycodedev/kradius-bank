@@ -128,7 +128,11 @@ class UserForm
                                             ->revealable()
                                             ->maxLength(4)
                                             ->placeholder('4-digit PIN')
-                                            ->belowContent('4-digit PIN for transactions'),
+                                            ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
+                                            ->dehydrateStateUsing(function (?string $state) {
+                                                return filled($state) ? encrypt($state) : null;
+                                            })
+                                            ->helperText('4-digit PIN for transactions'),
 
                                         Toggle::make('two_factor_enabled')
                                             ->label('Two-Factor Authentication')
@@ -286,14 +290,22 @@ class UserForm
                                                             ->required()
                                                             ->unique(ignoreRecord: true)
                                                             ->maxLength(19)
-                                                            ->placeholder('XXXX XXXX XXXX XXXX'),
+                                                            ->placeholder('XXXX XXXX XXXX XXXX')
+                                                            ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
+                                                            ->dehydrateStateUsing(function (?string $state) {
+                                                                return filled($state) ? encrypt($state) : null;
+                                                            }),
 
                                                         TextInput::make('cvv')
                                                             ->label('CVV')
                                                             ->required()
                                                             ->password()
                                                             ->maxLength(4)
-                                                            ->placeholder('XXX'),
+                                                            ->placeholder('XXX')
+                                                            ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
+                                                            ->dehydrateStateUsing(function (?string $state) {
+                                                                return filled($state) ? encrypt($state) : null;
+                                                            }),
 
                                                         DatePicker::make('expiry_date')
                                                             ->label('Expiry Date')
@@ -352,6 +364,7 @@ class UserForm
                                                             ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->name}({$record->code}) ")
                                                             ->required()
                                                             ->searchable()
+                                                            ->unique(ignoreRecord: true)
                                                             ->preload(),
 
                                                         TextInput::make('code')
@@ -369,7 +382,6 @@ class UserForm
 
                                                         Toggle::make('is_used')
                                                             ->label('Already Used')
-                                                            ->disabled()
                                                             ->default(false),
                                                     ]),
                                             ])

@@ -4,13 +4,16 @@ namespace App\Livewire\MobileApp\Screen;
 
 use App\Models\Bank;
 use App\Models\ExternalAccount;
+use App\Models\Setting;
 use App\Models\Settings;
+use App\Models\Transaction;
 use App\Models\UserAccount;
 use App\Models\VerificationType;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -19,7 +22,7 @@ class Transfer extends Component
     use HasAlerts;
 
     public $transferType = 'local'; // local, international
-    public $step = 1; // 1: Details, 2: PIN, 3: Verification Codes, 4: Processing
+    public $step = 1; // 1: Details, 2: PIN, 3: Verification Codes, 4: Processing, 5: Result
 
     // Step 1: Transfer Details
     public $bankId = '';
@@ -41,13 +44,37 @@ class Transfer extends Component
     public $currentCodeInput = '';
     public $requiredVerifications = [];
 
+    // Step 4 & 5: Processing and Result
+    public $isProcessing = false;
+    public $transferSuccess = false;
+    public $transferReference = '';
+    public $transferMessage = '';
+
     #[Title('Transfers')]
     public function render()
     {
         return view('livewire.mobile-app.screen.transfer', [
             'banks' => Bank::where('active', true)->orderBy('name')->get(),
             'sourceAccounts' => Auth::user()->accounts()->get(),
+            'beneficiaries' => Auth::user()->beneficiaries()->latest()->get(),
         ]);
+    }
+
+    public function selectBeneficiary($beneficiaryId)
+    {
+        $beneficiary = Auth::user()->beneficiaries()->findOrFail($beneficiaryId);
+
+        // Get the bank ID
+        $bank = Bank::where('name', $beneficiary->bank_name)
+            ->orWhere('code', $beneficiary->bank_code)
+            ->first();
+
+        $this->bankId = $bank?->id ?? '';
+        $this->accountNumber = $beneficiary->account_number;
+        $this->accountName = $beneficiary->account_name;
+
+        // Trigger account lookup to validate
+        $this->lookupAccount();
     }
 
     public function updatedAccountNumber($value)
@@ -127,15 +154,16 @@ class Transfer extends Component
     public function verifyPin()
     {
         $this->validate([
-            'transactionPin' => 'required|digits:5',
+            'transactionPin' => ['required', 'digits:4'],
         ]);
 
-        if (!Hash::check($this->transactionPin, Auth::user()->pin)) {
+        if (!Auth::user()->verifyTransactionPin($this->transactionPin)) {
             $this->addError('transactionPin', 'Incorrect PIN');
+            $this->errorAlert('Incorrect PIN');
             return;
         }
 
-        // Load required verification codes
+        // Load required verification codes BEFORE checking
         $this->loadRequiredVerifications();
 
         if (count($this->requiredVerifications) > 0) {
@@ -158,11 +186,11 @@ class Transfer extends Component
         foreach ($verificationTypes as $verificationType) {
             $userCode = Auth::user()->verificationCodes()
                 ->where('verification_type_id', $verificationType->id)
-                ->where('is_used', false)
-                ->where(function ($query) {
-                    $query->whereNull('expires_at')
-                        ->orWhere('expires_at', '>', now());
-                })
+                // ->where('is_used', false)
+                // ->where(function ($query) {
+                //     $query->whereNull('expires_at')
+                //         ->orWhere('expires_at', '>', now());
+                // })
                 ->first();
 
             if ($userCode) {
@@ -177,16 +205,30 @@ class Transfer extends Component
     public function verifyCode()
     {
         $this->validate([
-            'currentCodeInput' => 'required|string',
+            'currentCodeInput' => ['required', 'string']
         ]);
 
         $currentVerification = $this->requiredVerifications[$this->currentVerificationIndex];
         $userCode = $currentVerification['user_code'];
 
-        if ($this->currentCodeInput !== $userCode->code) {
-            $this->addError('currentCodeInput', 'Incorrect verification code');
-            return;
-        }
+        // if ($this->currentCodeInput !== $userCode->code) {
+        //     $this->addError('currentCodeInput', 'Incorrect verification code');
+        //     return;
+        // }
+
+        // // check if code is already used
+        // if ($userCode->is_used) {
+        //     $this->addError('currentCodeInput', 'Verification code already used');
+        //     $this->errorAlert('Verification code already used');
+        //     return;
+        // }
+
+        // // check if it has expired
+        // if ($userCode->expires_at && $userCode->expires_at < now()) {
+        //     $this->addError('currentCodeInput', 'Verification code has expired');
+        //     $this->errorAlert('Verification code has expired');
+        //     return;
+        // }
 
         // Mark as used
         $userCode->markAsUsed();
@@ -201,10 +243,17 @@ class Transfer extends Component
         }
     }
 
-    private function processTransfer()
+    public function processTransfer()
     {
         $this->step = 4;
+        $this->isProcessing = true;
 
+        // Dispatch event to start Alpine.js animation
+        $this->dispatch('start-transfer-processing');
+    }
+
+    public function executeTransfer()
+    {
         // Check transfer success flags
         $user = Auth::user();
         $settings = Settings::get();
@@ -213,14 +262,18 @@ class Transfer extends Component
         $failureMessage = $user->failed_transfer_message ?? $settings->failed_transfer_message ?? 'Transfer failed. Please try again.';
 
         if (!$transferSuccess) {
-            $this->errorAlert($failureMessage);
-            $this->resetTransfer();
+            $this->transferSuccess = false;
+            $this->transferMessage = $failureMessage;
+            $this->step = 5;
+            $this->isProcessing = false;
             return;
         }
 
         DB::beginTransaction();
         try {
             $sourceAccount = Auth::user()->accounts()->findOrFail($this->sourceAccountId);
+
+            $reference = 'TRF' . strtoupper(uniqid());
 
             // Create debit transaction for sender
             $debitTransaction = $sourceAccount->transactions()->create([
@@ -229,7 +282,7 @@ class Transfer extends Component
                 'currency' => $sourceAccount->currency,
                 'balance_before' => $sourceAccount->balance,
                 'balance_after' => $sourceAccount->balance - $this->amount,
-                'reference_number' => 'TRF' . strtoupper(uniqid()),
+                'reference_number' => $reference,
                 'description' => $this->description ?: "Transfer to {$this->accountName}",
                 'recipient_account_id' => $this->isExternalAccount ? null : $this->recipientAccount->id,
                 'status' => 'completed',
@@ -254,7 +307,7 @@ class Transfer extends Component
                     'currency' => $this->recipientAccount->currency,
                     'balance_before' => $this->recipientAccount->balance,
                     'balance_after' => $this->recipientAccount->balance + $this->amount,
-                    'reference_number' => 'TRF' . strtoupper(uniqid()),
+                    'reference_number' => $reference,
                     'description' => "Transfer from {$user->name}",
                     'status' => 'completed',
                     'channel' => 'mobile_app',
@@ -266,13 +319,18 @@ class Transfer extends Component
 
             DB::commit();
 
-            $this->successAlert('Transfer successful!');
-            $this->resetTransfer();
+            $this->transferSuccess = true;
+            $this->transferReference = $reference;
+            $this->transferMessage = 'Your transfer has been completed successfully!';
+            $this->step = 5;
+            $this->isProcessing = false;
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->errorAlert('Transfer failed. Please try again.');
-            // \Log::error('Transfer error: ' . $e->getMessage());
-            $this->resetTransfer();
+
+            $this->transferSuccess = false;
+            $this->transferMessage = 'Transfer failed. Please try again later.';
+            $this->step = 5;
+            $this->isProcessing = false;
         }
     }
 
@@ -290,7 +348,13 @@ class Transfer extends Component
             'currentCodeInput',
             'currentVerificationIndex',
             'requiredVerifications',
+            'isProcessing',
+            'transferSuccess',
+            'transferReference',
+            'transferMessage',
         ]);
+
+        return redirect()->route('dashboard');
     }
 
     public function backStep()

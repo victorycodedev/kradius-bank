@@ -28,13 +28,6 @@ class Card extends Model
         'block_reason',
     ];
 
-    protected $hidden = [
-        'cvv',
-        'card_pin',
-        'card_number',
-    ];
-
-
     protected function casts(): array
     {
         return  [

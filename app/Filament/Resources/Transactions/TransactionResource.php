@@ -20,7 +20,7 @@ class TransactionResource extends Resource
 
     // protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string | \UnitEnum | null $navigationGroup = 'Account Management';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
     public static function form(Schema $schema): Schema
     {
         return TransactionForm::configure($schema);
