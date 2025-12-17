@@ -69,56 +69,39 @@ class InvestmentSettingsPage extends Page implements HasSchemas
                                 'monthly' => 'Monthly',
                             ])
                             ->required(),
-                    ]),
-
-                Section::make('Investment Amount Limits')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('minimum_investment_amount')
-                            ->label('Minimum Investment Amount')
-                            ->numeric()
-                            ->prefix('₦')
-                            ->required(),
-
-                        TextInput::make('maximum_investment_amount')
-                            ->label('Maximum Investment Amount')
-                            ->numeric()
-                            ->prefix('₦')
-                            ->required(),
-
                         TextInput::make('max_active_investments_per_user')
                             ->label('Max Active Investments Per User')
                             ->numeric()
                             ->required(),
                     ]),
 
-                Section::make('Profit & ROI Settings')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('default_roi_percentage')
-                            ->label('Default ROI (%)')
-                            ->numeric()
-                            ->suffix('%')
-                            ->required(),
+                // Section::make('Profit & ROI Settings')
+                //     ->columns(2)
+                //     ->schema([
+                //         TextInput::make('default_roi_percentage')
+                //             ->label('Default ROI (%)')
+                //             ->numeric()
+                //             ->suffix('%')
+                //             ->required(),
 
-                        TextInput::make('default_investment_duration_days')
-                            ->label('Default Investment Duration (Days)')
-                            ->numeric()
-                            ->required(),
-                    ]),
+                //         TextInput::make('default_investment_duration_days')
+                //             ->label('Default Investment Duration (Days)')
+                //             ->numeric()
+                //             ->required(),
+                //     ]),
 
-                Section::make('Withdrawal & Penalty Settings')
-                    ->columns(2)
-                    ->schema([
-                        Toggle::make('allow_partial_withdrawal')
-                            ->label('Allow Partial Withdrawal'),
+                // Section::make('Withdrawal & Penalty Settings')
+                //     ->columns(2)
+                //     ->schema([
+                //         Toggle::make('allow_partial_withdrawal')
+                //             ->label('Allow Partial Withdrawal'),
 
-                        TextInput::make('early_withdrawal_penalty')
-                            ->label('Early Withdrawal Penalty (%)')
-                            ->numeric()
-                            ->suffix('%')
-                            ->required(),
-                    ]),
+                //         TextInput::make('early_withdrawal_penalty')
+                //             ->label('Early Withdrawal Penalty (%)')
+                //             ->numeric()
+                //             ->suffix('%')
+                //             ->required(),
+                //     ]),
 
                 Section::make('User Eligibility Requirements')
                     ->columns(2)
@@ -129,7 +112,8 @@ class InvestmentSettingsPage extends Page implements HasSchemas
                         TextInput::make('min_account_age_days')
                             ->label('Minimum Account Age (Days)')
                             ->numeric()
-                            ->required(),
+                            ->required()
+                            ->helperText('Enter 0 if not required'),
                     ]),
 
                 Section::make('Investment Terms')

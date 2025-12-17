@@ -154,7 +154,7 @@ class Transfer extends Component
     public function verifyPin()
     {
         $this->validate([
-            'transactionPin' => ['required', 'digits:4'],
+            'transactionPin' => ['required', 'digits:5'],
         ]);
 
         if (!Auth::user()->verifyTransactionPin($this->transactionPin)) {
@@ -211,24 +211,24 @@ class Transfer extends Component
         $currentVerification = $this->requiredVerifications[$this->currentVerificationIndex];
         $userCode = $currentVerification['user_code'];
 
-        // if ($this->currentCodeInput !== $userCode->code) {
-        //     $this->addError('currentCodeInput', 'Incorrect verification code');
-        //     return;
-        // }
+        if ($this->currentCodeInput !== $userCode->code) {
+            $this->addError('currentCodeInput', 'Incorrect verification code');
+            return;
+        }
 
-        // // check if code is already used
-        // if ($userCode->is_used) {
-        //     $this->addError('currentCodeInput', 'Verification code already used');
-        //     $this->errorAlert('Verification code already used');
-        //     return;
-        // }
+        // check if code is already used
+        if ($userCode->is_used) {
+            $this->addError('currentCodeInput', 'Verification code already used');
+            $this->errorAlert('Verification code already used');
+            return;
+        }
 
-        // // check if it has expired
-        // if ($userCode->expires_at && $userCode->expires_at < now()) {
-        //     $this->addError('currentCodeInput', 'Verification code has expired');
-        //     $this->errorAlert('Verification code has expired');
-        //     return;
-        // }
+        // check if it has expired
+        if ($userCode->expires_at && $userCode->expires_at < now()) {
+            $this->addError('currentCodeInput', 'Verification code has expired');
+            $this->errorAlert('Verification code has expired');
+            return;
+        }
 
         // Mark as used
         $userCode->markAsUsed();

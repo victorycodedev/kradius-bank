@@ -167,6 +167,10 @@ class Settings extends Model implements HasMedia
             static::clearCache();
         });
 
+        static::updated(function () {
+            static::clearCache();
+        });
+
         static::deleted(function () {
             static::clearCache();
         });

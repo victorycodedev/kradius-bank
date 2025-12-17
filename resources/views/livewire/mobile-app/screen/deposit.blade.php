@@ -1,6 +1,7 @@
 <div class="screen deposit-screen" x-data="{
     depositMethod: $wire.entangle('depositMethod'),
     selectedAccount: $wire.entangle('selectedAccount'),
+    'currency': $wire.entangle('currency'),
 }">
     <!-- Header -->
     <div class="detail-header">
@@ -20,16 +21,16 @@
     <!-- Select Account Section -->
     <div class="deposit-section">
         <h3 class="section-title">Select Account to Deposit To</h3>
-
         <div class="accounts-grid">
             @forelse($accounts as $account)
-                <div class="account-card" wire:click="selectAccount({{ $account->id }})" @class(['selected' => $selectedAccount == $account->id])>
+                <div class="account-card" @click="currency = '{{ $account->currency }}'"
+                    wire:click="selectAccount({{ $account->id }})" @class(['selected' => $selectedAccount == $account->id])>
                     <div class="account-card-header">
                         <div class="account-icon">
                             <i class="bi bi-wallet2"></i>
                         </div>
                         <div class="account-info">
-                            <h4>{{ ucfirst($account->account_type) }} Account</h4>
+                            <h4>{{ ucfirst(Str::replace('_', ' ', $account->account_type)) }} Account</h4>
                             <p>{{ $account->account_number }}</p>
                         </div>
                         @if ($selectedAccount == $account->id)
@@ -56,7 +57,6 @@
     @if ($selectedAccount)
         <div class="deposit-section">
             <h3 class="section-title">Select Payment Method</h3>
-
             <div class="payment-methods">
                 @if ($cryptoDetails['enabled'])
                     <button @click="depositMethod = 'crypto'"
@@ -204,8 +204,8 @@
                                 <span class="detail-label">IBAN</span>
                                 <div class="detail-value-with-copy">
                                     <span class="detail-value mono">{{ $bankDetails['iban'] }}</span>
-                                    <button wire:click="copyToClipboard('{{ $bankDetails['iban'] }}')" class="copy-btn"
-                                        wire:loading.attr="disabled">
+                                    <button wire:click="copyToClipboard('{{ $bankDetails['iban'] }}')"
+                                        class="copy-btn" wire:loading.attr="disabled">
                                         <i class="bi bi-clipboard"></i>
                                     </button>
                                 </div>
@@ -301,7 +301,11 @@
             <!-- Amount -->
             <div class="form-field">
                 <label class="form-label">Deposit Amount *</label>
-                <input type="number" wire:model="amount" class="form-control" placeholder="0.00" step="0.01">
+                <div class="input-group">
+                    <span class="input-group-text" x-text="currency"></span>
+                    <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
+                        step="0.01">
+                </div>
                 @error('amount')
                     <div class="text-danger text-sm">
                         <i class="bi bi-exclamation-circle-fill"></i>

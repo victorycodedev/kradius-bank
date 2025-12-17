@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\Settings;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Number;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -18,6 +19,7 @@ class Deposit extends Component
     public $showDepositDetails = false;
     public $showSubmitModal = false;
     public $paymentDetails = [];
+    public $currency = 'USD';
 
     // Submission form fields
     public $amount = '';
@@ -30,6 +32,8 @@ class Deposit extends Component
     {
         $user = Auth::user();
         $settings = Settings::get();
+
+        abort_if(!$settings->allow_deposits, 404);
 
         // Determine which payment details to use
         $useDefault = $user->use_default_deposit_details;
@@ -145,6 +149,7 @@ class Deposit extends Component
             ]);
 
             $this->successAlert('Deposit submitted successfully! We will verify and credit your account shortly.');
+            $this->selectedAccount = '';
             $this->closeSubmitModal();
         } catch (\Exception $e) {
             $this->errorAlert('Failed to submit deposit. Please try again.');

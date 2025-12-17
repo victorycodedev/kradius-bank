@@ -6,7 +6,7 @@
 ])
 
 @php
-    $classes = 'nav-item'; // base styles
+    $classes = 'text-decoration-none'; // base styles
 
     if ($active) {
         $classes .= ' active'; // add active class if true

@@ -126,7 +126,7 @@ class UserForm
                                         TextInput::make('pin')
                                             ->password()
                                             ->revealable()
-                                            ->maxLength(4)
+                                            ->maxLength(5)
                                             ->placeholder('4-digit PIN')
                                             ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
                                             ->dehydrateStateUsing(function (?string $state) {

@@ -97,7 +97,7 @@
                     <!-- Account Number -->
                     <div class="form-field">
                         <label class="form-label">Account Number</label>
-                        <input type="text" wire:model.live.debounce.500ms="accountNumber" class="form-input"
+                        <input type="text" wire:model.live.debounce.500ms="accountNumber" class="form-control"
                             placeholder="Enter account number (min 7 digits)" maxlength="15">
                         @error('accountNumber')
                             <div class="form-error">
@@ -125,8 +125,8 @@
                     <div class="form-field">
                         <label class="form-label">Amount</label>
                         <div class="input-group">
-                            <span class="input-prefix">$</span>
-                            <input type="number" wire:model="amount" class="form-input" placeholder="0.00"
+                            <span class="input-group-text">$</span>
+                            <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
                                 step="0.01">
                         </div>
                         @error('amount')
@@ -160,7 +160,7 @@
                     <!-- Description -->
                     <div class="form-field">
                         <label class="form-label">Description (Optional)</label>
-                        <textarea wire:model="description" class="form-textarea" placeholder="Payment for..." rows="2"></textarea>
+                        <textarea wire:model="description" class="form-textarea" placeholder="Payment for..." rows="2" required></textarea>
                     </div>
                 </div>
 
@@ -213,7 +213,7 @@
 
                 <div class="form-field">
                     <label class="form-label">Transaction PIN</label>
-                    <input type="password" wire:model="transactionPin" class="form-input text-center pin-input"
+                    <input type="password" wire:model="transactionPin" class="form-control text-center pin-input"
                         placeholder="••••" maxlength="4" inputmode="numeric" autofocus>
                     @error('transactionPin')
                         <div class="form-error">
@@ -255,7 +255,7 @@
 
                 <div class="form-field">
                     <label class="form-label">Enter Verification Code</label>
-                    <input type="text" wire:model="currentCodeInput" class="form-input text-center code-input"
+                    <input type="text" wire:model="currentCodeInput" class="form-control text-center code-input"
                         placeholder="Enter code" autofocus>
                     @error('currentCodeInput')
                         <div class="form-error">
@@ -320,8 +320,8 @@
                 <div class="result-content success">
                     <div class="result-icon success-icon">
                         <div class="success-checkmark">
-                            <div class="check-icon">
-                                {{-- <i class="bi bi-check-circle"></i> --}}
+                            <div class="check-icon-transfer">
+                                <i class="bi bi-check-circle text-success" style="font-size: 75px"></i>
                             </div>
                         </div>
                     </div>
@@ -353,10 +353,10 @@
                     </div>
 
                     <div class="result-actions">
-                        <button wire:click="resetTransfer" class="btn-primary">
+                        <a href="{{ route('dashboard') }}" class="btn-primary text-decoration-none">
                             <i class="bi bi-house-door"></i>
                             Back to Home
-                        </button>
+                        </a>
                         <button class="btn-secondary" onclick="window.print()">
                             <i class="bi bi-download"></i>
                             Download Receipt

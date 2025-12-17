@@ -67,7 +67,7 @@
     <!-- Content -->
     <div class="investment-content">
         <!-- Stocks List -->
-        <div x-show="activeTab === 'stocks'" class="pb-4" x-transition>
+        <div x-show="activeTab === 'stocks'" style="display: none;" class="pb-4">
             <div class="stocks-list">
                 @forelse($stocks as $stock)
                     <div class="stock-card" @click="selectStock({{ $stock->id }}, {{ Js::from($stock) }})">
@@ -123,34 +123,31 @@
         </div>
 
         <!-- My Investments List -->
-        <div x-show="activeTab === 'my-investments'" class="pb-4" x-transition>
+        <div x-show="activeTab === 'my-investments'" class="pb-4">
             <div class="investments-list">
                 @forelse($myInvestments as $investment)
-                    <div class="investment-card">
-                        <a href="{{ route('investment-detail', $investment->id) }}" class="investment-card">
-                            <div class="investment-header-row">
-                                <div class="investment-stock">
-                                    <div class="stock-logo-small">
-                                        @if ($investment->stock->logo_url)
-                                            <img src="{{ $investment->stock->logo_url }}"
-                                                alt="{{ $investment->stock->symbol }}">
-                                        @else
-                                            <div class="stock-logo-placeholder-small">
-                                                {{ substr($investment->stock->symbol, 0, 2) }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div>
-                                        <h4>{{ $investment->stock->symbol }}</h4>
-                                        <p>{{ $investment->shares }} shares</p>
-                                    </div>
+                    <x-link :href="route('investment-detail', $investment->id)" class="investment-card">
+                        <div class="investment-header-row">
+                            <div class="investment-stock">
+                                <div class="stock-logo-small">
+                                    @if ($investment->stock->logo_url)
+                                        <img src="{{ $investment->stock->logo_url }}"
+                                            alt="{{ $investment->stock->symbol }}">
+                                    @else
+                                        <div class="stock-logo-placeholder-small">
+                                            {{ substr($investment->stock->symbol, 0, 2) }}
+                                        </div>
+                                    @endif
                                 </div>
-                                <span class="investment-status status-{{ $investment->status }}">
-                                    {{ ucfirst($investment->status) }}
-                                </span>
+                                <div>
+                                    <h4>{{ $investment->stock->symbol }}</h4>
+                                    <p>{{ $investment->shares }} shares</p>
+                                </div>
                             </div>
-                        </a>
-
+                            <span class="investment-status status-{{ $investment->status }}">
+                                {{ ucfirst($investment->status) }}
+                            </span>
+                        </div>
                         <div class="investment-values">
                             <div class="value-item">
                                 <span class="label">Invested</span>
@@ -178,7 +175,7 @@
                                 <i class="bi bi-chevron-right"></i>
                             </div>
                         @endif
-                    </div>
+                    </x-link>
                 @empty
                     <div class="empty-state">
                         <i class="bi bi-wallet2"></i>
@@ -215,8 +212,6 @@
 
         <p class="stock-description" x-show="selectedStock?.description" x-text="selectedStock?.description">
         </p>
-
-
 
         <div class="investment-form">
             <div class="form-group">
@@ -278,6 +273,16 @@
             </div>
         </div>
 
+        @if ($terms)
+            <div class="terms-banner mt-3">
+                <i class="bi bi-info-circle"></i>
+                <div>
+                    <h4>Accept Terms</h4>
+                    <p>{{ $terms }}</p>
+                </div>
+            </div>
+        @endif
+
         <div class="mt-3 action-buttons gap-2">
             <button @click="closeModal()" class="btn-cancel" wire:loading.attr="disabled" wire:target="invest">
                 Cancel
@@ -291,118 +296,6 @@
         </div>
 
     </x-bottom-sheet>
-    <!-- Investment Modal -->
-    {{-- <div x-show="showInvestModal" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0" class="modal-overlay" @click="closeModal()" style="display: none;">
-        <div class="modal-content" @click.stop x-show="showInvestModal"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-95"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-95">
-            <div class="modal-header">
-                <h2 x-text="'Invest in ' + (selectedStock?.symbol || '')"></h2>
-                <button @click="closeModal()" class="close-modal">
-                    <i class="bi bi-x"></i>
-                </button>
-            </div>
 
-            <div class="modal-body">
-                <div class="stock-modal-info" x-show="selectedStock">
-                    <div class="stock-logo-large">
-                        <template x-if="selectedStock?.logo_url">
-                            <img :src="selectedStock.logo_url" :alt="selectedStock.symbol">
-                        </template>
-                        <template x-if="!selectedStock?.logo_url">
-                            <div class="stock-logo-placeholder-large" x-text="selectedStock?.symbol?.substring(0, 2)">
-                            </div>
-                        </template>
-                    </div>
-                    <div>
-                        <h3 x-text="selectedStock?.name"></h3>
-                        <p class="current-price">
-                            $<span x-text="parseFloat(selectedStock?.current_price || 0).toFixed(2)"></span> per share
-                        </p>
-                    </div>
-                </div>
-
-                <p class="stock-description" x-show="selectedStock?.description" x-text="selectedStock?.description">
-                </p>
-
-                <div class="investment-form">
-                    <div class="form-group">
-                        <label>Investment Amount</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">$</span>
-                            <input type="number" x-model.number="investmentAmount" class="form-control"
-                                placeholder="0.00" :min="selectedStock?.minimum_investment" step="0.01"
-                                @input="calculateShares()">
-                        </div>
-                        <small class="form-hint">
-                            Min: $<span x-text="selectedStock?.minimum_investment"></span>
-                            <template x-if="selectedStock?.maximum_investment">
-                                <span> • Max: $<span x-text="selectedStock?.maximum_investment"></span></span>
-                            </template>
-                        </small>
-                        @error('amount')
-                            <div class="text-danger small">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label>Select Account</label>
-                        <select wire:model='accountId' class="form-control">
-                            <option value="">Choose account...</option>
-                            @foreach (Auth::user()->accounts as $account)
-                                <option value="{{ $account->id }}">
-                                    {{ $account->account_number }} ({{ $account->currency }}
-                                    {{ number_format($account->balance, 2) }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('accountId')
-                            <div class="text-danger small">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="investment-summary"
-                        x-show="investmentAmount > 0 && selectedStock?.minimum_investment && investmentAmount >= parseFloat(selectedStock.minimum_investment)">
-                        <div class="summary-row">
-                            <span>Shares to purchase</span>
-                            <strong x-text="calculatedShares.toFixed(4)"></strong>
-                        </div>
-                        <div class="summary-row">
-                            <span>Price per share</span>
-                            <strong>$<span
-                                    x-text="parseFloat(selectedStock?.current_price || 0).toFixed(2)"></span></strong>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total Amount</span>
-                            <strong>$<span x-text="(investmentAmount || 0).toFixed(2)"></span></strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button @click="closeModal()" class="btn-secondary">Cancel</button>
-                <button class="btn-primary" @click="$wire.closeModal()" :disabled="isInvesting"
-                    @click="isInvesting = true">
-                    <i class="bi bi-check-circle"></i>
-                    <span x-text="isInvesting ? 'Processing...' : 'Invest Now'"></span>
-                </button>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <livewire:mobile-app.component.bottom-nav /> --}}
+    <livewire:mobile-app.component.bottom-nav />
 </div>

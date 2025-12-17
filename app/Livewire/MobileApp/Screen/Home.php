@@ -2,6 +2,7 @@
 
 namespace App\Livewire\MobileApp\Screen;
 
+use App\Models\InvestmentSetting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,19 @@ class Home extends Component
     public User $user;
     public Collection $accounts;
     public array $notifications = [];
+    public ?string $avatarUrl = null;
+    public $enable_stocks = false;
 
     public function mount(): void
     {
+        $stockSettings = InvestmentSetting::find(1);
+        $this->enable_stocks = $stockSettings->investments_enabled;
+
         $this->user = Auth::user();
+
+        if ($this->user->hasMedia('avatars')) {
+            $this->avatarUrl = $this->user->getFirstMediaUrl('avatars');
+        }
 
         $this->accounts = $this->user->accounts()->orderByDesc('is_primary')->get();
         $this->loadNotifications();

@@ -1,11 +1,15 @@
 <div class="screen home-screen">
     <!-- Header -->
     <div class="app-header">
-        <button class="icon-btn">
-            <span class="initials">
-                {{ Auth::user()->initials() }}
-            </span>
-        </button>
+        <x-link :href="route('account.profile')" class="icon-btn">
+            @if ($avatarUrl)
+                <img src="{{ $avatarUrl }}" alt="" class="home-avatar">
+            @else
+                <span class="initials">
+                    {{ Auth::user()->initials() }}
+                </span>
+            @endif
+        </x-link>
         <button @click="toggleDarkMode()" class="icon-btn">
             <i :class="darkMode ? 'bi bi-sun-fill' : 'bi bi-moon-fill'"></i>
         </button>
@@ -13,8 +17,8 @@
 
     <!-- Swipeable Balance Cards -->
     <div class="balance-container" x-data="balanceSliderComponent({{ $accounts->count() }})">
-        <div class="balance-slider" x-ref="slider" @touchstart="start($event)" @touchmove="move($event)" @touchend="end()"
-            :style="`transform: translateX(-${currentSlide * 100}%)`">
+        <div class="balance-slider" x-ref="slider" @touchstart="start($event)" @touchmove="move($event)"
+            @touchend="end()" :style="`transform: translateX(-${currentSlide * 100}%)`">
             @foreach ($accounts as $account)
                 <div class="balance-card">
                     <div class="account-type">
@@ -44,30 +48,40 @@
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-        <a class="action-btn" href="{{ route('deposit') }}" wire:navigate>
-            <div class="action-icon">
-                <i class="bi bi-plus-lg"></i>
-            </div>
-            <span>Add money</span>
-        </a>
-        <a class="action-btn" href="{{ route('transfer') }}" wire:navigate>
-            <div class="action-icon">
-                <i class="bi bi-send"></i>
-            </div>
-            <span>Transfer</span>
-        </a>
-        <a class="action-btn" href="{{ route('stock') }}" wire:navigate>
-            <div class="action-icon">
-                <i class="bi bi-pie-chart-fill"></i>
-            </div>
-            <span>Stock</span>
-        </a>
-        <a class="action-btn" href="{{ route('more') }}" wire:navigate>
+        @if ($configuration->allow_deposits)
+            <x-link :href="route('deposit')" class="action-btn">
+                <div class="action-icon">
+                    <i class="bi bi-plus-lg"></i>
+                </div>
+                <span>Add money</span>
+            </x-link>
+        @endif
+
+        @if ($configuration->allow_transfers)
+            <x-link :href="route('transfer')" class="action-btn">
+                <div class="action-icon">
+                    <i class="bi bi-send"></i>
+                </div>
+                <span>Transfer</span>
+            </x-link>
+        @endif
+
+
+        @if ($enable_stocks)
+            <x-link :href="route('stock')" class="action-btn">
+                <div class="action-icon">
+                    <i class="bi bi-pie-chart-fill"></i>
+                </div>
+                <span>Stock</span>
+            </x-link>
+        @endif
+
+        <x-link :href="route('more')" class="action-btn">
             <div class="action-icon">
                 <i class="bi bi-three-dots"></i>
             </div>
             <span>More</span>
-        </a>
+        </x-link>
     </div>
 
     <!-- Swipeable Notification Banners -->
@@ -168,9 +182,9 @@
             @endforelse
             @if ($recentTransactions->count() > 0)
                 <div class="text-center mt-3 text-dark pb-3">
-                    <a class="py-1 px-4 rounded shadow view-all-btn" href="{{ route('payments') }}" wire:navigate>
+                    <x-link :href="route('payments')" class="py-1 px-4 rounded shadow view-all-btn">
                         View all
-                    </a>
+                    </x-link>
                 </div>
             @endif
         </div>

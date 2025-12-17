@@ -3,7 +3,9 @@
 namespace App\Livewire\MobileApp\Screen;
 
 use App\Models\Loan as ModelsLoan;
+use App\Models\LoanSetting;
 use App\Models\LoanType;
+use App\Models\Settings;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
@@ -34,6 +36,8 @@ class Loan extends Component
 
     public function mount(): void
     {
+        $config = LoanSetting::find(1);
+        abort_if(!$config->loan_applications_enabled, 404);
         $this->monthsList = range(1, 12);
     }
 

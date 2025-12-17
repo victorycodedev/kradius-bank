@@ -9,9 +9,13 @@
     <div class="profile-container">
         <!-- Profile Avatar Section -->
         <div class="profile-avatar-section">
-            <div class="profile-avatar">
-                <span class="avatar-text">{{ Auth::user()->initials() }}</span>
-            </div>
+            @if ($avatarUrl)
+                <img src="{{ $avatarUrl }}" alt="" class="profile-avatar">
+            @else
+                <div class="profile-avatar">
+                    <span class="avatar-text">{{ Auth::user()->initials() }}</span>
+                </div>
+            @endif
             <h2>{{ Auth::user()->name }}</h2>
             <p>{{ Auth::user()->email }}</p>
         </div>

@@ -24,6 +24,7 @@ class Profile extends Component
     public $country = '';
     public $zip_code = '';
     public $date_of_birth = '';
+    public $avatarUrl = '';
 
     #[Title('My Profile')]
     public function mount()
@@ -38,6 +39,10 @@ class Profile extends Component
         $this->country = $user->country ?? '';
         $this->zip_code = $user->zip_code ?? '';
         $this->date_of_birth = $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : '';
+
+        if ($user->hasMedia('avatars')) {
+            $this->avatarUrl = $user->getFirstMediaUrl('avatars');
+        }
     }
 
     public function render()

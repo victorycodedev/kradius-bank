@@ -2,17 +2,12 @@
 
 namespace App\Livewire\MobileApp\Screen;
 
-use App\Models\UserAccount;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class Payments extends Component
 {
-    use WithPagination;
-
     public $filterType = 'all'; // all, credit, debit, transfer, withdrawal, deposit
     public $filterDate = 'all'; // all, today, week, month, year
     public $sortBy = 'latest'; // latest, oldest, highest, lowest
@@ -46,59 +41,44 @@ class Payments extends Component
 
     public function getTransactions()
     {
-        $query = UserAccount::where('user_id', Auth::user()->id)
-            ->with(['transactions' => function ($q) {
+        return \App\Models\Transaction::query()
+            ->whereIn('user_account_id', Auth::user()->accounts()->pluck('id'))
+            ->whereIn('status', ['completed', 'pending_verification'])
 
-                $q->where(function ($query) {
-                    $query->where('status', 'completed')
-                        ->orWhere('status', 'pending_verification');
-                });
+            ->when(
+                $this->filterType !== 'all',
+                fn($q) =>
+                $q->where('transaction_type', $this->filterType)
+            )
 
-                // Apply type filter
-                if ($this->filterType !== 'all') {
-                    $q->where('transaction_type', $this->filterType);
-                }
+            ->when($this->filterDate !== 'all', function ($q) {
+                match ($this->filterDate) {
+                    'today' => $q->whereDate('created_at', today()),
+                    'week'  => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+                    'month' => $q->whereMonth('created_at', now()->month)
+                        ->whereYear('created_at', now()->year),
+                    'year'  => $q->whereYear('created_at', now()->year),
+                };
+            })
 
-                // // Apply date filter
-                // if ($this->filterDate !== 'all') {
-                //     match ($this->filterDate) {
-                //         'today' => $q->whereDate('created_at', today()),
-                //         'week' => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
-                //         'month' => $q->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year),
-                //         'year' => $q->whereYear('created_at', now()->year),
-                //         default => null
-                //     };
-                // }
+            ->when(
+                $this->searchQuery,
+                fn($q) =>
+                $q->where('description', 'like', "%{$this->searchQuery}%")
+            )
 
-                // // Apply search
-                // if ($this->searchQuery) {
-                //     $q->where('description', 'like', '%' . $this->searchQuery . '%');
-                // }
+            ->orderBy(
+                match ($this->sortBy) {
+                    'oldest'  => 'created_at',
+                    'highest' => 'amount',
+                    'lowest'  => 'amount',
+                    default   => 'created_at',
+                },
+                in_array($this->sortBy, ['oldest', 'lowest']) ? 'asc' : 'desc'
+            )
 
-                // // Apply sorting - moved inside the query
-                // match ($this->sortBy) {
-                //     'latest' => $q->latest(),
-                //     'oldest' => $q->oldest(),
-                //     'highest' => $q->orderBy('amount', 'desc'),
-                //     'lowest' => $q->orderBy('amount', 'asc'),
-                //     default => $q->latest()
-                // };
-            }])
-            ->get()
-            // dd($query)
-            ->pluck('transactions')
-            ->flatten();
-
-        // Apply collection-level sorting based on sortBy
-        $sorted = match ($this->sortBy) {
-            'latest' => $query->sortByDesc('created_at'),
-            'oldest' => $query->sortBy('created_at'),
-            'highest' => $query->sortByDesc('amount'),
-            'lowest' => $query->sortBy('amount'),
-            default => $query->sortByDesc('created_at')
-        };
-
-        return $sorted->take(50); // Limit to 50 for performance
+            ->limit(50)
+            ->get();
     }
 
     public function getTransactionStats()
@@ -137,12 +117,6 @@ class Payments extends Component
         $this->sortBy = 'latest';
         $this->tempSortBy = 'latest';
         $this->tempFilterDate = 'all';
-        $this->resetPage();
-    }
-
-    public function updatedSearchQuery()
-    {
-        $this->resetPage();
     }
 
     public function applyFilters(): void
@@ -150,7 +124,6 @@ class Payments extends Component
         $this->filterType = $this->tempFilterType;
         $this->filterDate = $this->tempFilterDate;
         $this->sortBy = $this->tempSortBy;
-        $this->resetPage();
         $this->dispatch('close-bottom-sheet', id: 'showFilters');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Livewire\MobileApp\Screen;
 
 use App\Models\Investment;
+use App\Models\InvestmentSetting;
+use App\Models\Settings;
 use App\Models\Stock;
 use App\Models\UserAccount;
 use App\Traits\HasAlerts;
@@ -10,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+
+use function Symfony\Component\Clock\now;
 
 class StockInvestment extends Component
 {
@@ -20,6 +24,14 @@ class StockInvestment extends Component
     public $showInvestModal = false;
     public $amount = 0;
     public $accountId;
+    public $terms;
+
+    public function mount(): void
+    {
+        $config = InvestmentSetting::find(1);
+        abort_if(!$config->investments_enabled, 404);
+        $this->terms = $config->investment_terms;
+    }
 
     #[Title('Stock Investment')]
     public function render()
@@ -58,6 +70,31 @@ class StockInvestment extends Component
         ]);
 
         $stock = Stock::findOrFail($this->selectedStockId);
+
+        $activeInts = Investment::where('user_id', Auth::user()->id)
+            ->where('status', 'active')
+            ->count();
+
+        $settings = InvestmentSetting::find(1);
+
+        if ($settings->max_active_investments_per_user == $activeInts) {
+            $this->errorAlert(message: 'You have reached the maximum number of active investments.');
+            return;
+        }
+
+        if ($settings->require_kyc_for_investment && Auth::user()->kyc_status != 'verified') {
+            $this->errorAlert(message: 'Please verify your KYC to proceed.');
+            return;
+        }
+
+        // min_account_age_days
+        if ($settings->min_account_age_days > 0) {
+            $accountAgeDays = Auth::user()->created_at->diffInDays(now());
+            if ($accountAgeDays < $settings->min_account_age_days) {
+                $this->errorAlert('Your account must be at least ' . $settings->min_account_age_days . ' days old to invest.');
+                return;
+            }
+        }
 
         $account = UserAccount::where('id', $validated['accountId'])
             ->where('user_id', Auth::id())

@@ -14,11 +14,11 @@
         :root {
             --bs-primary: {{ $configuration->primary_color }};
             --primary-color: {{ $configuration->primary_color }};
-            --secondary-color: {{ $configuration->secondary_color }};
+            --secondary-color: {{ $configuration->primary_color }};
             --accent-color: {{ $configuration->accent_color }};
-            --bg-secondary: {{ $configuration->secondary_color }};
+            --bg-secondary: {{ $configuration->primary_color }};
             /* --text-primary: {{ $configuration->primary_color }}; */
-            --text-secondary: {{ $configuration->secondary_color }};
+            --text-secondary: {{ $configuration->primary_color }};
             /* --font-family: {{ $configuration->font_family }}; */
         }
     </style>

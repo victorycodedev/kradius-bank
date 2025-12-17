@@ -75,6 +75,7 @@
             </button>
         </div>
     @endif
+
     <!-- Transactions List -->
     <div class="transactions-list-container pb-4">
         @forelse($transactions as $transaction)
