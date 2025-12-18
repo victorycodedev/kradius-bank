@@ -298,77 +298,81 @@
                 </div>
             </div>
 
-            <!-- Amount -->
-            <div class="form-field">
-                <label class="form-label">Deposit Amount *</label>
-                <div class="input-group">
-                    <span class="input-group-text" x-text="currency"></span>
-                    <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
-                        step="0.01">
+            <form action="" wire:submit="submitDeposit">
+                <!-- Amount -->
+                <div class="form-group">
+                    <label class="form-label">Deposit Amount *</label>
+                    <div class="input-group">
+                        <span class="input-group-text" x-text="currency"></span>
+                        <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
+                            step="0.01" required>
+                    </div>
+                    @error('amount')
+                        <div class="text-danger text-sm">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                @error('amount')
-                    <div class="text-danger text-sm">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
 
-            <!-- Transaction Reference -->
-            <div class="form-field">
-                <label class="form-label">Transaction Reference/Hash *</label>
-                <input type="text" wire:model="transactionReference" class="form-control"
-                    placeholder="Enter your transaction reference or hash">
-                <small class="form-hint">
-                    {{ $depositMethod === 'crypto' ? 'Transaction hash from your wallet' : 'Bank transfer reference number' }}
-                </small>
-                @error('transactionReference')
-                    <div class="text-danger text-sm">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+                <!-- Transaction Reference -->
+                <div class="form-group">
+                    <label class="form-label">Transaction Reference/Hash *</label>
+                    <input type="text" wire:model="transactionReference" class="form-control"
+                        placeholder="Enter your transaction reference or hash" required>
+                    <small class="form-hint">
+                        {{ $depositMethod === 'crypto' ? 'Transaction hash from your wallet' : 'Bank transfer reference number' }}
+                    </small>
+                    @error('transactionReference')
+                        <div class="text-danger text-sm">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <!-- Proof of Payment -->
-            <div class="form-field">
-                <label class="form-label">Proof of Payment (Optional)</label>
-                <textarea wire:model="proofOfPayment" class="form-textarea"
-                    placeholder="Paste screenshot URL or additional payment details..." rows="3"></textarea>
-                <small class="form-hint">
-                    Upload your payment screenshot to an image hosting service and paste the URL here
-                </small>
-                @error('proofOfPayment')
-                    <div class="text-danger text-sm">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+                <!-- Proof of Payment -->
+                <div class="form-group">
+                    <label class="form-label">Proof of Payment (Optional)</label>
+                    <textarea wire:model="proofOfPayment" class="form-control"
+                        placeholder="Paste screenshot URL or additional payment details..." rows="3"></textarea>
+                    <small class="form-hint">
+                        Upload your payment screenshot to an image hosting service and paste the URL here
+                    </small>
+                    @error('proofOfPayment')
+                        <div class="text-danger text-sm">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <!-- Payment Note -->
-            <div class="form-field">
-                <label class="form-label">Additional Notes (Optional)</label>
-                <textarea wire:model="paymentNote" class="form-textarea"
-                    placeholder="Any additional information about this deposit..." rows="2"></textarea>
-            </div>
+                <!-- Payment Note -->
+                <div class="form-group">
+                    <label class="form-label">Additional Notes (Optional)</label>
+                    <textarea wire:model="paymentNote" class="form-control"
+                        placeholder="Any additional information about this deposit..." rows="2"></textarea>
+                </div>
 
-            <!-- Action Buttons -->
-            <div class="action-buttons gap-2">
-                <button wire:click="closeSubmitModal" class="btn-cancel">
-                    Cancel
-                </button>
-                <button wire:click="submitDeposit" class="btn-primary" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="submitDeposit">
-                        <i class="bi bi-check-circle"></i>
-                        Submit for Verification
-                    </span>
-                    <span wire:loading wire:target="submitDeposit">
-                        <x-spinner />
-                        Submitting...
-                    </span>
-                </button>
-            </div>
+                <!-- Action Buttons -->
+                <div class="action-buttons gap-2">
+                    <button type="button" wire:click="closeSubmitModal" class="btn-cancel"
+                        wire:loading.attr="disabled">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="submitDeposit">
+                            <i class="bi bi-check-circle"></i>
+                            Submit for Verification
+                        </span>
+                        <span wire:loading wire:target="submitDeposit">
+                            <x-spinner />
+                            Submitting...
+                        </span>
+                    </button>
+                </div>
+            </form>
+
         </div>
     </x-bottom-sheet>
 

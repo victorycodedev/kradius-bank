@@ -1683,7 +1683,7 @@ body {
 }
 
 .summary-row.total {
-    border-top: 2px solid var(--border-color);
+    /* border-top: 2px solid var(--border-color); */
     padding-top: var(--spacing-md);
     margin-top: var(--spacing-sm);
     font-size: var(--font-size-md);
@@ -5437,16 +5437,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.form-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.dark-mode .form-label {
-    color: #d1d5db;
 }
 
 .form-input {

@@ -5,7 +5,7 @@
     durationMonths: $wire.entangle('durationMonths'),
 }">
     <!-- Header -->
-    <div class="loan-header">
+    <div class="detail-header">
         <x-link :href="route('dashboard')" class="btn-back" icon="arrow-left" />
         <h1>Loans</h1>
     </div>
@@ -88,7 +88,7 @@
         <div x-show="activeTab === 'my-loans'" class="pb-4" x-transition>
             <div class="my-loans-list">
                 @forelse($myLoans as $loan)
-                    <a href="{{ route('loanDetails', $loan->id) }}" class="my-loan-card text-decoration-none">
+                    <x-link :href="route('loanDetails', $loan->id)" class="my-loan-card text-decoration-none">
                         <div class="loan-card-header">
                             <div class="loan-type-badge">
                                 {{ $loan->loanType->name }}
@@ -159,7 +159,7 @@
                                 Next payment due: {{ $loan->due_date->format('M j, Y') }}
                             </div>
                         @endif
-                    </a>
+                    </x-link>
                 @empty
                     <div class="empty-state">
                         <i class="bi bi-wallet2"></i>
@@ -183,137 +183,150 @@
                 <p>{{ $selectedLoanType?->description }}</p>
             </div>
 
-            <!-- Amount -->
-            <div>
-                <label class="form-label">Loan Amount</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" wire:model.live="amount" class="form-control" placeholder="0.00"
-                        step="100">
+            <form action="" wire:submit="applyForLoan">
+                <!-- Duration -->
+                <div class="form-group">
+                    <label class="form-label">Loan Duration (Months)</label>
+                    <select class="form-select" wire:model.live="durationMonths" required>
+                        <option value="">Select Month</option>
+                        @foreach ($monthsList as $month)
+                            <option>{{ $month }}</option>
+                        @endforeach
+                    </select>
+                    <small class="form-hint">
+                        Min: <span>{{ $selectedLoanType?->min_duration_months }}</span>
+                        • Max: <span>{{ $selectedLoanType?->max_duration_months }}</span>
+                    </small>
+                    @error('durationMonths')
+                        <div class="text-danger small">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                <small class="form-hint">
-                    Min: <span>${{ $selectedLoanType?->min_amount }}</span>
-                    • Max: <span>${{ $selectedLoanType?->max_amount }}</span>
-                </small>
-                @error('amount')
-                    <div class="text-danger small">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
 
-            <!-- Duration -->
-            <div>
-                <label class="form-label">Loan Duration (Months)</label>
-                <select class="form-select" wire:model.live="durationMonths">
-                    <option value="">Select Month</option>
-                    @foreach ($monthsList as $month)
-                        <option>{{ $month }}</option>
-                    @endforeach
-                </select>
-                <small class="form-hint">
-                    Min: <span>{{ $selectedLoanType?->min_duration_months }}</span>
-                    • Max: <span>{{ $selectedLoanType?->max_duration_months }}</span>
-                </small>
-                @error('durationMonths')
-                    <div class="text-danger small">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
+                <!-- Amount -->
+                <div class="form-group">
+                    <label class="form-label">Loan Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" wire:model.live="amount" class="form-control" placeholder="0.00"
+                            step="100" required>
                     </div>
-                @enderror
-            </div>
-
-            <!-- Loan Calculator Summary -->
-            @if ($calculatedMonthlyPayment > 0)
-                <div class="loan-calculator-summary">
-                    <h4>Loan Summary</h4>
-                    <div class="summary-item">
-                        <span>Monthly Payment</span>
-                        <strong>${{ number_format($calculatedMonthlyPayment, 2) }}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Interest</span>
-                        <strong>${{ number_format($calculatedInterest, 2) }}</strong>
-                    </div>
-                    <div class="summary-item summary-total">
-                        <span>Total Payable</span>
-                        <strong>${{ number_format($calculatedTotalPayable, 2) }}</strong>
-                    </div>
+                    <small class="form-hint">
+                        Min: <span>${{ $selectedLoanType?->min_amount }}</span>
+                        • Max: <span>${{ $selectedLoanType?->max_amount }}</span>
+                    </small>
+                    @error('amount')
+                        <div class="text-danger small">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-            @endif
 
-            <!-- Purpose -->
-            <div class="form-field">
-                <label class="form-label">Purpose of Loan</label>
-                <textarea wire:model="purpose" class="form-control" placeholder="Describe why you need this loan..." rows="3"></textarea>
-                @error('purpose')
-                    <div class="text-danger small">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
+                <!-- Loan Calculator Summary -->
+                @if ($calculatedMonthlyPayment > 0)
+                    <div class="loan-calculator-summary">
+                        <h4>Loan Summary</h4>
+                        <div class="summary-item">
+                            <span>Monthly Payment</span>
+                            <strong>${{ number_format($calculatedMonthlyPayment, 2) }}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Interest</span>
+                            <strong>${{ number_format($calculatedInterest, 2) }}</strong>
+                        </div>
+                        <div class="summary-item summary-total">
+                            <span>Total Payable</span>
+                            <strong>${{ number_format($calculatedTotalPayable, 2) }}</strong>
+                        </div>
                     </div>
-                @enderror
-            </div>
+                @endif
 
-            <!-- Employment Status -->
-            <div class="form-field">
-                <label class="form-label">Employment Status</label>
-                <select wire:model="employmentStatus" class="form-select">
-                    <option value="">Select employment status...</option>
-                    <option value="employed">Employed</option>
-                    <option value="self_employed">Self Employed</option>
-                    <option value="business_owner">Business Owner</option>
-                    <option value="freelancer">Freelancer</option>
-                    <option value="unemployed">Unemployed</option>
-                    <option value="student">Student</option>
-                </select>
-                @error('employmentStatus')
-                    <div class="text-danger small">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            <!-- Monthly Income -->
-            <div class="form-field">
-                <label class="form-label">Monthly Income</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" wire:model="monthlyIncome" class="form-control" placeholder="0.00"
-                        step="100">
+                <!-- Purpose -->
+                <div class="form-group">
+                    <label class="form-label">Purpose of Loan</label>
+                    <textarea wire:model="purpose" class="form-control" placeholder="Describe why you need this loan..." rows="3"
+                        required></textarea>
+                    @error('purpose')
+                        <div class="text-danger small">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                @error('monthlyIncome')
-                    <div class="text-danger small">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
+
+                <!-- Employment Status -->
+                <div class="form-group">
+                    <label class="form-label">Employment Status</label>
+                    <select wire:model="employmentStatus" class="form-select">
+                        <option value="">Select employment status...</option>
+                        <option value="employed">Employed</option>
+                        <option value="self_employed">Self Employed</option>
+                        <option value="business_owner">Business Owner</option>
+                        <option value="freelancer">Freelancer</option>
+                        <option value="unemployed">Unemployed</option>
+                        <option value="student">Student</option>
+                    </select>
+                    @error('employmentStatus')
+                        <div class="text-danger small">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <!-- Monthly Income -->
+                <div class="form-group">
+                    <label class="form-label">Monthly Income</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" wire:model="monthlyIncome" class="form-control" placeholder="0.00"
+                            step="100">
                     </div>
-                @enderror
-            </div>
+                    @error('monthlyIncome')
+                        <div class="text-danger small">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <!-- Additional Info -->
-            <div class="form-field">
-                <label class="form-label">Additional Information (Optional)</label>
-                <textarea wire:model="additionalInfo" class="form-control" placeholder="Any additional information..."
-                    rows="2"></textarea>
-            </div>
+                <!-- Additional Info -->
+                <div class="form-group">
+                    <label class="form-label">Additional Information (Optional)</label>
+                    <textarea wire:model="additionalInfo" class="form-control" placeholder="Any additional information..."
+                        rows="2"></textarea>
+                </div>
 
-            <!-- Action Buttons -->
-            <div class="action-buttons gap-2">
-                <button @click="$wire.closeModal()" class="btn-cancel">
-                    Cancel
-                </button>
-                <button wire:click="applyForLoan" class="btn-primary" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="applyForLoan">
-                        <i class="bi bi-check-circle"></i>
-                        Submit Application
-                    </span>
-                    <span wire:loading wire:target="applyForLoan">
-                        <x-spinner />
-                        Processing...
-                    </span>
-                </button>
-            </div>
+                @if ($terms)
+                    <div class="terms-banner mt-3">
+                        <i class="bi bi-info-circle"></i>
+                        <div>
+                            <h4>Accept Terms</h4>
+                            <p>{{ $terms }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Action Buttons -->
+                <div class="action-buttons gap-2">
+                    <button @click="$wire.closeModal()" type="button" class="btn-cancel">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="applyForLoan">
+                            <i class="bi bi-check-circle"></i>
+                            Submit Application
+                        </span>
+                        <span wire:loading wire:target="applyForLoan">
+                            <x-spinner />
+                            Processing...
+                        </span>
+                    </button>
+                </div>
+            </form>
         </div>
     </x-bottom-sheet>
 

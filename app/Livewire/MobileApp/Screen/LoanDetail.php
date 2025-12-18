@@ -4,6 +4,7 @@ namespace App\Livewire\MobileApp\Screen;
 
 use App\Models\Loan;
 use App\Models\LoanRepayment;
+use App\Models\LoanSetting;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +23,14 @@ class LoanDetail extends Component
 
     public function mount($id)
     {
+        $config = LoanSetting::find(1);
+        abort_if(!$config->loan_applications_enabled, 404);
+
         $this->loan = Loan::with(['loanType', 'repayments' => function ($query) {
             $query->orderBy('due_date', 'asc');
-        }])->where('user_id', Auth::id())->findOrFail($id);
+        }])->where('user_id', Auth::user()->id)->findOrFail($id);
+
+        $this->authorize('view', $this->loan);
     }
 
     #[Title('Loan Details')]
@@ -71,6 +77,8 @@ class LoanDetail extends Component
 
     public function makePayment()
     {
+        sleep(3);
+        return;
         $this->validate([
             'selectedAccount' => 'required|exists:user_accounts,id',
         ]);

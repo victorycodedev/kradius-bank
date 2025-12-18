@@ -28,6 +28,7 @@ class Loan extends Component
     public $monthlyIncome = '';
     public $additionalInfo = '';
     public $monthsList = [];
+    public $terms;
 
     // Calculated fields
     public $calculatedInterest = 0;
@@ -39,6 +40,9 @@ class Loan extends Component
         $config = LoanSetting::find(1);
         abort_if(!$config->loan_applications_enabled, 404);
         $this->monthsList = range(1, 12);
+        $loanSet = LoanSetting::find(1);
+
+        $this->terms = $loanSet->terms_and_conditions;
     }
 
     #[Title('Loans')]
@@ -127,7 +131,7 @@ class Loan extends Component
     public function applyForLoan()
     {
         $this->validate([
-            'loanTypeId' => 'required|exists:loan_types,id',
+            'loanTypeId' => ['required', 'exists:loan_types,id'],
             'amount' => [
                 'required',
                 'numeric',
@@ -144,6 +148,41 @@ class Loan extends Component
             'employmentStatus' => ['required', 'string'],
             'monthlyIncome' => ['required', 'numeric', 'min:0'],
         ]);
+
+        // count the number of active loans
+        $activeLoans = ModelsLoan::where('user_id', Auth::user()->id)
+            ->where('status', 'active')
+            ->count();
+        $settings = LoanSetting::find(1);
+
+        if ($activeLoans >= $settings->max_active_loans_per_user) {
+            $this->errorAlert(message: 'You have reached the maximum number of active loans.');
+            return;
+        }
+
+        if ($settings->min_account_age_days > 0) {
+            // min_account_age_days
+            $accountAge = Auth::user()->created_at->diffInDays();
+            if ($accountAge < $settings->min_account_age_days) {
+                $this->errorAlert(message: 'Your account is too young to apply for a loan.');
+                return;
+            }
+        }
+
+        // min_account_balance
+        if ($settings->min_account_balance > 0) {
+            $userAccounts = Auth::user()->accounts()->get();
+            $totalBalance = $userAccounts->sum('balance');
+            if ($totalBalance < $settings->min_account_balance) {
+                $this->errorAlert(message: 'Your account balance is too low to apply for a loan.');
+                return;
+            }
+        }
+
+        if ($settings->require_guarantor && Auth::user()->kyc_status != 'verified') {
+            $this->errorAlert(message: 'Please verify your KYC to proceed.');
+            return;
+        }
 
         try {
             $loan = ModelsLoan::create([

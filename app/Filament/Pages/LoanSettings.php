@@ -48,10 +48,10 @@ class LoanSettings extends Page implements HasSchemas
                     ->label('Enable Loan Applications')
                     ->columnSpanFull(),
 
-                TextInput::make('max_loan_amount')
-                    ->numeric()
-                    ->label('Maximum Loan Amount')
-                    ->required(),
+                // TextInput::make('max_loan_amount')
+                //     ->numeric()
+                //     ->label('Maximum Loan Amount')
+                //     ->required(),
 
                 TextInput::make('max_active_loans_per_user')
                     ->numeric()
@@ -70,21 +70,22 @@ class LoanSettings extends Page implements HasSchemas
 
                 Checkbox::make('require_guarantor')
                     ->live()
-                    ->label('Require Guarantor'),
+                    ->label('Require KYC')
+                    ->helperText('Enable this if you want to require KYC for loan applications.'),
 
-                TextInput::make('min_guarantors')
-                    ->numeric()
-                    ->label('Minimum Guarantors')
-                    ->required(fn($get) => $get('require_guarantor')),
+                // TextInput::make('min_guarantors')
+                //     ->numeric()
+                //     ->label('Minimum Guarantors')
+                //     ->required(fn($get) => $get('require_guarantor')),
 
-                Repeater::make('required_documents')
-                    ->label('Required Documents')
-                    ->simple(TextInput::make('name')
-                        ->label('Document Name')
-                        ->placeholder('eg : ID Card')
-                        ->required())
-                    ->addActionLabel('Add Document')
-                    ->columnSpanFull(),
+                // Repeater::make('required_documents')
+                //     ->label('Required Documents')
+                //     ->simple(TextInput::make('name')
+                //         ->label('Document Name')
+                //         ->placeholder('eg : ID Card')
+                //         ->required())
+                //     ->addActionLabel('Add Document')
+                //     ->columnSpanFull(),
 
                 Textarea::make('terms_and_conditions')
                     ->label('Terms & Conditions')

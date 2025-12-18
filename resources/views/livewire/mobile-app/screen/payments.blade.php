@@ -12,7 +12,7 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="transaction-stats">
+    {{-- <div class="transaction-stats">
         <div class="row">
             <div class="col-12 mb-2">
                 <div class="stat-card">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Search Bar -->
     <div class="search-bar">
@@ -135,9 +135,9 @@
                     ]),
                 ])>
                     @if (in_array($transaction->transaction_type, ['credit', 'deposit']))
-                        + {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                        + {{ Number::currency($transaction->amount, $transaction->currency) }}
                     @else
-                        - {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                        - {{ Number::currency($transaction->amount, $transaction->currency) }}
                     @endif
                 </div>
             </div>

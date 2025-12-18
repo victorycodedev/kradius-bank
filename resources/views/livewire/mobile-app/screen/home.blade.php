@@ -169,9 +169,9 @@
                     ]),
                 ])>
                     @if (in_array($transaction->transaction_type, ['credit', 'deposit']))
-                        + {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                        + {{ Number::currency($transaction->amount, $transaction->currency) }}
                     @else
-                        - {{ $transaction->currency_symbol ?? '£' }} {{ number_format($transaction->amount, 2) }}
+                        - {{ Number::currency($transaction->amount, $transaction->currency) }}
                     @endif
                 </div>
             </div>

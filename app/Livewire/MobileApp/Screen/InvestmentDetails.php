@@ -17,6 +17,8 @@ class InvestmentDetails extends Component
         $this->investment = Investment::with(['stock', 'userAccount', 'transactions', 'profits'])
             ->where('user_id', Auth::user()->id)
             ->findOrFail($id);
+
+        $this->authorize('view', $this->investment);
     }
 
 

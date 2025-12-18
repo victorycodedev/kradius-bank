@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Settings;
+use EragLaravelPwa\Facades\PWA;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -37,6 +38,22 @@ class AppServiceProvider extends ServiceProvider
         View::share('configuration', $settings);
         View::share('site_logo', $logo);
         View::share('site_favicon', $favicon);
+
+        PWA::update([
+            'name' => 'Laravel Apps',
+            'short_name' => 'LA',
+            'background_color' => '#6777ef',
+            'display' => 'fullscreen',
+            'description' => 'A Progressive Web Application setup for Laravel projects.',
+            'theme_color' => '#6777ef',
+            'icons' => [
+                [
+                    'src' => 'logo.png',
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                ],
+            ],
+        ]);
 
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;

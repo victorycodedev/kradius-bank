@@ -1,5 +1,5 @@
 <div class="screen loan-detail-screen">
-    <div class="loan-header">
+    <div class="detail-header">
         <x-link :href="route('loans')" class="btn-back" icon="arrow-left" />
         <h1>Loan Details</h1>
     </div>
@@ -199,7 +199,6 @@
                         <span>Due Date</span>
                         <strong>{{ $selectedRepayment->due_date->format('M j, Y') }}</strong>
                     </div>
-                    <div class="summary-divider"></div>
                     <div class="summary-row">
                         <span>Principal Amount</span>
                         <strong>${{ number_format($selectedRepayment->principal_amount, 2) }}</strong>
@@ -208,7 +207,6 @@
                         <span>Interest Amount</span>
                         <strong>${{ number_format($selectedRepayment->interest_amount, 2) }}</strong>
                     </div>
-                    <div class="summary-divider"></div>
                     <div class="summary-row total">
                         <span>Total Payment</span>
                         <strong>${{ number_format($selectedRepayment->amount, 2) }}</strong>
@@ -225,7 +223,7 @@
                         <span>Remaining Payments</span>
                         <strong>{{ $pendingCount + $overdueCount }}</strong>
                     </div>
-                    <div class="summary-divider"></div>
+                    {{-- <div class="summary-divider"></div> --}}
                     <div class="summary-row total">
                         <span>Total Outstanding</span>
                         <strong>${{ number_format($loan->outstanding_balance, 2) }}</strong>
@@ -233,50 +231,51 @@
                 </div>
             @endif
 
-            <!-- Select Account -->
-            <div class="form-field">
-                <label class="form-label">Select Account</label>
-                <select wire:model="selectedAccount" class="form-select">
-                    <option value="">Choose account...</option>
-                    @foreach (Auth::user()->accounts as $account)
-                        <option value="{{ $account->id }}">
-                            {{ $account->account_number }}
-                            ({{ $account->currency }} {{ number_format($account->balance, 2) }})
-                        </option>
-                    @endforeach
-                </select>
-                @error('selectedAccount')
-                    <div class="form-error">
-                        <i class="bi bi-exclamation-circle-fill"></i>
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+            <form action="" wire:submit="{{ $selectedRepayment ? 'makePayment' : 'payInFull' }}">
+                <!-- Select Account -->
+                <div class="form-group">
+                    <label class="form-label">Select Account</label>
+                    <select wire:model="selectedAccount" class="form-select">
+                        <option value="">Choose account...</option>
+                        @foreach (Auth::user()->accounts as $account)
+                            <option value="{{ $account->id }}">
+                                {{ $account->account_number }}
+                                ({{ $account->currency }} {{ number_format($account->balance, 2) }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('selectedAccount')
+                        <div class="form-error">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <!-- Payment Notes -->
-            <div class="form-field">
-                <label class="form-label">Notes (Optional)</label>
-                <textarea wire:model="paymentNotes" class="form-control" placeholder="Add any notes about this payment..."
-                    rows="2"></textarea>
-            </div>
+                <!-- Payment Notes -->
+                <div class="form-group">
+                    <label class="form-label">Notes (Optional)</label>
+                    <textarea wire:model="paymentNotes" class="form-control" placeholder="Add any notes about this payment..."
+                        rows="2"></textarea>
+                </div>
 
-            <!-- Action Buttons -->
-            <div class="action-buttons gap-2">
-                <button wire:click="closeModal" class="btn-cancel" wire:loading.attr="disabled">
-                    Cancel
-                </button>
-                <button wire:click="{{ $selectedRepayment ? 'makePayment' : 'payInFull' }}" class="btn-primary"
-                    wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="{{ $selectedRepayment ? 'makePayment' : 'payInFull' }}">
-                        <i class="bi bi-check-circle"></i>
-                        Confirm Payment
-                    </span>
-                    <span wire:loading wire:target="{{ $selectedRepayment ? 'makePayment' : 'payInFull' }}">
-                        <x-spinner />
-                        Processing...
-                    </span>
-                </button>
-            </div>
+                <!-- Action Buttons -->
+                <div class="action-buttons gap-2">
+                    <button wire:click="closeModal" type="button" class="btn-cancel" wire:loading.attr="disabled">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="makePayment,payInFull">
+                            <i class="bi bi-check-circle"></i>
+                            Confirm Payment
+                        </span>
+                        <span wire:loading wire:target="makePayment,payInFull">
+                            <x-spinner />
+                            Processing...
+                        </span>
+                    </button>
+                </div>
+            </form>
         </div>
     </x-bottom-sheet>
 
