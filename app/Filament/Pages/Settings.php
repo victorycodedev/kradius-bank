@@ -66,13 +66,16 @@ class Settings extends Page implements HasSchemas
                                                     ->required()
                                                     ->maxLength(255),
 
-                                                // TextInput::make('app_short_name')
-                                                //     ->label('Short Name')
-                                                //     ->maxLength(50),
+                                                TextInput::make('app_short_name')
+                                                    ->label('Short Name')
+                                                    ->placeholder('eg KRD')
+                                                    ->required()
+                                                    ->maxLength(3),
 
-                                                // TextInput::make('app_slogan')
-                                                //     ->label('Slogan/Tagline')
-                                                //     ->maxLength(255),
+                                                TextInput::make('app_slogan')
+                                                    ->label('Slogan/Tagline')
+                                                    ->required()
+                                                    ->maxLength(255),
 
                                                 // TextInput::make('app_url')
                                                 //     ->label('Website URL')
@@ -138,19 +141,31 @@ class Settings extends Page implements HasSchemas
                                 Section::make('Media Assets')
                                     ->description('Upload logos and branding images (optimized automatically)')
                                     ->schema([
-                                        Grid::make(3)->schema([
+                                        Grid::make(2)->schema([
                                             SpatieMediaLibraryFileUpload::make('logo')
                                                 ->collection('logo')
                                                 ->image()
                                                 ->imageEditor()
                                                 ->maxSize(2048)
+                                                // ->required()
                                                 ->helperText('Main logo (PNG, JPG, WebP, SVG)'),
 
                                             SpatieMediaLibraryFileUpload::make('favicon')
                                                 ->collection('favicon')
                                                 ->image()
+                                                //  ->required()
                                                 ->maxSize(512)
                                                 ->helperText('Favicon (ICO, PNG, 32x32)'),
+
+                                            // Mobile App Icon
+                                            SpatieMediaLibraryFileUpload::make('mobile_app_icon')
+                                                ->collection('mobile_app_icon')
+                                                ->conversion('optimized')
+                                                ->image()
+                                                ->maxSize(1024)
+                                                ->required()
+                                                ->acceptedFileTypes(['image/png'])
+                                                ->helperText('Mobile App Icon (PNG, 512x512)'),
 
                                             SpatieMediaLibraryFileUpload::make('login_banner')
                                                 ->collection('login_banner')

@@ -40,15 +40,16 @@ class AppServiceProvider extends ServiceProvider
         View::share('site_favicon', $favicon);
 
         PWA::update([
-            'name' => 'Laravel Apps',
-            'short_name' => 'LA',
-            'background_color' => '#6777ef',
+            'name' => $settings->app_name,
+            'short_name' => $settings->app_short_name,
+            'background_color' => $settings->primary_color,
             'display' => 'fullscreen',
-            'description' => 'A Progressive Web Application setup for Laravel projects.',
-            'theme_color' => '#6777ef',
+            'description' => $settings->app_slogan,
+            'theme_color' => $settings->primary_color,
+            'start_url' => '/onboarding', // Add this line
             'icons' => [
                 [
-                    'src' => 'logo.png',
+                    'src' => $settings->getFirstMediaUrl('mobile_app_icon', 'optimized'),
                     'sizes' => '512x512',
                     'type' => 'image/png',
                 ],

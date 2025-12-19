@@ -1,14 +1,14 @@
 {
-    "name": "Laravel Apps",
-    "short_name": "LA",
-    "background_color": "#6777ef",
+    "name": "kradius",
+    "short_name": null,
+    "background_color": "#f46b10",
     "display": "fullscreen",
-    "description": "A Progressive Web Application setup for Laravel projects.",
-    "theme_color": "#6777ef",
+    "description": null,
+    "theme_color": "#f46b10",
     "start_url": "/",
     "icons": [
         {
-            "src": "logo.png",
+            "src": "",
             "sizes": "512x512",
             "type": "image/png"
         }

@@ -1,8 +1,9 @@
 <div class="screen onboarding-screen">
     <div class="onboarding-content">
-        <div class="onboarding-slides">
+        <div class="onboarding-slides d-flex justify-content-center align-items-center">
+            <!-- Your slides remain the same -->
             <div x-show="onboardingSlide === 0" class="slide">
-                <div class="icon-circle">
+                <div class="onboarding-circle">
                     <i class="bi bi-wallet2"></i>
                 </div>
                 <h2>Manage Your Money</h2>
@@ -10,7 +11,7 @@
             </div>
 
             <div x-show="onboardingSlide === 1" class="slide">
-                <div class="icon-circle">
+                <div class="onboarding-circle">
                     <i class="bi bi-send"></i>
                 </div>
                 <h2>Fast Transfers</h2>
@@ -18,7 +19,7 @@
             </div>
 
             <div x-show="onboardingSlide === 2" class="slide">
-                <div class="icon-circle">
+                <div class="onboarding-circle">
                     <i class="bi bi-shield-check"></i>
                 </div>
                 <h2>Secure & Safe</h2>
@@ -33,9 +34,10 @@
         </div>
 
         <div class="onboarding-actions">
-            <button @click="nextSlide()" class="btn btn-primary btn-lg w-100"
-                x-text="onboardingSlide === 2 ? 'Get Started' : 'Next'"></button>
-            <button @click="currentScreen = 'login'" class="btn btn-link">Skip</button>
+            <button @click="if (onboardingSlide === 2) { $wire.goToLogin() } else { onboardingSlide++ }"
+                class="button btn w-100" x-text="onboardingSlide === 2 ? 'Get Started' : 'Next'">
+            </button>
+            <button wire:click="goToLogin" class="btn btn-link">Skip</button>
         </div>
     </div>
 </div>

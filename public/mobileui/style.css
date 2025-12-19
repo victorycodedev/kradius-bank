@@ -284,7 +284,7 @@ body {
     }
 }
 
-.icon-circle {
+.onboarding-circle {
     width: 120px;
     height: 120px;
     background: rgba(255, 255, 255, 0.2);
@@ -296,7 +296,7 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.icon-circle i {
+.onboarding-circle i {
     font-size: 50px;
 }
 
@@ -337,7 +337,7 @@ body {
     margin-top: var(--spacing-xl);
 }
 
-.onboarding-actions .btn-primary {
+.onboarding-actions .button {
     background: var(--bg-primary);
     color: var(--primary-color);
     border: none;
@@ -345,6 +345,11 @@ body {
     padding: var(--spacing-base);
     border-radius: var(--radius-md);
     margin-bottom: 15px;
+}
+
+.onboarding-actions .button :hover {
+    opacity: var(--opacity-hover);
+    background: var(--bg-primary);
 }
 
 .onboarding-actions .btn-link {

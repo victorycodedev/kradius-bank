@@ -13,6 +13,7 @@ use App\Livewire\MobileApp\Screen\More\Cards;
 use App\Livewire\MobileApp\Screen\More\FaqSupport;
 use App\Livewire\MobileApp\Screen\More\Profile;
 use App\Livewire\MobileApp\Screen\More\Security;
+use App\Livewire\MobileApp\Screen\OnBoarding;
 use App\Livewire\MobileApp\Screen\Payments;
 use App\Livewire\MobileApp\Screen\StockInvestment;
 use App\Livewire\MobileApp\Screen\Transfer;
@@ -22,6 +23,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
+use Livewire\Attributes\On;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,6 +32,8 @@ Route::get('/', function () {
 Route::get('dashboard', Home::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::get('onboarding', OnBoarding::class)->name('onboarding');
 
 Route::middleware([
     'auth',

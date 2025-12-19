@@ -108,6 +108,23 @@ class Settings extends Model implements HasMedia
                     ->performOnCollections('favicon');
             });
 
+        // mobile app icon
+        //  'sizes' => '512x512',
+        //         'type' => 'image/png',
+
+        $this
+            ->addMediaCollection('mobile_app_icon')
+            ->singleFile()
+            ->acceptsMimeTypes(['image/png'])
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('optimized')
+                    ->fit(Fit::Contain, 512, 512)
+                    ->format('png')
+                    ->quality(90)
+                    ->performOnCollections('mobile_app_icon');
+            });
+
         $this
             ->addMediaCollection('login_banner')
             ->singleFile()
