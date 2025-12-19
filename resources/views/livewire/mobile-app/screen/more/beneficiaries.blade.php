@@ -3,9 +3,11 @@
     <div class="investment-header">
         <x-link :href="route('more')" class="btn-back" icon="arrow-left" />
         <h1>Beneficiaries</h1>
-        <button wire:click="openAddModal" class="add-card-btn">
-            <i class="bi bi-plus-lg"></i>
-        </button>
+        @if (Auth::user()->can_add_beneficiary)
+            <button wire:click="openAddModal" class="add-card-btn">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        @endif
     </div>
 
     <!-- Beneficiaries List -->
@@ -51,14 +53,15 @@
                         </div>
                     @endif
                 </div>
-
-                <div class="beneficiary-actions">
-                    <button wire:click="selectBeneficiaryForDelete({{ $beneficiary->id }})"
-                        class="action-btn text-danger" wire:loading.attr="disabled">
-                        <i class="bi bi-trash"></i>
-                        Remove
-                    </button>
-                </div>
+                @if (Auth::user()->can_manage_beneficiary)
+                    <div class="beneficiary-actions">
+                        <button wire:click="selectBeneficiaryForDelete({{ $beneficiary->id }})"
+                            class="action-btn text-danger" wire:loading.attr="disabled">
+                            <i class="bi bi-trash"></i>
+                            Remove
+                        </button>
+                    </div>
+                @endif
             </div>
         @empty
             <div class="empty-state">

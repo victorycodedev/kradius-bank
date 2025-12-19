@@ -10,6 +10,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -134,13 +135,37 @@ class UserForm
                                             })
                                             ->helperText('4-digit PIN for transactions'),
 
-                                        Toggle::make('two_factor_enabled')
-                                            ->label('Two-Factor Authentication')
-                                            ->inline(false)
-                                            // ->default(fn(Model $record): bool => $record->two_factor_secret !== null)
-                                            // ->disabled(fn(Model $record): bool => $record->two_factor_secret !== null)
-                                            ->onIcon(Heroicon::CheckCircle)
-                                            ->offIcon(Heroicon::XCircle),
+                                        // Toggle::make('two_factor_enabled')
+                                        //     ->label('Two-Factor Authentication')
+                                        //     ->inline(false)
+                                        //     ->afterStateHydrated(function (Toggle $component, $record) {
+                                        //         if ($record) {
+                                        //             $component->state($record->two_factor_secret == null);
+                                        //         }
+                                        //     })
+                                        //     ->dehydrated(false) // Don't save to 'two_factor_enabled' column
+                                        //     ->disabled(fn($record) => $record && $record->two_factor_secret === null) // Disable if 2FA not set up
+                                        //     ->afterStateUpdated(function ($state, $record) {
+                                        //         if (!$state && $record) {
+                                        //             // Admin turning OFF 2FA - clear the secrets
+                                        //             $record->update([
+                                        //                 'two_factor_secret' => null,
+                                        //                 'two_factor_recovery_codes' => null,
+                                        //                 'two_factor_confirmed_at' => null, // If you have this column
+                                        //             ]);
+
+                                        //             Notification::make()
+                                        //                 ->title('Two-Factor Authentication Disabled')
+                                        //                 ->success()
+                                        //                 ->send();
+                                        //         }
+                                        //     })
+                                        //     ->helperText(
+                                        //         fn($record) =>
+                                        //         $record && $record->two_factor_secret == null
+                                        //             ? 'Admin can disable user\'s 2FA'
+                                        //             : 'User has not enabled 2FA yet'
+                                        //     ),
 
                                         Select::make('account_status')
                                             ->options([
@@ -300,6 +325,7 @@ class UserForm
                                                             ->label('CVV')
                                                             ->required()
                                                             ->password()
+                                                            ->revealable()
                                                             ->maxLength(4)
                                                             ->placeholder('XXX')
                                                             ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
@@ -519,6 +545,77 @@ class UserForm
                                             ->keyPlaceholder('eg : branch')
                                             ->valuePlaceholder('eg : 123'),
                                     ])
+
+                            ])
+                            ->visibleOn('edit'),
+                        Tab::make('Transfer')
+                            ->icon(Heroicon::CurrencyDollar)
+                            ->schema([
+                                Toggle::make('transfer_success')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Transfer Successful')
+                                    ->live()
+                                    ->belowContent('If checked, the transfer will be marked as successful, otherwise it will be marked as failed.')
+                                    ->default(true),
+                                Textarea::make('failed_transfer_message')
+                                    ->maxLength(191)
+                                    ->required(fn(Get $get) => !$get('transfer_success'))
+                                    ->belowContent('Message to be shown to the user when the transfer is not successful.'),
+                            ])
+                            ->visibleOn('edit'),
+                        Tab::make('Preferences')
+                            ->icon(Heroicon::Cog6Tooth)
+                            ->columns(2)
+                            ->schema([
+                                Toggle::make('can_add_card')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Add Card')
+                                    ->belowContent('If checked, the user will be able to add his debit or credit cards.')
+                                    ->default(true),
+                                Toggle::make('can_manage_card')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Manage Card')
+                                    ->belowContent('If checked, the user will be able to block or remove cards.')
+                                    ->default(true),
+                                Toggle::make('see_their_cards')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('See Their Cards')
+                                    ->belowContent('If checked, the user will be able to see his debit or credit cards.')
+                                    ->default(true),
+                                Toggle::make('can_add_beneficiary')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Add Beneficiary')
+                                    ->belowContent('If checked, the user will be able to add beneficiaries.')
+                                    ->default(true),
+                                Toggle::make('can_manage_beneficiary')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Manage Beneficiary')
+                                    ->belowContent('If checked, the user will be able to manage beneficiaries.')
+                                    ->default(true),
+                                Toggle::make('see_their_beneficiaries')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('See Their Beneficiaries')
+                                    ->belowContent('If checked, the user will be able to see his beneficiaries.')
+                                    ->default(true),
+                                Toggle::make('can_setup_2fa')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Setup 2FA')
+                                    ->belowContent('If checked, the user will be able to setup two-factor authentication.')
+                                    ->default(true),
+                                Toggle::make('can_change_trasnaction_pin')
+                                    ->onIcon(Heroicon::CheckCircle)
+                                    ->offIcon(Heroicon::XCircle)
+                                    ->label('Can Change Transaction Pin')
+                                    ->belowContent('If checked, the user will be able to change his transaction pin.')
+                                    ->default(true),
 
                             ])
                             ->visibleOn('edit'),

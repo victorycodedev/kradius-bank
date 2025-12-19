@@ -54,94 +54,99 @@
             </button>
         </div>
 
-        <!-- Transaction PIN Section -->
-        <div class="security-section">
-            <div class="section-header">
-                <i class="bi bi-shield-lock"></i>
-                <h3>Transaction PIN</h3>
-            </div>
-
-            <p class="section-description">
-                {{ Auth::user()->pin ? 'Change your 5-digit PIN for secure transactions' : 'Set up a 5-digit PIN for secure transactions' }}
-            </p>
-
-            <button wire:click="openPinSetup" class="btn-action outline">
-                <i class="bi bi-key"></i>
-                {{ Auth::user()->pin ? 'Change PIN' : 'Setup PIN' }}
-            </button>
-        </div>
-
-        <!-- Two-Factor Authentication Section -->
-        <div class="security-section">
-            <div class="section-header">
-                <i class="bi bi-shield-check"></i>
-                <h3>Two-Factor Authentication</h3>
-            </div>
-
-            <div class="twofa-status">
-                <div class="status-indicator {{ $twoFactorEnabled ? 'enabled' : 'disabled' }}">
-                    <i class="bi bi-{{ $twoFactorEnabled ? 'check-circle-fill' : 'x-circle' }}"></i>
-                    <span>{{ $twoFactorEnabled ? 'Enabled' : 'Disabled' }}</span>
+        @if (Auth::user()->can_change_trasnaction_pin)
+            <!-- Transaction PIN Section -->
+            <div class="security-section">
+                <div class="section-header">
+                    <i class="bi bi-shield-lock"></i>
+                    <h3>Transaction PIN</h3>
                 </div>
+
+                <p class="section-description">
+                    {{ Auth::user()->pin ? 'Change your 5-digit PIN for secure transactions' : 'Set up a 5-digit PIN for secure transactions' }}
+                </p>
+
+                <button wire:click="openPinSetup" class="btn-action outline">
+                    <i class="bi bi-key"></i>
+                    {{ Auth::user()->pin ? 'Change PIN' : 'Setup PIN' }}
+                </button>
             </div>
+        @endif
 
-            <p class="section-description">
-                Add an extra layer of security by requiring a verification code when logging in.
-            </p>
+        @if (Auth::user()->can_setup_2fa)
+            <!-- Two-Factor Authentication Section -->
+            <div class="security-section">
+                <div class="section-header">
+                    <i class="bi bi-shield-check"></i>
+                    <h3>Two-Factor Authentication</h3>
+                </div>
 
-            @if ($twoFactorEnabled)
-                <button wire:click="disable2FA" class="btn-action danger" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="disable2FA">
-                        <i class="bi bi-shield-slash"></i>
-                        Disable 2FA
-                    </span>
-                    <span wire:loading wire:target="disable2FA">
-                        <x-spinner />
-                        Disabling...
-                    </span>
-                </button>
-            @else
-                <button wire:click="enable2FA" class="btn-action" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="enable2FA">
-                        <i class="bi bi-shield-check"></i>
-                        Enable 2FA
-                    </span>
-                    <span wire:loading wire:target="enable2FA">
-                        <x-spinner />
-                        Enabling...
-                    </span>
-                </button>
-            @endif
+                <div class="twofa-status">
+                    <div class="status-indicator {{ $twoFactorEnabled ? 'enabled' : 'disabled' }}">
+                        <i class="bi bi-{{ $twoFactorEnabled ? 'check-circle-fill' : 'x-circle' }}"></i>
+                        <span>{{ $twoFactorEnabled ? 'Enabled' : 'Disabled' }}</span>
+                    </div>
+                </div>
 
-            <!-- Recovery Codes -->
-            @if ($twoFactorEnabled && count($recoveryCodes) > 0)
-                <div class="recovery-codes-section">
-                    <button wire:click="toggleRecoveryCodes" class="btn-recovery-toggle">
-                        <i class="bi bi-key"></i>
-                        {{ $showRecoveryCodes ? 'Hide' : 'View' }} Recovery Codes
-                        <i class="bi bi-chevron-{{ $showRecoveryCodes ? 'up' : 'down' }}"></i>
+                <p class="section-description">
+                    Add an extra layer of security by requiring a verification code when logging in.
+                </p>
+
+                @if ($twoFactorEnabled)
+                    <button wire:click="disable2FA" class="btn-action danger" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="disable2FA">
+                            <i class="bi bi-shield-slash"></i>
+                            Disable 2FA
+                        </span>
+                        <span wire:loading wire:target="disable2FA">
+                            <x-spinner />
+                            Disabling...
+                        </span>
                     </button>
+                @else
+                    <button wire:click="enable2FA" class="btn-action" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="enable2FA">
+                            <i class="bi bi-shield-check"></i>
+                            Enable 2FA
+                        </span>
+                        <span wire:loading wire:target="enable2FA">
+                            <x-spinner />
+                            Enabling...
+                        </span>
+                    </button>
+                @endif
 
-                    @if ($showRecoveryCodes)
-                        <div class="recovery-codes-box">
-                            <p class="recovery-warning">
-                                <i class="bi bi-exclamation-triangle"></i>
-                                Store these codes securely. Each code can only be used once.
-                            </p>
-                            <div class="codes-grid">
-                                @foreach ($recoveryCodes as $code)
-                                    <div class="recovery-code">{{ $code }}</div>
-                                @endforeach
+                <!-- Recovery Codes -->
+                @if ($twoFactorEnabled && count($recoveryCodes) > 0)
+                    <div class="recovery-codes-section">
+                        <button wire:click="toggleRecoveryCodes" class="btn-recovery-toggle">
+                            <i class="bi bi-key"></i>
+                            {{ $showRecoveryCodes ? 'Hide' : 'View' }} Recovery Codes
+                            <i class="bi bi-chevron-{{ $showRecoveryCodes ? 'up' : 'down' }}"></i>
+                        </button>
+
+                        @if ($showRecoveryCodes)
+                            <div class="recovery-codes-box">
+                                <p class="recovery-warning">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    Store these codes securely. Each code can only be used once.
+                                </p>
+                                <div class="codes-grid">
+                                    @foreach ($recoveryCodes as $code)
+                                        <div class="recovery-code">{{ $code }}</div>
+                                    @endforeach
+                                </div>
+                                <button wire:click="regenerateRecoveryCodes" class="btn-regenerate">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                    Regenerate Codes
+                                </button>
                             </div>
-                            <button wire:click="regenerateRecoveryCodes" class="btn-regenerate">
-                                <i class="bi bi-arrow-clockwise"></i>
-                                Regenerate Codes
-                            </button>
-                        </div>
-                    @endif
-                </div>
-            @endif
-        </div>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        @endif
+
     </div>
 
     <!-- PIN Setup Modal -->

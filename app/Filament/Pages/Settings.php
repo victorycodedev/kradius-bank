@@ -59,82 +59,80 @@ class Settings extends Page implements HasSchemas
                             ->schema([
                                 Section::make('Basic Information')
                                     ->schema([
-                                        Grid::make(2)->schema([
-                                            TextInput::make('app_name')
-                                                ->label('Application Name')
-                                                ->required()
-                                                ->maxLength(255),
+                                        Grid::make(2)
+                                            ->schema([
+                                                TextInput::make('app_name')
+                                                    ->label('Application Name')
+                                                    ->required()
+                                                    ->maxLength(255),
 
-                                            TextInput::make('app_short_name')
-                                                ->label('Short Name')
-                                                ->maxLength(50),
+                                                TextInput::make('app_short_name')
+                                                    ->label('Short Name')
+                                                    ->maxLength(50),
 
-                                            TextInput::make('app_slogan')
-                                                ->label('Slogan/Tagline')
-                                                ->maxLength(255),
+                                                TextInput::make('app_slogan')
+                                                    ->label('Slogan/Tagline')
+                                                    ->maxLength(255),
 
-                                            TextInput::make('app_url')
-                                                ->label('Website URL')
-                                                ->url()
-                                                ->prefix('https://'),
+                                                TextInput::make('app_url')
+                                                    ->label('Website URL')
+                                                    ->url()
+                                                    ->prefix('https://'),
 
-                                            TextInput::make('app_version')
-                                                ->label('Version')
-                                                ->required(),
+                                                TextInput::make('app_version')
+                                                    ->label('Version')
+                                                    ->required(),
 
-                                            TextInput::make('copyright_text')
-                                                ->label('Copyright Text')
-                                                ->placeholder('© 2024 Company Name. All rights reserved.'),
-                                        ]),
+                                                TextInput::make('copyright_text')
+                                                    ->label('Copyright Text')
+                                                    ->placeholder('© 2024 Company Name. All rights reserved.'),
+                                            ]),
                                     ]),
 
                                 Section::make('Branding & Colors')
                                     ->schema([
-                                        Grid::make(4)->schema([
-                                            TextInput::make('primary_color')
-                                                ->label('Primary Color')
-                                                ->required()
-                                                ->type('color'),
+                                        Grid::make(3)
+                                            ->schema([
+                                                TextInput::make('primary_color')
+                                                    ->label('Primary Color')
+                                                    ->required()
+                                                    ->type('color'),
 
-                                            TextInput::make('secondary_color')
-                                                ->label('Secondary Color')
-                                                ->required()
-                                                ->type('color'),
+                                                TextInput::make('secondary_color')
+                                                    ->label('Secondary Color')
+                                                    ->required()
+                                                    ->type('color'),
 
-                                            TextInput::make('accent_color')
-                                                ->label('Accent Color')
-                                                ->required()
-                                                ->type('color'),
+                                                TextInput::make('accent_color')
+                                                    ->label('Accent Color')
+                                                    ->required()
+                                                    ->type('color'),
 
-                                            Select::make('font_family')
-                                                ->label('Font Family')
-                                                ->required()
-                                                ->options([
-                                                    'Inter' => 'Inter (Modern, Clean)',
-                                                    'Roboto' => 'Roboto (Google Default)',
-                                                    'Open Sans' => 'Open Sans (Friendly)',
-                                                    'Lato' => 'Lato (Professional)',
-                                                    'Montserrat' => 'Montserrat (Bold, Stylish)',
-                                                    'Poppins' => 'Poppins (Geometric)',
-                                                    'Raleway' => 'Raleway (Elegant)',
-                                                    'Ubuntu' => 'Ubuntu (Humanist)',
-                                                    'Nunito' => 'Nunito (Rounded, Friendly)',
-                                                    'Playfair Display' => 'Playfair Display (Serif, Elegant)',
-                                                    'Merriweather' => 'Merriweather (Readable Serif)',
-                                                    'Source Sans Pro' => 'Source Sans Pro (Adobe)',
-                                                    'Oswald' => 'Oswald (Condensed, Bold)',
-                                                    'PT Sans' => 'PT Sans (Universal)',
-                                                    'Work Sans' => 'Work Sans (Versatile)',
-                                                ])
-                                                ->default('Inter')
-                                                ->searchable()
-                                                ->native(false)
-                                                ->helperText('Choose the primary font for your application'),
-                                        ]),
-
-                                        Toggle::make('dark_mode_enabled')
-                                            ->label('Enable Dark Mode')
-                                            ->helperText('Allow users to switch to dark mode'),
+                                                // Select::make('font_family')
+                                                //     ->label('Font Family')
+                                                //     ->required()
+                                                //     ->options([
+                                                //         'Inter' => 'Inter (Modern, Clean)',
+                                                //         'Roboto' => 'Roboto (Google Default)',
+                                                //         'Open Sans' => 'Open Sans (Friendly)',
+                                                //         'Lato' => 'Lato (Professional)',
+                                                //         'Montserrat' => 'Montserrat (Bold, Stylish)',
+                                                //         'Poppins' => 'Poppins (Geometric)',
+                                                //         'Raleway' => 'Raleway (Elegant)',
+                                                //         'Ubuntu' => 'Ubuntu (Humanist)',
+                                                //         'Nunito' => 'Nunito (Rounded, Friendly)',
+                                                //         'Playfair Display' => 'Playfair Display (Serif, Elegant)',
+                                                //         'Merriweather' => 'Merriweather (Readable Serif)',
+                                                //         'Source Sans Pro' => 'Source Sans Pro (Adobe)',
+                                                //         'Oswald' => 'Oswald (Condensed, Bold)',
+                                                //         'PT Sans' => 'PT Sans (Universal)',
+                                                //         'Work Sans' => 'Work Sans (Versatile)',
+                                                //     ])
+                                                //     ->default('Inter')
+                                                //     ->searchable()
+                                                //     ->native(false)
+                                                //     ->helperText('Choose the primary font for your application'),
+                                            ]),
                                     ]),
 
                                 Section::make('Media Assets')
@@ -226,121 +224,137 @@ class Settings extends Page implements HasSchemas
                             ->schema([
                                 Section::make('Deposit Settings')
                                     ->schema([
-                                        Grid::make(3)->schema([
-                                            TextInput::make('minimum_deposit')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                        Grid::make(2)
+                                            ->schema([
+                                                TextInput::make('minimum_deposit')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->required(),
 
-                                            TextInput::make('maximum_deposit')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                                TextInput::make('maximum_deposit')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->required(),
 
-                                            Toggle::make('charge_deposit_fee')
-                                                ->label('Charge Deposit Fee')
-                                                ->live(),
+                                                // Toggle::make('charge_deposit_fee')
+                                                //     ->label('Charge Deposit Fee')
+                                                //     ->live(),
 
-                                            Select::make('deposit_fee_type')
-                                                ->options([
-                                                    'fixed' => 'Fixed Amount',
-                                                    'percentage' => 'Percentage',
-                                                ])
-                                                ->visible(fn($get) => $get('charge_deposit_fee')),
+                                                // Select::make('deposit_fee_type')
+                                                //     ->options([
+                                                //         'fixed' => 'Fixed Amount',
+                                                //         'percentage' => 'Percentage',
+                                                //     ])
+                                                //     ->visible(fn($get) => $get('charge_deposit_fee')),
 
-                                            TextInput::make('deposit_fee_amount')
-                                                ->numeric()
-                                                ->prefix(fn($get) => $get('deposit_fee_type') === 'percentage' ? '' : '₦')
-                                                ->suffix(fn($get) => $get('deposit_fee_type') === 'percentage' ? '%' : '')
-                                                ->visible(fn($get) => $get('charge_deposit_fee')),
-                                        ]),
+                                                // TextInput::make('deposit_fee_amount')
+                                                //     ->numeric()
+                                                //     ->prefix(fn($get) => $get('deposit_fee_type') === 'percentage' ? '' : '$')
+                                                //     ->suffix(fn($get) => $get('deposit_fee_type') === 'percentage' ? '%' : '')
+                                                //     ->visible(fn($get) => $get('charge_deposit_fee')),
+                                            ]),
                                     ]),
 
-                                Section::make('Withdrawal Settings')
-                                    ->schema([
-                                        Grid::make(3)->schema([
-                                            TextInput::make('minimum_withdrawal')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                // Section::make('Withdrawal Settings')
+                                //     ->schema([
+                                //         Grid::make(3)->schema([
+                                //             TextInput::make('minimum_withdrawal')
+                                //                 ->numeric()
+                                //                 ->prefix('$')
+                                //                 ->required(),
 
-                                            TextInput::make('maximum_withdrawal')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                //             TextInput::make('maximum_withdrawal')
+                                //                 ->numeric()
+                                //                 ->prefix('$')
+                                //                 ->required(),
 
-                                            TextInput::make('withdrawal_processing_days')
-                                                ->numeric()
-                                                ->required()
-                                                ->suffix('days')
-                                                ->default(1),
+                                //             TextInput::make('withdrawal_processing_days')
+                                //                 ->numeric()
+                                //                 ->required()
+                                //                 ->suffix('days')
+                                //                 ->default(1),
 
-                                            Select::make('withdrawal_fee_type')
-                                                ->options([
-                                                    'fixed' => 'Fixed Amount',
-                                                    'percentage' => 'Percentage',
-                                                ])
-                                                ->live(),
+                                //             Select::make('withdrawal_fee_type')
+                                //                 ->options([
+                                //                     'fixed' => 'Fixed Amount',
+                                //                     'percentage' => 'Percentage',
+                                //                 ])
+                                //                 ->live(),
 
-                                            TextInput::make('withdrawal_fee_amount')
-                                                ->numeric()
-                                                ->prefix(fn($get) => $get('withdrawal_fee_type') === 'percentage' ? '' : '₦')
-                                                ->suffix(fn($get) => $get('withdrawal_fee_type') === 'percentage' ? '%' : ''),
-                                        ]),
-                                    ]),
+                                //             TextInput::make('withdrawal_fee_amount')
+                                //                 ->numeric()
+                                //                 ->prefix(fn($get) => $get('withdrawal_fee_type') === 'percentage' ? '' : '$')
+                                //                 ->suffix(fn($get) => $get('withdrawal_fee_type') === 'percentage' ? '%' : ''),
+                                //         ]),
+                                //     ]),
 
                                 Section::make('Transfer Settings')
                                     ->schema([
-                                        Grid::make(3)->schema([
-                                            TextInput::make('minimum_transfer')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                        Grid::make(2)
+                                            ->schema([
+                                                TextInput::make('minimum_transfer')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->required(),
 
-                                            TextInput::make('maximum_transfer')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required(),
+                                                TextInput::make('maximum_transfer')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->required(),
 
-                                            Toggle::make('allow_international_transfers')
-                                                ->label('Allow International Transfers'),
+                                                Toggle::make('allow_international_transfers')
+                                                    ->label('Allow International Transfers'),
 
-                                            Select::make('transfer_fee_type')
-                                                ->options([
-                                                    'fixed' => 'Fixed Amount',
-                                                    'percentage' => 'Percentage',
-                                                ])
-                                                ->required()
-                                                ->default('fixed')
-                                                ->live(),
+                                                // Select::make('transfer_fee_type')
+                                                //     ->options([
+                                                //         'fixed' => 'Fixed Amount',
+                                                //         'percentage' => 'Percentage',
+                                                //     ])
+                                                //     ->required()
+                                                //     ->default('fixed')
+                                                //     ->live(),
 
-                                            TextInput::make('transfer_fee_amount')
-                                                ->numeric()
-                                                ->prefix(fn($get) => $get('transfer_fee_type') === 'percentage' ? '' : '₦')
-                                                ->suffix(fn($get) => $get('transfer_fee_type') === 'percentage' ? '%' : ''),
-                                        ]),
+                                                // TextInput::make('transfer_fee_amount')
+                                                //     ->numeric()
+                                                //     ->prefix(fn($get) => $get('transfer_fee_type') === 'percentage' ? '' : '$')
+                                                //     ->suffix(fn($get) => $get('transfer_fee_type') === 'percentage' ? '%' : ''),
+
+                                                Toggle::make('transfer_success')
+                                                    ->onIcon(Heroicon::CheckCircle)
+                                                    ->offIcon(Heroicon::XCircle)
+                                                    ->label('Transfer Successful')
+                                                    ->live()
+                                                    ->belowContent('If checked, the transfer will be marked as successful, otherwise it will be marked as failed.')
+                                                    ->default(true),
+
+                                                Textarea::make('failed_transfer_message')
+                                                    ->maxLength(191)
+                                                    ->columnSpanFull()
+                                                    ->required(fn(Get $get) => !$get('transfer_success'))
+                                                    ->belowContent('Message to be shown to the user when the transfer is not successful.'),
+                                            ]),
                                     ]),
 
-                                Section::make('Transaction Limits')
-                                    ->schema([
-                                        Grid::make(3)->schema([
-                                            TextInput::make('daily_transaction_limit')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->required()
-                                                ->helperText('Max per day per user'),
+                                // Section::make('Transaction Limits')
+                                //     ->schema([
+                                //         Grid::make(3)->schema([
+                                //             TextInput::make('daily_transaction_limit')
+                                //                 ->numeric()
+                                //                 ->prefix('$')
+                                //                 ->required()
+                                //                 ->helperText('Max per day per user'),
 
-                                            TextInput::make('monthly_transaction_limit')
-                                                ->numeric()
-                                                ->prefix('₦')
-                                                ->helperText('Max per month per user'),
+                                //             TextInput::make('monthly_transaction_limit')
+                                //                 ->numeric()
+                                //                 ->prefix('$')
+                                //                 ->helperText('Max per month per user'),
 
-                                            TextInput::make('max_transactions_per_day')
-                                                ->numeric()
-                                                ->suffix('transactions')
-                                                ->helperText('Count limit per day'),
-                                        ]),
-                                    ]),
+                                //             TextInput::make('max_transactions_per_day')
+                                //                 ->numeric()
+                                //                 ->suffix('transactions')
+                                //                 ->helperText('Count limit per day'),
+                                //         ]),
+                                //     ]),
                             ]),
                         Tab::make('Deposit Details')
                             ->icon(Heroicon::Banknotes)
@@ -420,16 +434,17 @@ class Settings extends Page implements HasSchemas
                                             Toggle::make('require_email_verification')
                                                 ->label('Require Email Verification'),
 
-                                            Toggle::make('require_phone_verification')
-                                                ->label('Require Phone Verification'),
+                                            // Toggle::make('require_phone_verification')
+                                            //     ->label('Require Phone Verification'),
 
                                             Toggle::make('require_2fa')
                                                 ->label('Require Two-Factor Authentication'),
 
-                                            Toggle::make('force_2fa_for_withdrawals')
-                                                ->label('Force 2FA for Withdrawals'),
+                                            // Toggle::make('force_2fa_for_withdrawals')
+                                            //     ->label('Force 2FA for Withdrawals'),
 
                                             Toggle::make('require_transaction_pin')
+                                                ->disabled()
                                                 ->label('Require Transaction PIN'),
 
                                             Toggle::make('auto_logout_on_idle')
@@ -454,11 +469,6 @@ class Settings extends Page implements HasSchemas
                                                 ->numeric()
                                                 ->suffix('minutes')
                                                 ->default(30),
-
-                                            TextInput::make('password_expiry_days')
-                                                ->numeric()
-                                                ->suffix('days')
-                                                ->helperText('Users must change password after this period'),
                                         ]),
                                     ]),
                             ]),
@@ -474,18 +484,6 @@ class Settings extends Page implements HasSchemas
                                                 ->label('Require KYC Verification')
                                                 ->live(),
 
-                                            TextInput::make('min_kyc_level_for_withdrawal')
-                                                ->numeric()
-                                                ->label('Min KYC Level for Withdrawal')
-                                                ->default(1)
-                                                ->visible(fn($get) => $get('kyc_required')),
-
-                                            TextInput::make('min_kyc_level_for_transfer')
-                                                ->numeric()
-                                                ->label('Min KYC Level for Transfer')
-                                                ->default(1)
-                                                ->visible(fn($get) => $get('kyc_required')),
-
                                             TextInput::make('kyc_expiry_months')
                                                 ->numeric()
                                                 ->suffix('months')
@@ -493,29 +491,29 @@ class Settings extends Page implements HasSchemas
                                         ]),
                                     ]),
 
-                                Section::make('Document Requirements')
-                                    ->schema([
-                                        Grid::make(3)->schema([
-                                            Toggle::make('require_selfie')
-                                                ->label('Require Selfie Photo'),
+                                // Section::make('Document Requirements')
+                                //     ->schema([
+                                //         Grid::make(3)->schema([
+                                //             Toggle::make('require_selfie')
+                                //                 ->label('Require Selfie Photo'),
 
-                                            Toggle::make('require_id_upload')
-                                                ->label('Require ID Document'),
+                                //             Toggle::make('require_id_upload')
+                                //                 ->label('Require ID Document'),
 
-                                            Toggle::make('require_address_proof')
-                                                ->label('Require Address Proof'),
-                                        ]),
+                                //             Toggle::make('require_address_proof')
+                                //                 ->label('Require Address Proof'),
+                                //         ]),
 
-                                        Select::make('allowed_id_types')
-                                            ->multiple()
-                                            ->options([
-                                                'passport' => 'International Passport',
-                                                'nin' => 'National ID (NIN)',
-                                                'drivers_license' => 'Driver\'s License',
-                                                'voters_card' => 'Voter\'s Card',
-                                            ])
-                                            ->helperText('Select acceptable ID types'),
-                                    ]),
+                                //         Select::make('allowed_id_types')
+                                //             ->multiple()
+                                //             ->options([
+                                //                 'passport' => 'International Passport',
+                                //                 'nin' => 'National ID (NIN)',
+                                //                 'drivers_license' => 'Driver\'s License',
+                                //                 'voters_card' => 'Voter\'s Card',
+                                //             ])
+                                //             ->helperText('Select acceptable ID types'),
+                                //     ]),
                             ]),
 
                         // ✅ NOTIFICATIONS (simplified for space)
@@ -526,7 +524,7 @@ class Settings extends Page implements HasSchemas
                                     ->schema([
                                         Grid::make(3)->schema([
                                             Toggle::make('email_notifications_enabled'),
-                                            Toggle::make('sms_notifications_enabled'),
+                                            // Toggle::make('sms_notifications_enabled'),
                                             Toggle::make('push_notifications_enabled'),
                                         ]),
                                     ]),
@@ -555,30 +553,30 @@ class Settings extends Page implements HasSchemas
                                             Toggle::make('allow_transfers')
                                                 ->label('Allow Transfers'),
 
-                                            Toggle::make('allow_withdrawals')
-                                                ->label('Allow Withdrawals'),
+                                            // Toggle::make('allow_withdrawals')
+                                            //     ->label('Allow Withdrawals'),
 
                                             Toggle::make('allow_deposits')
                                                 ->label('Allow Deposits'),
 
-                                            Toggle::make('demo_mode')
-                                                ->label('Demo Mode')
-                                                ->helperText('For testing purposes'),
+                                            // Toggle::make('demo_mode')
+                                            //     ->label('Demo Mode')
+                                            //     ->helperText('For testing purposes'),
                                         ]),
                                     ]),
 
-                                Section::make('Maintenance Mode')
-                                    ->schema([
-                                        Toggle::make('maintenance_mode')
-                                            ->label('Enable Maintenance Mode')
-                                            ->live(),
+                                // Section::make('Maintenance Mode')
+                                //     ->schema([
+                                //         Toggle::make('maintenance_mode')
+                                //             ->label('Enable Maintenance Mode')
+                                //             ->live(),
 
-                                        Textarea::make('maintenance_message')
-                                            ->label('Maintenance Message')
-                                            ->rows(2)
-                                            ->placeholder('We are currently performing system maintenance...')
-                                            ->visible(fn($get) => $get('maintenance_mode')),
-                                    ]),
+                                //         Textarea::make('maintenance_message')
+                                //             ->label('Maintenance Message')
+                                //             ->rows(2)
+                                //             ->placeholder('We are currently performing system maintenance...')
+                                //             ->visible(fn($get) => $get('maintenance_mode')),
+                                //     ]),
                             ]),
 
                         // ✅ LEGAL
@@ -598,16 +596,16 @@ class Settings extends Page implements HasSchemas
                                             ->columnSpanFull(),
                                     ]),
 
-                                Section::make('Company Information')
-                                    ->schema([
-                                        Grid::make(2)->schema([
-                                            TextInput::make('company_registration_number')
-                                                ->label('Company Registration Number'),
+                                // Section::make('Company Information')
+                                //     ->schema([
+                                //         Grid::make(2)->schema([
+                                //             TextInput::make('company_registration_number')
+                                //                 ->label('Company Registration Number'),
 
-                                            TextInput::make('tax_identification_number')
-                                                ->label('Tax ID (TIN)'),
-                                        ]),
-                                    ]),
+                                //             TextInput::make('tax_identification_number')
+                                //                 ->label('Tax ID (TIN)'),
+                                //         ]),
+                                //     ]),
                             ]),
                     ])
                     ->persistTabInQueryString()

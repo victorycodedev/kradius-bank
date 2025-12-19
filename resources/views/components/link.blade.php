@@ -13,7 +13,7 @@
     }
 @endphp
 
-<a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }} wire:navigate>
+<a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }}>
     @if ($icon)
         <i class="bi bi-{{ $icon }} me-1"></i>
     @endif

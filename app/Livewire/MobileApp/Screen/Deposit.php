@@ -120,10 +120,12 @@ class Deposit extends Component
 
     public function submitDeposit()
     {
+        $settings = Settings::get();
+
         $this->validate([
-            'amount' => 'required|numeric|min:1',
-            'transactionReference' => 'required|string|max:255',
-            'proofOfPayment' => 'nullable|string|max:1000',
+            'amount' => ['required', 'numeric', 'min:' . $settings->minimum_deposit, 'max:' . $settings->maximum_deposit],
+            'transactionReference' => ['required', 'string', 'max:255'],
+            'proofOfPayment' => ['required', 'string', 'max:1000'],
         ]);
 
         $account = Auth::user()->accounts()->findOrFail($this->selectedAccount);

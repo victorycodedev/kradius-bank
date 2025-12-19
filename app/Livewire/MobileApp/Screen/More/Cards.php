@@ -28,6 +28,11 @@ class Cards extends Component
     public $cardType = 'debit';
     public $dailyLimit = 5000;
 
+    public function mount(): void
+    {
+        abort_if(!Auth::user()->see_their_cards, 403);
+    }
+
     #[Title('My Cards')]
     public function render()
     {

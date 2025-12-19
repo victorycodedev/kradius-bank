@@ -32,16 +32,17 @@
         <!-- Step 1: Transfer Details -->
         @if ($step === 1)
             <div class="transfer-step">
-                <!-- Transfer Type Toggle -->
-                <div class="transfer-type-toggle">
-                    <button wire:click="$set('transferType', 'local')" @class(['type-btn', 'active' => $transferType === 'local'])>
-                        Local Transfer
-                    </button>
-                    <button wire:click="$set('transferType', 'international')" @class(['type-btn', 'active' => $transferType === 'international'])>
-                        International
-                    </button>
-                </div>
-
+                @if ($configuration->allow_international_transfers)
+                    <!-- Transfer Type Toggle -->
+                    <div class="transfer-type-toggle">
+                        <button wire:click="$set('transferType', 'local')" @class(['type-btn', 'active' => $transferType === 'local'])>
+                            Local Transfer
+                        </button>
+                        <button wire:click="$set('transferType', 'international')" @class(['type-btn', 'active' => $transferType === 'international'])>
+                            International
+                        </button>
+                    </div>
+                @endif
                 <!-- Beneficiary Selection -->
                 @if ($beneficiaries->count() > 0)
                     <div class="beneficiaries-section">
@@ -70,110 +71,112 @@
                     </div>
                 @endif
 
-                <!-- Manual Entry -->
-                <div class="manual-entry-section">
-                    <h3 class="section-subtitle">
-                        <i class="bi bi-pencil"></i>
-                        Enter Details Manually
-                    </h3>
+                <form wire:submit="proceedToPin">
+                    <!-- Manual Entry -->
+                    <div class="manual-entry-section">
+                        <h3 class="section-subtitle">
+                            <i class="bi bi-pencil"></i>
+                            Enter Details Manually
+                        </h3>
 
-                    <!-- Select Bank -->
-                    <div class="form-field">
-                        <label class="form-label">Select Bank</label>
-                        <select wire:model.live="bankId" class="form-select">
-                            <option value="">Choose bank...</option>
-                            @foreach ($banks as $bank)
-                                <option value="{{ $bank->id }}">{{ $bank->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('bankId')
-                            <div class="form-error">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <!-- Account Number -->
-                    <div class="form-field">
-                        <label class="form-label">Account Number</label>
-                        <input type="text" wire:model.live.debounce.500ms="accountNumber" class="form-control"
-                            placeholder="Enter account number (min 7 digits)" maxlength="15">
-                        @error('accountNumber')
-                            <div class="form-error">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-
-                        @if ($accountName)
-                            <div class="account-name-display {{ $accountFound ? 'found' : 'not-found' }}">
-                                <i class="bi bi-{{ $accountFound ? 'check-circle-fill' : 'x-circle-fill' }}"></i>
-                                {{ $accountName }}
-                            </div>
-                        @endif
-
-                        @if (strlen($accountNumber) > 0 && strlen($accountNumber) < 7)
-                            <div class="form-hint">
-                                <i class="bi bi-info-circle"></i>
-                                Enter at least 7 digits to search
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Amount -->
-                    <div class="form-field">
-                        <label class="form-label">Amount</label>
-                        <div class="input-group">
-                            <span class="input-group-text">$</span>
-                            <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
-                                step="0.01">
+                        <!-- Select Bank -->
+                        <div class="form-group">
+                            <label class="form-label">Select Bank</label>
+                            <select wire:model.live="bankId" class="form-select">
+                                <option value="">Choose bank...</option>
+                                @foreach ($banks as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('bankId')
+                                <div class="form-error">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                        @error('amount')
-                            <div class="form-error">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
+
+                        <!-- Account Number -->
+                        <div class="form-group">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" wire:model.live.debounce.500ms="accountNumber" class="form-control"
+                                placeholder="Enter account number (min 7 digits)" maxlength="15">
+                            @error('accountNumber')
+                                <div class="form-error">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                            @if ($accountName)
+                                <div class="account-name-display {{ $accountFound ? 'found' : 'not-found' }}">
+                                    <i class="bi bi-{{ $accountFound ? 'check-circle-fill' : 'x-circle-fill' }}"></i>
+                                    {{ $accountName }}
+                                </div>
+                            @endif
+
+                            @if (strlen($accountNumber) > 0 && strlen($accountNumber) < 7)
+                                <div class="form-hint">
+                                    <i class="bi bi-info-circle"></i>
+                                    Enter at least 7 digits to search
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="form-group">
+                            <label class="form-label">Amount</label>
+                            <div class="input-group">
+                                {{-- <span class="input-group-text">$</span> --}}
+                                <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
+                                    step="0.01" min="{{ $configuration->minimum_transfer }}">
                             </div>
-                        @enderror
-                    </div>
+                            @error('amount')
+                                <div class="form-error">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                    <!-- From Account -->
-                    <div class="form-field">
-                        <label class="form-label">From Account</label>
-                        <select wire:model="sourceAccountId" class="form-select">
-                            <option value="">Select source account...</option>
-                            @foreach ($sourceAccounts as $account)
-                                <option value="{{ $account->id }}">
-                                    {{ $account->account_number }} - {{ $account->currency }}
-                                    {{ number_format($account->balance, 2) }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('sourceAccountId')
-                            <div class="form-error">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                        <!-- From Account -->
+                        <div class="form-group">
+                            <label class="form-label">From Account</label>
+                            <select wire:model="sourceAccountId" class="form-select">
+                                <option value="">Select source account...</option>
+                                @foreach ($sourceAccounts as $account)
+                                    <option value="{{ $account->id }}">
+                                        {{ $account->account_number }} - {{ $account->currency }}
+                                        {{ number_format($account->balance, 2) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('sourceAccountId')
+                                <div class="form-error">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                    <!-- Description -->
-                    <div class="form-field">
-                        <label class="form-label">Description (Optional)</label>
-                        <textarea wire:model="description" class="form-textarea" placeholder="Payment for..." rows="2" required></textarea>
-                    </div>
-                </div>
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea wire:model="description" class="form-textarea" placeholder="Payment for..." rows="2" required></textarea>
+                        </div>
 
-                <button wire:click="proceedToPin" class="btn-primary" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="proceedToPin">
-                        Continue
-                        <i class="bi bi-arrow-right"></i>
-                    </span>
-                    <span wire:loading wire:target="proceedToPin">
-                        <x-spinner />
-                        Processing...
-                    </span>
-                </button>
+                        <button type="submit" class="btn-primary" wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="proceedToPin">
+                                Continue
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                            <span wire:loading wire:target="proceedToPin">
+                                <x-spinner />
+                                Processing...
+                            </span>
+                        </button>
+                    </div>
+                </form>
             </div>
         @endif
 
@@ -183,7 +186,7 @@
                 <div class="verification-card">
                     <i class="bi bi-shield-lock"></i>
                     <h3>Enter Transaction PIN</h3>
-                    <p>Please enter your 4-digit transaction PIN to authorize this transfer</p>
+                    <p>Please enter your 5-digit transaction PIN to authorize this transfer</p>
                 </div>
 
                 <div class="transfer-summary">
@@ -211,16 +214,17 @@
                     @endif
                 </div>
 
-                <div class="form-field">
+                <div class="form-group">
                     <label class="form-label">Transaction PIN</label>
                     <input type="password" wire:model="transactionPin" class="form-control text-center pin-input"
-                        placeholder="••••" maxlength="4" inputmode="numeric" autofocus>
-                    @error('transactionPin')
+                        placeholder="•••••" maxlength="5" inputmode="numeric" wire:loading.attr="disabled"
+                        autofocus>
+                    {{-- @error('transactionPin')
                         <div class="form-error">
                             <i class="bi bi-exclamation-circle-fill"></i>
                             {{ $message }}
                         </div>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <button wire:click="verifyPin" class="btn-primary" wire:loading.attr="disabled">
@@ -253,7 +257,7 @@
                     </div>
                 </div>
 
-                <div class="form-field">
+                <div class="form-group">
                     <label class="form-label">Enter Verification Code</label>
                     <input type="text" wire:model="currentCodeInput" class="form-control text-center code-input"
                         placeholder="Enter code" autofocus>
@@ -280,7 +284,7 @@
     </div>
 
     <!-- Step 4: Processing Animation -->
-    <div x-show="isProcessing && $wire.step === 4" x-transition class="processing-screen">
+    <div x-show="isProcessing && $wire.step === 4" style="display: none;" x-transition class="processing-screen">
         <div class="processing-content">
             <div class="processing-icon">
                 <div class="pulse-ring"></div>

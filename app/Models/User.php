@@ -97,6 +97,14 @@ class User extends Authenticatable implements FilamentUser, HasMedia
             'enable_crypto_payment' => 'boolean',
             'enable_bank_payment' => 'boolean',
             'transfer_success' => 'boolean',
+            'can_add_card' => 'boolean',
+            'can_manage_card' => 'boolean',
+            'see_their_cards' => 'boolean',
+            'see_their_beneficiaries' => 'boolean',
+            'can_add_beneficiary' => 'boolean',
+            'can_manage_beneficiary' => 'boolean',
+            'can_setup_2fa' => 'boolean',
+            'can_change_trasnaction_pin' => 'boolean',
         ];
     }
 

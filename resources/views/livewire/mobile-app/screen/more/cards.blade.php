@@ -3,9 +3,11 @@
     <div class="investment-header">
         <x-link :href="route('more')" class="btn-back" icon="arrow-left" />
         <h1>My Cards</h1>
-        <button wire:click="openAddCardModal" class="add-card-btn">
-            <i class="bi bi-plus-lg"></i>
-        </button>
+        @if (Auth::user()->can_add_card)
+            <button wire:click="openAddCardModal" class="add-card-btn">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        @endif
     </div>
 
     <!-- Cards List -->
@@ -71,20 +73,23 @@
                         </span>
                     </div>
                 </div>
+                @if (Auth::user()->can_manage_card)
+                    <!-- Card Actions -->
+                    <div class="card-actions gap-2">
+                        <button wire:click="toggleCardStatus({{ $card->id }})"
+                            class="act-btn {{ $card->isActive() ? 'danger' : 'success' }}"
+                            wire:loading.attr="disabled">
+                            <i class="bi bi-{{ $card->isActive() ? 'shield-slash' : 'shield-check' }}"></i>
+                            {{ $card->isActive() ? 'Block Card' : 'Activate Card' }}
+                        </button>
+                        <button wire:click="selectCardForDelete({{ $card->id }})" class="act-btn danger"
+                            wire:loading.attr="disabled">
+                            <i class="bi bi-trash"></i>
+                            Remove Card
+                        </button>
+                    </div>
+                @endif
 
-                <!-- Card Actions -->
-                <div class="card-actions gap-2">
-                    <button wire:click="toggleCardStatus({{ $card->id }})"
-                        class="act-btn {{ $card->isActive() ? 'danger' : 'success' }}" wire:loading.attr="disabled">
-                        <i class="bi bi-{{ $card->isActive() ? 'shield-slash' : 'shield-check' }}"></i>
-                        {{ $card->isActive() ? 'Block Card' : 'Activate Card' }}
-                    </button>
-                    <button wire:click="selectCardForDelete({{ $card->id }})" class="act-btn danger"
-                        wire:loading.attr="disabled">
-                        <i class="bi bi-trash"></i>
-                        Remove Card
-                    </button>
-                </div>
             </div>
         @empty
             <div class="empty-state">

@@ -13,22 +13,24 @@
             </div>
             <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
-
-        <a href="{{ route('account.cards') }}" class="menu-item text-decoration-none">
-            <div class="menu-left">
-                <i class="bi bi-credit-card"></i>
-                <span>My Cards</span>
-            </div>
-            <i class="bi bi-chevron-right menu-arrow"></i>
-        </a>
-
-        <a href="{{ route('account.beneficiaries') }}" class="menu-item text-decoration-none">
-            <div class="menu-left">
-                <i class="bi bi-people-fill"></i>
-                <span>Beneficiaries</span>
-            </div>
-            <i class="bi bi-chevron-right menu-arrow"></i>
-        </a>
+        @if (Auth::user()->see_their_cards)
+            <a href="{{ route('account.cards') }}" class="menu-item text-decoration-none">
+                <div class="menu-left">
+                    <i class="bi bi-credit-card"></i>
+                    <span>My Cards</span>
+                </div>
+                <i class="bi bi-chevron-right menu-arrow"></i>
+            </a>
+        @endif
+        @if (Auth::user()->see_their_beneficiaries)
+            <a href="{{ route('account.beneficiaries') }}" class="menu-item text-decoration-none">
+                <div class="menu-left">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Beneficiaries</span>
+                </div>
+                <i class="bi bi-chevron-right menu-arrow"></i>
+            </a>
+        @endif
 
         <a href="{{ route('account.kyc') }}" class="menu-item text-decoration-none">
             <div class="menu-left">

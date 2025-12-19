@@ -94,6 +94,13 @@
                     </div>
                 @endif
             </div>
+            <div class="alert alert-primary" role="alert">
+                Minimum amount to deposit:
+                <strong class="d-flex">
+                    <span x-text="currency"></span>
+                    {{ Number::format($configuration->minimum_deposit) }}
+                </strong>
+            </div>
         </div>
 
         <!-- Payment Details -->
@@ -305,7 +312,7 @@
                     <div class="input-group">
                         <span class="input-group-text" x-text="currency"></span>
                         <input type="number" wire:model="amount" class="form-control" placeholder="0.00"
-                            step="0.01" required>
+                            step="0.01" min="{{ $configuration->minimum_deposit }}" required>
                     </div>
                     @error('amount')
                         <div class="text-danger text-sm">

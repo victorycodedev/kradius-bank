@@ -129,11 +129,13 @@ class Transfer extends Component
 
     public function proceedToPin()
     {
+        $settings = Settings::get();
+
         $this->validate([
-            'bankId' => 'required|exists:banks,id',
-            'accountNumber' => 'required|string|min:7|max:15',
-            'amount' => 'required|numeric|min:1',
-            'sourceAccountId' => 'required|exists:user_accounts,id',
+            'bankId' => ['required', 'exists:banks,id'],
+            'accountNumber' => ['required', 'string', 'min:7', 'max:15'],
+            'amount' => ['required', 'numeric', 'min:' . $settings->minimum_transfer, 'max:' . $settings->maximum_transfer],
+            'sourceAccountId' => ['required', 'exists:user_accounts,id'],
         ]);
 
         if (!$this->accountFound) {

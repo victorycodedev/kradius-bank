@@ -24,6 +24,13 @@ class Home extends Component
 
         $this->user = Auth::user();
 
+        if ($this->user->account_status == 'suspended' || $this->user->account_status == 'closed') {
+            // logged out user
+            Auth::logout();
+            redirect()->route('login');
+            return;
+        }
+
         if ($this->user->hasMedia('avatars')) {
             $this->avatarUrl = $this->user->getFirstMediaUrl('avatars');
         }

@@ -25,6 +25,11 @@ class Beneficiaries extends Component
     public $nickname = '';
     public $isFavorite = false;
 
+    public function mount(): void
+    {
+        abort_if(!Auth::user()->see_their_beneficiaries, 403);
+    }
+
     #[Title('Beneficiaries')]
     public function render()
     {
