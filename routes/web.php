@@ -21,13 +21,19 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 
 use App\Livewire\Settings\TwoFactor;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Attributes\On;
 
 Route::get('/', function () {
+    // If already authenticated, go to dashboard
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+
     return view('welcome');
-})->name('home');
+})->name('welcome');
 
 Route::get('dashboard', Home::class)
     ->middleware(['auth', 'verified'])

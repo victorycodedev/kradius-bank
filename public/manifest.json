@@ -1,16 +1,30 @@
 {
     "name": "kradius",
-    "short_name": null,
+    "short_name": "BankApp",
     "background_color": "#f46b10",
-    "display": "fullscreen",
-    "description": null,
+    "display": "standalone",
+    "description": "Secure mobile banking",
     "theme_color": "#f46b10",
+    "scope": "/",
+    "orientation": "portrait-primary",
+    "categories": [
+        "finance",
+        "banking"
+    ],
+    "screenshots": [],
     "start_url": "/",
     "icons": [
         {
             "src": "",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ]
 }

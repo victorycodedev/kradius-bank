@@ -160,19 +160,11 @@ class Settings extends Page implements HasSchemas
                                             // Mobile App Icon
                                             SpatieMediaLibraryFileUpload::make('mobile_app_icon')
                                                 ->collection('mobile_app_icon')
-                                                ->conversion('optimized')
                                                 ->image()
                                                 ->maxSize(1024)
                                                 ->required()
                                                 ->acceptedFileTypes(['image/png'])
                                                 ->helperText('Mobile App Icon (PNG, 512x512)'),
-
-                                            SpatieMediaLibraryFileUpload::make('login_banner')
-                                                ->collection('login_banner')
-                                                ->image()
-                                                ->imageEditor()
-                                                ->maxSize(5120)
-                                                ->helperText('Login page banner'),
                                         ]),
                                     ]),
                             ]),
