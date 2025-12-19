@@ -5,7 +5,7 @@
     "display": "standalone",
     "description": "Secure mobile banking",
     "theme_color": "#f46b10",
-    "scope": "/",
+    "scope": "/onboarding",
     "orientation": "portrait-primary",
     "categories": [
         "finance",

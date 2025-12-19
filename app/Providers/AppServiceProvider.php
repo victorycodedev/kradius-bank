@@ -66,20 +66,20 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         // Fallback if no icons are uploaded
-        // if (empty($icons)) {
-        //     $icons = [
-        //         [
-        //             'src' => asset('images/icons/icon-192x192.png'),
-        //             'sizes' => '192x192',
-        //             'type' => 'image/png',
-        //         ],
-        //         [
-        //             'src' => asset('images/icons/icon-512x512.png'),
-        //             'sizes' => '512x512',
-        //             'type' => 'image/png',
-        //         ]
-        //     ];
-        // }
+        if (empty($icons)) {
+            $icons = [
+                [
+                    'src' => asset('images/icons/icon-192x192.png'),
+                    'sizes' => '192x192',
+                    'type' => 'image/png',
+                ],
+                [
+                    'src' => asset('images/icons/icon-512x512.png'),
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                ]
+            ];
+        }
 
         PWA::update([
             'name' => $settings->app_name ?? config('app.name'),
@@ -89,7 +89,7 @@ class AppServiceProvider extends ServiceProvider
             'description' => $settings->app_slogan ?? 'Secure mobile banking',
             'theme_color' => $settings->primary_color ?? '#f46b10',
             'start_url' => '/onboarding',
-            'scope' => '/',
+            'scope' => '/onboarding',
             'orientation' => 'portrait-primary',
             'icons' => $icons,
             'categories' => ['finance', 'banking'],

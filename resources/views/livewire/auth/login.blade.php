@@ -1,7 +1,7 @@
 <x-layouts.auth>
     <!-- Login Screen -->
     <div class="screen login-screen">
-        <div class="auth-header">
+        <div class="auth-header mb-5">
             <h1>Welcome Back</h1>
             <p>Login to your account</p>
         </div>
