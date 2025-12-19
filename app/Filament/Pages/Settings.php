@@ -66,18 +66,18 @@ class Settings extends Page implements HasSchemas
                                                     ->required()
                                                     ->maxLength(255),
 
-                                                TextInput::make('app_short_name')
-                                                    ->label('Short Name')
-                                                    ->maxLength(50),
+                                                // TextInput::make('app_short_name')
+                                                //     ->label('Short Name')
+                                                //     ->maxLength(50),
 
-                                                TextInput::make('app_slogan')
-                                                    ->label('Slogan/Tagline')
-                                                    ->maxLength(255),
+                                                // TextInput::make('app_slogan')
+                                                //     ->label('Slogan/Tagline')
+                                                //     ->maxLength(255),
 
-                                                TextInput::make('app_url')
-                                                    ->label('Website URL')
-                                                    ->url()
-                                                    ->prefix('https://'),
+                                                // TextInput::make('app_url')
+                                                //     ->label('Website URL')
+                                                //     ->url()
+                                                //     ->prefix('https://'),
 
                                                 TextInput::make('app_version')
                                                     ->label('Version')
@@ -171,20 +171,22 @@ class Settings extends Page implements HasSchemas
                                         Grid::make(2)->schema([
                                             TextInput::make('support_email')
                                                 ->email()
+                                                ->required()
                                                 ->label('Support Email'),
 
                                             TextInput::make('notifiable_email')
                                                 ->email()
                                                 ->label('Admin Notification Email')
+                                                ->required()
                                                 ->helperText('Receives system notifications'),
 
                                             TextInput::make('support_phone')
                                                 ->tel()
                                                 ->label('Support Phone'),
 
-                                            TextInput::make('support_whatsapp')
-                                                ->tel()
-                                                ->label('WhatsApp Number'),
+                                            // TextInput::make('support_whatsapp')
+                                            //     ->tel()
+                                            //     ->label('WhatsApp Number'),
 
                                             TextInput::make('support_working_hours')
                                                 ->label('Working Hours')
@@ -447,28 +449,28 @@ class Settings extends Page implements HasSchemas
                                                 ->disabled()
                                                 ->label('Require Transaction PIN'),
 
-                                            Toggle::make('auto_logout_on_idle')
-                                                ->label('Auto-Logout on Idle'),
+                                            // Toggle::make('auto_logout_on_idle')
+                                            //     ->label('Auto-Logout on Idle'),
                                         ]),
                                     ]),
 
                                 Section::make('Session & Login')
                                     ->schema([
-                                        Grid::make(3)->schema([
-                                            TextInput::make('session_timeout_minutes')
-                                                ->numeric()
-                                                ->suffix('minutes')
-                                                ->default(30),
+                                        Grid::make(2)->schema([
+                                            // TextInput::make('session_timeout_minutes')
+                                            //     ->numeric()
+                                            //     ->suffix('minutes')
+                                            //     ->default(30),
 
                                             TextInput::make('max_failed_login_attempts')
                                                 ->numeric()
                                                 ->suffix('attempts')
                                                 ->default(5),
 
-                                            TextInput::make('lockout_duration_minutes')
-                                                ->numeric()
-                                                ->suffix('minutes')
-                                                ->default(30),
+                                            // TextInput::make('lockout_duration_minutes')
+                                            //     ->numeric()
+                                            //     ->suffix('minutes')
+                                            //     ->default(30),
                                         ]),
                                     ]),
                             ]),

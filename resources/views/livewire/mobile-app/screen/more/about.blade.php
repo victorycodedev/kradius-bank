@@ -1,4 +1,7 @@
-<div class="screen about-screen">
+<div class="screen about-screen" x-data="{
+    showTernsModal: $wire.entangle('showTernsModal'),
+    showPrivacyModal: $wire.entangle('showPrivacyModal')
+}">
     <!-- Header -->
     <div class="investment-header">
         <x-link :href="route('more')" class="btn-back" icon="arrow-left" />
@@ -11,15 +14,16 @@
             <div class="app-logo">
                 <i class="bi bi-bank"></i>
             </div>
-            <h2>{{ $appName }}</h2>
-            <p class="version-text">Version {{ $appVersion }}</p>
+            <h2>{{ $configuration->app_name }}</h2>
+            <p class="version-text">Version {{ $configuration->app_version }}</p>
         </div>
 
         <!-- App Description -->
         <div class="about-card">
-            <h3 class="section-title">About {{ $appName }}</h3>
+            <h3 class="section-title">About {{ $configuration->app_name }}</h3>
             <p class="about-description">
-                {{ $appName }} is your trusted financial partner, providing secure and innovative banking
+                {{ $configuration->app_name }} is your trusted financial partner, providing secure and innovative
+                banking
                 solutions.
                 We're committed to making your financial journey seamless with cutting-edge technology and
                 exceptional customer service.
@@ -34,26 +38,27 @@
                     <i class="bi bi-building"></i>
                     <div>
                         <span class="info-label">Company Name</span>
-                        <span class="info-value">{{ $companyName }}</span>
+                        <span class="info-value">{{ $configuration->app_name }}</span>
                     </div>
                 </div>
 
-                @if ($companyAddress)
+                @if ($configuration->support_address)
                     <div class="info-item">
                         <i class="bi bi-geo-alt"></i>
                         <div>
                             <span class="info-label">Address</span>
-                            <span class="info-value">{{ $companyAddress }}</span>
+                            <span class="info-value">{{ $configuration->support_address }}</span>
                         </div>
                     </div>
                 @endif
 
-                @if ($companyPhone)
+                @if ($configuration->support_phone)
                     <div class="info-item">
                         <i class="bi bi-telephone"></i>
                         <div>
                             <span class="info-label">Phone</span>
-                            <a href="tel:{{ $companyPhone }}" class="info-value link">{{ $companyPhone }}</a>
+                            <a href="tel:{{ $configuration->support_phone }}"
+                                class="info-value link">{{ $configuration->support_phone }}</a>
                         </div>
                     </div>
                 @endif
@@ -62,7 +67,8 @@
                     <i class="bi bi-envelope"></i>
                     <div>
                         <span class="info-label">Support Email</span>
-                        <a href="mailto:{{ $supportEmail }}" class="info-value link">{{ $supportEmail }}</a>
+                        <a href="mailto:{{ $configuration->support_email }}"
+                            class="info-value link">{{ $configuration->support_email }}</a>
                     </div>
                 </div>
             </div>
@@ -105,12 +111,12 @@
             <div class="system-info">
                 <div class="system-item">
                     <span>App Version</span>
-                    <strong>{{ $appVersion }}</strong>
+                    <strong>{{ $configuration->app_version }}</strong>
                 </div>
-                <div class="system-item">
+                {{-- <div class="system-item">
                     <span>Build Date</span>
                     <strong>{{ now()->format('F Y') }}</strong>
-                </div>
+                </div> --}}
                 <div class="system-item">
                     <span>Platform</span>
                     <strong>Web & Mobile</strong>
@@ -122,45 +128,63 @@
         <div class="about-card">
             <h3 class="section-title">Legal</h3>
             <div class="legal-links">
-                <a href="#" class="legal-link">
+                <a href="#" @click.prevent="showTernsModal = true" class="legal-link">
                     <span>Terms of Service</span>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a href="#" class="legal-link">
+                <a href="#" @click.prevent="showPrivacyModal = true" class="legal-link">
                     <span>Privacy Policy</span>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a href="#" class="legal-link">
-                    <span>Licenses</span>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
             </div>
         </div>
 
-        <!-- Social Media -->
-        <div class="about-card">
-            <h3 class="section-title">Connect With Us</h3>
-            <div class="social-links">
-                <a href="#" class="social-btn">
-                    <i class="bi bi-facebook"></i>
-                </a>
-                <a href="#" class="social-btn">
-                    <i class="bi bi-twitter"></i>
-                </a>
-                <a href="#" class="social-btn">
-                    <i class="bi bi-instagram"></i>
-                </a>
-                <a href="#" class="social-btn">
-                    <i class="bi bi-linkedin"></i>
-                </a>
+        @if (filled($configuration->facebook_url) ||
+                filled($configuration->twitter_url) ||
+                filled($configuration->instagram_url) ||
+                filled($configuration->linkedin_url))
+            <!-- Social Media -->
+            <div class="about-card">
+                <h3 class="section-title">Connect With Us</h3>
+                <div class="social-links">
+                    @if ($configuration->facebook_url)
+                        <a href="{{ $configuration->facebook_url }}" class="social-btn" target="_blank">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                    @endif
+                    @if ($configuration->twitter_url)
+                        <a href="{{ $configuration->twitter_url }}" class="social-btn" target="_blank">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                    @endif
+                    @if ($configuration->instagram_url)
+                        <a href="{{ $configuration->instagram_url }}" class="social-btn" target="_blank">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    @endif
+                    @if ($configuration->linkedin_url)
+                        <a href="{{ $configuration->linkedin_url }}" class="social-btn" target="_blank">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
+        @endif
 
-        <!-- Copyright -->
-        <div class="copyright-text">
-            <p>&copy; {{ now()->year }} {{ $companyName }}. All rights reserved.</p>
-        </div>
+        @if ($configuration->copyright_text)
+            <div class="copyright-text">
+                <p>{{ $configuration->copyright_text }}</p>
+            </div>
+        @endif
     </div>
+
+    <x-bottom-sheet id="showTernsModal" title="Terms of Service">
+        {!! str($configuration->terms_and_conditions)->sanitizeHtml() !!}
+    </x-bottom-sheet>
+
+    <x-bottom-sheet id="showPrivacyModal" title="Privacy Policy">
+        {!! str($configuration->privacy_policy)->sanitizeHtml() !!}
+    </x-bottom-sheet>
 
     <livewire:mobile-app.component.bottom-nav />
 </div>

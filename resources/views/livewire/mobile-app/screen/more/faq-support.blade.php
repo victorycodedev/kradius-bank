@@ -14,7 +14,7 @@
             <h3>Need Help?</h3>
             <p>Our support team is here to assist you</p>
         </div>
-        <a href="mailto:{{ $supportEmail }}" class="contact-btn">
+        <a href="mailto:{{ $configuration->support_email }}" class="contact-btn">
             <i class="bi bi-envelope"></i>
             Contact Us
         </a>
@@ -85,17 +85,13 @@
     </div>
 
     <!-- Still Need Help Section -->
-    {{-- <div class="help-section">
+    <div class="help-section">
         <div class="help-card">
             <i class="bi bi-question-circle"></i>
             <h3>Still need help?</h3>
             <p>Can't find the answer you're looking for? Our support team is ready to help.</p>
-            <a href="mailto:{{ $supportEmail }}" class="btn-primary">
-                <i class="bi bi-envelope"></i>
-                Email Support
-            </a>
         </div>
-    </div> --}}
+    </div>
 
     <livewire:mobile-app.component.bottom-nav />
 </div>

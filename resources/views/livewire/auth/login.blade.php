@@ -46,12 +46,14 @@
                 <i class="bi bi-google"></i> Continue with Google
             </button> --}}
 
-            <div class="auth-footer">
-                <p>
-                    Don't have an account?
-                    <a href="{{ route('register') }}" class="link">Sign Up</a>
-                </p>
-            </div>
+            @if ($configuration->allow_registration)
+                <div class="auth-footer">
+                    <p>
+                        Don't have an account?
+                        <a href="{{ route('register') }}" class="link">Sign Up</a>
+                    </p>
+                </div>
+            @endif
         </form>
     </div>
 </x-layouts.auth>

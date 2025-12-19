@@ -31,14 +31,15 @@
                 <i class="bi bi-chevron-right menu-arrow"></i>
             </a>
         @endif
-
-        <a href="{{ route('account.kyc') }}" class="menu-item text-decoration-none">
-            <div class="menu-left">
-                <i class="bi bi-person-vcard-fill"></i>
-                <span>KYC</span>
-            </div>
-            <i class="bi bi-chevron-right menu-arrow"></i>
-        </a>
+        @if ($configuration->kyc_required)
+            <a href="{{ route('account.kyc') }}" class="menu-item text-decoration-none">
+                <div class="menu-left">
+                    <i class="bi bi-person-vcard-fill"></i>
+                    <span>KYC</span>
+                </div>
+                <i class="bi bi-chevron-right menu-arrow"></i>
+            </a>
+        @endif
 
         <a href="{{ route('account.security') }}" class="menu-item text-decoration-none">
             <div class="menu-left">

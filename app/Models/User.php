@@ -105,7 +105,36 @@ class User extends Authenticatable implements FilamentUser, HasMedia
             'can_manage_beneficiary' => 'boolean',
             'can_setup_2fa' => 'boolean',
             'can_change_trasnaction_pin' => 'boolean',
+            'kyc_submitted_at' => 'datetime',
+            'kyc_verified_at' => 'datetime',
         ];
+    }
+
+
+    // if settings email verification false set user email_verified_at = now
+    public static function booted()
+    {
+        static::creating(function (User $user) {
+            $settings = Settings::get();
+            if (!$settings->require_email_verification) {
+                $user->email_verified_at = now();
+            }
+        });
+
+        //saved
+        static::saved(function (User $user) {
+            if ($user->isDirty('kyc_status') && $user->kyc_status === 'verified') {
+                $user->kyc_verified_at = now();
+                $user->save();
+            }
+
+            // if account_status changed to active set locked_until to null
+            if ($user->isDirty('account_status') && $user->account_status === 'active') {
+                $user->locked_until = null;
+                $user->login_attempts = 0;
+                $user->save();
+            }
+        });
     }
 
     /**

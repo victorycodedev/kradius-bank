@@ -73,7 +73,7 @@
             </div>
         @endif
 
-        @if (Auth::user()->can_setup_2fa)
+        @if (Auth::user()->can_setup_2fa || $configuration->require_2fa)
             <!-- Two-Factor Authentication Section -->
             <div class="security-section">
                 <div class="section-header">

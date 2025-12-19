@@ -3,8 +3,6 @@
 namespace App\Livewire\MobileApp\Screen\More;
 
 use App\Models\Faq;
-use App\Models\Setting;
-use App\Models\Settings;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -37,13 +35,9 @@ class FaqSupport extends Component
             ->pluck('category')
             ->filter();
 
-        $settings = Settings::get();
-        $supportEmail = $settings->support_email ?? config('mail.from.address');
-
         return view('livewire.mobile-app.screen.more.faq-support', [
             'faqs' => $faqs,
             'categories' => $categories,
-            'supportEmail' => $supportEmail,
         ]);
     }
 
