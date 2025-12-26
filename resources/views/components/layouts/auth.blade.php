@@ -234,7 +234,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
 
-    @if (request()->routeIs('register') || request()->routeIs('forgot-password'))
+    @if (false)
         <script>
             // Check device and PWA status for auth pages
             function isPWA() {

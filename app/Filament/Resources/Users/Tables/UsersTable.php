@@ -218,6 +218,7 @@ class UsersTable
                         ->chunkSelectedRecords(250)
                         ->deselectRecordsAfterCompletion()
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

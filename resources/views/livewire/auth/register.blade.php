@@ -11,7 +11,11 @@
         <form method="POST" action="{{ route('register.store') }}" class="auth-form">
             @csrf
             <div class="form-group">
-                <x-form.input label="Full Name" name="name" required autofocus placeholder="Enter your full name" />
+                <x-form.input label="Firstname" name="first_name" required autofocus placeholder="Enter your first name" />
+            </div>
+
+            <div class="form-group">
+                <x-form.input label="Lastname" name="last_name" required placeholder="Enter your last name" />
             </div>
 
             <div class="form-group">
