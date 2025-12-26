@@ -4,8 +4,10 @@ namespace App\Livewire\MobileApp\Screen;
 
 use App\Models\Setting;
 use App\Models\Settings;
+use App\Notifications\AdminDepositNotification;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Number;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -149,6 +151,12 @@ class Deposit extends Component
                     'submitted_at' => now()->toDateTimeString(),
                 ],
             ]);
+
+            // Notify admin
+            if ($settings->notify_on_transaction) {
+                Notification::route('mail', $settings->notifiable_email)
+                    ->notify(new AdminDepositNotification(Auth::user(), $transaction));
+            }
 
             $this->successAlert('Deposit submitted successfully! We will verify and credit your account shortly.');
             $this->selectedAccount = '';

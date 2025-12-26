@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendLoginSuccessNotification;
+use App\Listeners\SendRegisterSuccessNotification;
 use App\Models\Settings;
 use EragLaravelPwa\Facades\PWA;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +24,17 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+
+        Event::listen(
+            Login::class,
+            SendLoginSuccessNotification::class,
+        );
+
+        Event::listen(
+            Registered::class,
+            SendRegisterSuccessNotification::class,
+        );
+
         $appInProduction = App::environment('production');
 
         Model::automaticallyEagerLoadRelationships();

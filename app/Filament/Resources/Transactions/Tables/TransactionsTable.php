@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Transactions\Tables;
 
+use App\Models\Settings;
+use App\Notifications\DepositStatusNotification;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -76,17 +78,31 @@ class TransactionsTable
                         ->modalDescription(fn(Model $record) => 'Are you sure you want to mark this transaction as completed? User will be credited with the amount of ' . $record->amount . ' ' . $record->currency . ' to their account.')
                         ->action(function (Model $record) {
 
-                            $record->update(['status' => 'completed']);
+                            try {
+                                $record->update(['status' => 'completed']);
 
-                            // add to account balance
-                            $record->userAccount->update([
-                                'balance' => $record->userAccount->balance + $record->amount
-                            ]);
+                                // add to account balance
+                                $record->userAccount->update([
+                                    'balance' => $record->userAccount->balance + $record->amount
+                                ]);
 
-                            Notification::make()
-                                ->success()
-                                ->title('Transaction marked as completed')
-                                ->send();
+                                $settings = Settings::get();
+
+                                if ($settings->notify_on_transaction) {
+                                    // Notify user
+                                    $record->user->notify(new DepositStatusNotification($record, 'completed'));
+                                }
+
+                                Notification::make()
+                                    ->success()
+                                    ->title('Transaction marked as completed')
+                                    ->send();
+                            } catch (\Throwable $th) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Failed to send email')
+                                    ->send();
+                            }
                         }),
 
                     DeleteAction::make(),

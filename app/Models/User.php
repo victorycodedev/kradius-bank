@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\UserKycStatusUpdate;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -53,7 +54,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, InteractsWithMedia;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, InteractsWithMedia, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -123,10 +124,23 @@ class User extends Authenticatable implements FilamentUser, HasMedia
 
         //saved
         static::saved(function (User $user) {
+            $settings = Settings::get();
+
             if ($user->isDirty('kyc_status') && $user->kyc_status === 'verified') {
                 $user->kyc_verified_at = now();
                 $user->save();
+
+                if ($settings->notify_on_kyc_status) {
+                    $user->notify(new UserKycStatusUpdate('verified'));
+                }
             }
+
+            if ($user->isDirty('kyc_status') && $user->kyc_status === 'rejected') {
+                if ($settings->notify_on_kyc_status) {
+                    $user->notify(new UserKycStatusUpdate('rejected'));
+                }
+            }
+
 
             // if account_status changed to active set locked_until to null
             if ($user->isDirty('account_status') && $user->account_status === 'active') {

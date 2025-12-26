@@ -9,6 +9,7 @@ use App\Models\Settings;
 use App\Models\Transaction;
 use App\Models\UserAccount;
 use App\Models\VerificationType;
+use App\Notifications\TransferStatusNotification;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -297,6 +298,11 @@ class Transfer extends Component
                     'bank_id' => $this->bankId,
                 ],
             ]);
+
+            if ($settings->notify_on_transaction) {
+                // Notify user
+                Auth::user()->notify(new TransferStatusNotification($debitTransaction, 'completed'));
+            }
 
             // Deduct from sender
             $sourceAccount->decrement('balance', $this->amount);

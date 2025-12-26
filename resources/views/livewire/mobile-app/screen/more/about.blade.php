@@ -22,11 +22,7 @@
         <div class="about-card">
             <h3 class="section-title">About {{ $configuration->app_name }}</h3>
             <p class="about-description">
-                {{ $configuration->app_name }} is your trusted financial partner, providing secure and innovative
-                banking
-                solutions.
-                We're committed to making your financial journey seamless with cutting-edge technology and
-                exceptional customer service.
+                {{ $configuration->about }}
             </p>
         </div>
 

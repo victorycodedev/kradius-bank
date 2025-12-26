@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Loans\Tables;
 
 use App\Models\Loan;
+use App\Models\Settings;
+use App\Notifications\LoanStatusNotification;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -164,8 +166,15 @@ class LoansTable
                             // Log activity
                             $record->logActivity('status_changed', 'Loan approved by ' . Auth::user()->name);
 
-                            // Send approval email
-                            // Mail::to($record->user->email)->send(new LoanApproved($record, $data['review_notes'] ?? ''));
+                            $settings = Settings::get();
+
+                            try {
+                                if ($settings->notify_on_loan_status) {
+                                    $record->user->notify(new LoanStatusNotification($record, 'approved'));
+                                }
+                            } catch (\Throwable $th) {
+                                //throw $th;
+                            }
 
                             Notification::make()
                                 ->success()
@@ -197,8 +206,15 @@ class LoansTable
                             // Log activity
                             $record->logActivity('status_changed', 'Loan rejected by ' . Auth::user()->name);
 
-                            // Send rejection email
-                            // Mail::to($record->user->email)->send(new LoanRejected($record, $data['rejection_reason']));
+                            $settings = Settings::get();
+
+                            try {
+                                if ($settings->notify_on_loan_status) {
+                                    $record->user->notify(new LoanStatusNotification($record, 'rejected'));
+                                }
+                            } catch (\Throwable $th) {
+                                //throw $th;
+                            }
 
                             Notification::make()
                                 ->success()
@@ -244,8 +260,15 @@ class LoansTable
                             // Log activity
                             $record->logActivity('disbursed', 'Loan disbursed by ' . Auth::user()->name);
 
-                            // Send disbursement email
-                            // Mail::to($record->user->email)->send(new LoanDisbursed($record));
+                            $settings = Settings::get();
+
+                            try {
+                                if ($settings->notify_on_loan_status) {
+                                    $record->user->notify(new LoanStatusNotification($record, 'disbursed'));
+                                }
+                            } catch (\Throwable $th) {
+                                //throw $th;
+                            }
 
                             Notification::make()
                                 ->success()

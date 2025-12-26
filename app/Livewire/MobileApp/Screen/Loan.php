@@ -6,8 +6,10 @@ use App\Models\Loan as ModelsLoan;
 use App\Models\LoanSetting;
 use App\Models\LoanType;
 use App\Models\Settings;
+use App\Notifications\AdminLoanApplicationNotification;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -200,6 +202,14 @@ class Loan extends Component
                 'monthly_income' => $this->monthlyIncome,
                 'additional_info' => $this->additionalInfo,
             ]);
+
+            // Notify admin
+            $set = Settings::first();
+
+            if ($set->notify_on_loan_status) {
+                Notification::route('mail', $settings->notifiable_email)
+                    ->notify(new AdminLoanApplicationNotification(Auth::user(), $loan));
+            }
 
             $loan->logActivity('application_submitted', 'Loan application submitted');
 

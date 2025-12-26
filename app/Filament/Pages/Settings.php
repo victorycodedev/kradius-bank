@@ -89,6 +89,10 @@ class Settings extends Page implements HasSchemas
                                                 TextInput::make('copyright_text')
                                                     ->label('Copyright Text')
                                                     ->placeholder('© 2024 Company Name. All rights reserved.'),
+
+                                                Textarea::make('about')
+                                                    ->label('About Your App')
+                                                    ->maxLength(255),
                                             ]),
                                     ]),
 

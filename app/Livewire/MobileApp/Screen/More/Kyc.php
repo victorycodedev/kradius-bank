@@ -2,8 +2,11 @@
 
 namespace App\Livewire\MobileApp\Screen\More;
 
+use App\Models\Settings;
+use App\Notifications\AdminKycSubmitted;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -80,6 +83,13 @@ class Kyc extends Component
                     ->usingName($document->getClientOriginalName())
                     ->usingFileName($document->getClientOriginalName())
                     ->toMediaCollection('kyc_documents');
+            }
+
+            $settings = Settings::get();
+
+            if ($settings->notify_on_kyc_status) {
+                Notification::route('mail', $settings->notification_email)
+                    ->notify(new AdminKycSubmitted($user));
             }
 
             $this->successAlert(message: 'KYC documents submitted successfully! We will review and notify you.');

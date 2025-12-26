@@ -7,9 +7,12 @@ use App\Models\InvestmentSetting;
 use App\Models\Settings;
 use App\Models\Stock;
 use App\Models\UserAccount;
+use App\Notifications\AdminStockInvestmentNotification;
+use App\Notifications\StockInvestmentSuccessNotification;
 use App\Traits\HasAlerts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -122,7 +125,7 @@ class StockInvestment extends Component
             $shares = $validated['amount'] / $stock->current_price;
 
             // Create investment
-            Investment::create([
+            $Investment = Investment::create([
                 'user_id' => Auth::user()->id,
                 'stock_id' => $stock->id,
                 'user_account_id' => $account->id,
@@ -133,22 +136,33 @@ class StockInvestment extends Component
                 'status' => 'active',
             ]);
 
+            $set = Settings::get();
+
+            if ($set->notify_on_transaction) {
+                Notification::route('mail', $set->notifiable_email)
+                    ->notify(new AdminStockInvestmentNotification(Auth::user(), $Investment));
+            }
+
+            // Notify user
+            Auth::user()->notify(new StockInvestmentSuccessNotification($Investment));
+
             // Deduct from account
             $account->decrement('balance', $validated['amount']);
 
             // Create transaction record
-            $account->transactions()->create([
-                'transaction_type' => 'debit',
-                'amount' => $validated['amount'],
-                'currency' => $account->currency,
-                'balance_before' => $account->balance + $validated['amount'],
-                'balance_after' => $account->balance,
-                'reference_number' => 'INV' . strtoupper(uniqid()),
-                'description' => "Investment in {$stock->symbol} - {$shares} shares",
-                'status' => 'completed',
-                'channel' => 'mobile_app',
-                'completed_at' => now(),
-            ]);
+            $account->transactions()
+                ->create([
+                    'transaction_type' => 'debit',
+                    'amount' => $validated['amount'],
+                    'currency' => $account->currency,
+                    'balance_before' => $account->balance + $validated['amount'],
+                    'balance_after' => $account->balance,
+                    'reference_number' => 'INV' . strtoupper(uniqid()),
+                    'description' => "Investment in {$stock->symbol} - {$shares} shares",
+                    'status' => 'completed',
+                    'channel' => 'mobile_app',
+                    'completed_at' => now(),
+                ]);
 
             // Update stock investment count
             $stock->increment('investment_count');
