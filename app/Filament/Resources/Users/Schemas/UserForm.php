@@ -268,7 +268,8 @@ class UserForm
                                             ->multiple()
                                             ->columnSpanFull(),
                                     ]),
-                            ]),
+                            ])
+                            ->visibleOn('edit'),
                         // Tab 4: Cards Management
                         Tab::make('Cards')
                             ->icon(Heroicon::CreditCard)

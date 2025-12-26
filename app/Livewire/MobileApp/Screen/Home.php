@@ -2,6 +2,7 @@
 
 namespace App\Livewire\MobileApp\Screen;
 
+use App\Models\AdNotifcation;
 use App\Models\InvestmentSetting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -36,23 +37,8 @@ class Home extends Component
         }
 
         $this->accounts = $this->user->accounts()->orderByDesc('is_primary')->get();
-        $this->loadNotifications();
-    }
 
-    private function loadNotifications(): void
-    {
-        $this->notifications = [
-            [
-                'icon' => '💲',
-                'title' => 'USD Account is live!',
-                'message' => 'Click here to open your USD account',
-            ],
-            [
-                'icon' => '🎁',
-                'title' => 'Refer & Earn €50!',
-                'message' => 'Invite friends and get rewards',
-            ],
-        ];
+        $this->notifications = AdNotifcation::where('is_active', true)->orderBy('created_at')->get()->toArray();
     }
 
     #[Title('Home')]

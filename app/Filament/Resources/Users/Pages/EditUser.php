@@ -6,12 +6,14 @@ use App\Filament\Resources\Users\UserResource;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class EditUser extends EditRecord
 {
@@ -82,6 +84,35 @@ class EditUser extends EditRecord
                         ->success()
                         ->title('KYC verified successfully')
                         ->send();
+                }),
+
+            Action::make('send_email')
+                ->icon(Heroicon::Envelope)
+                ->color('secondary')
+                ->schema([
+                    TextInput::make('subject')
+                        ->label('Subject')
+                        ->required(),
+
+                    RichEditor::make('message')
+                        ->label('Message')
+                        ->required(),
+                ])
+                ->action(function (Model $record, array $data) {
+                    try {
+
+                        Mail::to($record->email)->send(new \App\Mail\SendEmailNotification($data['subject'], $data['message']));
+
+                        Notification::make()
+                            ->success()
+                            ->title('Email sent successfully')
+                            ->send();
+                    } catch (\Throwable $th) {
+                        Notification::make()
+                            ->danger()
+                            ->title($th->getMessage() ?? 'Failed to send email')
+                            ->send();
+                    }
                 }),
         ];
     }
