@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Transactions\Tables;
 
 use App\Models\Settings;
+use App\Models\Transaction;
 use App\Notifications\DepositStatusNotification;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -76,7 +77,7 @@ class TransactionsTable
                         ->color(Color::Blue)
                         ->modalHeading('Mark as Completed')
                         ->modalDescription(fn(Model $record) => 'Are you sure you want to mark this transaction as completed? User will be credited with the amount of ' . $record->amount . ' ' . $record->currency . ' to their account.')
-                        ->action(function (Model $record) {
+                        ->action(function (Transaction $record) {
 
                             try {
                                 $record->update(['status' => 'completed']);
@@ -90,7 +91,7 @@ class TransactionsTable
 
                                 if ($settings->notify_on_transaction) {
                                     // Notify user
-                                    $record->user->notify(new DepositStatusNotification($record, 'completed'));
+                                    $record->userAccount->user->notify(new DepositStatusNotification($record, 'completed'));
                                 }
 
                                 Notification::make()
