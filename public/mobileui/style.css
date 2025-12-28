@@ -838,6 +838,9 @@ body {
     margin: 0;
 }
 
+.dark-mode .notification-text h4 {
+    color: var(--dark-text-primary);
+}
 .dark-mode .notification-text p {
     color: var(--dark-text-secondary);
 }
@@ -866,6 +869,10 @@ body {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-xl);
+}
+
+.dark-mode .task-section h3 {
+    color: var(--dark-text-primary);
 }
 
 .transaction-item {
@@ -931,7 +938,7 @@ body {
 }
 
 .transaction-amount.positive {
-    color: var(--accent-color);
+    color: green;
 }
 
 .transaction-amount.negative {
@@ -1041,9 +1048,11 @@ body {
 
 .dark-mode .investment-header,
 .dark-mode .loan-header,
-.dark-mode .detail-header {
+.dark-mode .detail-header,
+.dark-mode .payments-header {
     background: var(--dark-bg-primary);
     border-bottom-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
 }
 
 .investment-header h1,
@@ -1188,6 +1197,7 @@ body {
 
 .dark-mode .stock-card {
     background: var(--dark-bg-primary);
+    color: var(--dark-text-primary);
 }
 
 .stock-card:hover {
@@ -1339,6 +1349,7 @@ body {
 
 .dark-mode .investment-card {
     background: var(--dark-bg-primary);
+    color: var(--dark-text-primary);
 }
 
 .investment-card:hover {
@@ -4525,8 +4536,10 @@ body {
     color: #111827;
 }
 
-.dark-mode .balance-amount {
-    color: #f9fafb;
+.dark-mode .balance-amount,
+.dark-mode .balance {
+    /* color: #f9fafb; */
+    color: white;
 }
 
 /* Payment Methods */

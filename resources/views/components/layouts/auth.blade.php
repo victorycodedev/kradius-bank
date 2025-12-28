@@ -244,7 +244,10 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
 
-    @if (false)
+    @if (request()->routeIs('login') ||
+            request()->routeIs('register') ||
+            request()->routeIs('forgot-password') ||
+            request()->routeIs('twofactor.login'))
         <script>
             // Check device and PWA status for auth pages
             function isPWA() {

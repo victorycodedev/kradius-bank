@@ -132,6 +132,7 @@
                     'negative' => in_array($transaction->transaction_type, [
                         'debit',
                         'withdrawal',
+                        'transfer',
                     ]),
                 ])>
                     @if (in_array($transaction->transaction_type, ['credit', 'deposit']))

@@ -5,7 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-
+    <script>
+        (function() {
+            try {
+                if (localStorage.getItem('darkMode') === 'true') {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (e) {}
+        })();
+    </script>
     <!-- PWA Meta Tags -->
     @PwaHead
 
@@ -19,7 +27,7 @@
         <link rel="apple-touch-icon"
             href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
         {{-- favicon --}}
-        <link rel="icon" href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
+        <link rel="shortcut icon" href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
     @endif
 
     <!-- iOS Splash Screens -->
@@ -328,7 +336,7 @@
         </div>
     </div>
 
-    <div x-data="bankingApp()" :class="darkMode ? 'dark-mode' : ''" class="app-container" id="app-wrapper">
+    <div x-data="bankingApp()" class="app-container">
         {{ $slot }}
     </div>
 

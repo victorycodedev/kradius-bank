@@ -203,13 +203,15 @@ function bankingApp() {
         darkMode: false,
 
         init() {
-            // Load saved dark mode state
             const savedDarkMode = localStorage.getItem("darkMode");
-            if (savedDarkMode === "true") {
-                this.darkMode = true;
-            }
+            this.darkMode = savedDarkMode === "true";
 
-            // Prevent iOS bounce effect
+            // Sync Alpine state with already-applied class
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                this.darkMode
+            );
+
             this.preventPullToRefresh();
         },
 
@@ -245,6 +247,12 @@ function bankingApp() {
         toggleDarkMode() {
             this.darkMode = !this.darkMode;
             localStorage.setItem("darkMode", this.darkMode);
+
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                this.darkMode
+            );
+
             hapticFeedback("medium");
         },
 
