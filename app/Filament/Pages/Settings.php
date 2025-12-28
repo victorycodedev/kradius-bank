@@ -92,7 +92,7 @@ class Settings extends Page implements HasSchemas
 
                                                 Textarea::make('about')
                                                     ->label('About Your App')
-                                                    ->maxLength(255),
+                                                    ->maxLength(1000),
                                             ]),
                                     ]),
 
@@ -151,15 +151,17 @@ class Settings extends Page implements HasSchemas
                                                 ->image()
                                                 ->imageEditor()
                                                 ->maxSize(2048)
-                                                // ->required()
+                                                ->required()
+                                                ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
                                                 ->helperText('Main logo (PNG, JPG, WebP, SVG)'),
 
-                                            SpatieMediaLibraryFileUpload::make('favicon')
-                                                ->collection('favicon')
+                                            SpatieMediaLibraryFileUpload::make('splash_screen')
+                                                ->collection('splash_screen')
                                                 ->image()
                                                 //  ->required()
                                                 ->maxSize(512)
-                                                ->helperText('Favicon (ICO, PNG, 32x32)'),
+                                                ->acceptedFileTypes(['image/png', 'image/jpeg'])
+                                                ->helperText('Favicon (jpeg, PNG)'),
 
                                             // Mobile App Icon
                                             SpatieMediaLibraryFileUpload::make('mobile_app_icon')

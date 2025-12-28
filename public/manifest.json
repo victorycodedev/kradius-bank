@@ -1,9 +1,9 @@
 {
     "name": "kradius",
-    "short_name": "BankApp",
+    "short_name": "KRD",
     "background_color": "#f46b10",
     "display": "standalone",
-    "description": "Secure mobile banking",
+    "description": "Inovation at the best",
     "theme_color": "#f46b10",
     "scope": "/onboarding",
     "orientation": "portrait-primary",

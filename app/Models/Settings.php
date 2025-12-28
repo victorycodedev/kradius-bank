@@ -85,15 +85,13 @@ class Settings extends Model implements HasMedia
                     ->addMediaConversion('thumb')
                     ->fit(Fit::Contain, 150, 150)
                     ->format('webp')
-                    ->quality(90)
-                    ->performOnCollections('logo');
+                    ->quality(90);
 
                 $this
                     ->addMediaConversion('optimized')
                     ->fit(Fit::Contain, 500, 500)
                     ->format('webp')
-                    ->quality(90)
-                    ->performOnCollections('logo');
+                    ->quality(90);
             });
 
         $this
@@ -104,8 +102,7 @@ class Settings extends Model implements HasMedia
                 $this
                     ->addMediaConversion('ico')
                     ->fit(Fit::Contain, 32, 32)
-                    ->format('png')
-                    ->performOnCollections('favicon');
+                    ->format('png');
             });
 
         // PWA Icons - Multiple sizes for different devices

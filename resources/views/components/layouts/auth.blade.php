@@ -35,8 +35,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('mobileui/style.css') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.2/dist/cdn.min.js"></script>
-
     <style>
+        :root {
+            --bs-primary: {{ $configuration->primary_color }};
+            --primary-color: {{ $configuration->primary_color }};
+            --secondary-color: {{ $configuration->primary_color }};
+            --accent-color: {{ $configuration->accent_color }};
+            --bg-secondary: {{ $configuration->primary_color }};
+            --text-secondary: {{ $configuration->primary_color }};
+        }
+
         /* Safe Area Support */
         body {
             padding-top: env(safe-area-inset-top);
