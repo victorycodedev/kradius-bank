@@ -21,6 +21,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 
 use App\Livewire\Settings\TwoFactor;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -87,4 +88,10 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+});
+
+Route::get('symlink', function () {
+    Artisan::call('storage:link');
+
+    return 'Storage symlinked successfully';
 });
