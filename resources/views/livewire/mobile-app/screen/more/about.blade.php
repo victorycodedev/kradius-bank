@@ -12,7 +12,12 @@
         <!-- App Logo Section -->
         <div class="app-logo-section">
             <div class="app-logo">
-                <i class="bi bi-bank"></i>
+                @if ($configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon'))
+                    <img src="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}"
+                        style="width:200px" class="img-fluid">
+                @else
+                    <i class="bi bi-bank"></i>
+                @endif
             </div>
             <h2>{{ $configuration->app_name }}</h2>
             <p class="version-text">Version {{ $configuration->app_version }}</p>

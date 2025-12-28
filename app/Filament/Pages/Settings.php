@@ -49,6 +49,7 @@ class Settings extends Page implements HasSchemas
     {
         return $schema
             ->statePath('data')
+            ->model($this->settings)
             ->columns(1)
             ->components([
                 Tabs::make('System Settings')
@@ -145,33 +146,37 @@ class Settings extends Page implements HasSchemas
                                 Section::make('Media Assets')
                                     ->description('Upload logos and branding images (optimized automatically)')
                                     ->schema([
-                                        Grid::make(2)->schema([
-                                            SpatieMediaLibraryFileUpload::make('logo')
-                                                ->collection('logo')
-                                                ->image()
-                                                ->imageEditor()
-                                                ->maxSize(2048)
-                                                ->required()
-                                                ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
-                                                ->helperText('Main logo (PNG, JPG, WebP, SVG)'),
+                                        Grid::make(2)
+                                            ->schema([
+                                                SpatieMediaLibraryFileUpload::make('logo')
+                                                    ->collection('logo')
+                                                    ->image()
+                                                    ->imageEditor()
+                                                    ->maxSize(2048)
+                                                    ->required()
+                                                    ->disk('public')
+                                                    ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
+                                                    ->helperText('Main logo (PNG, JPG, WebP, SVG)'),
 
-                                            SpatieMediaLibraryFileUpload::make('splash_screen')
-                                                ->collection('splash_screen')
-                                                ->image()
-                                                //  ->required()
-                                                ->maxSize(512)
-                                                ->acceptedFileTypes(['image/png', 'image/jpeg'])
-                                                ->helperText('Favicon (jpeg, PNG)'),
+                                                SpatieMediaLibraryFileUpload::make('splash_screen')
+                                                    ->collection('splash_screen')
+                                                    ->image()
+                                                    ->disk('public')
+                                                    //  ->required()
+                                                    ->maxSize(512)
+                                                    ->acceptedFileTypes(['image/png', 'image/jpeg'])
+                                                    ->helperText('Favicon (jpeg, PNG)'),
 
-                                            // Mobile App Icon
-                                            SpatieMediaLibraryFileUpload::make('mobile_app_icon')
-                                                ->collection('mobile_app_icon')
-                                                ->image()
-                                                ->maxSize(1024)
-                                                ->required()
-                                                ->acceptedFileTypes(['image/png'])
-                                                ->helperText('Mobile App Icon (PNG, 512x512)'),
-                                        ]),
+                                                // Mobile App Icon
+                                                SpatieMediaLibraryFileUpload::make('mobile_app_icon')
+                                                    ->collection('mobile_app_icon')
+                                                    ->image()
+                                                    ->maxSize(1024)
+                                                    ->disk('public')
+                                                    ->required()
+                                                    ->acceptedFileTypes(['image/png'])
+                                                    ->helperText('Mobile App Icon (PNG, 512x512)'),
+                                            ]),
                                     ]),
                             ]),
 

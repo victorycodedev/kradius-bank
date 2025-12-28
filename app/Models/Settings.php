@@ -85,24 +85,15 @@ class Settings extends Model implements HasMedia
                     ->addMediaConversion('thumb')
                     ->fit(Fit::Contain, 150, 150)
                     ->format('webp')
+                    ->nonQueued()  // ✅ ADD THIS
                     ->quality(90);
 
                 $this
                     ->addMediaConversion('optimized')
                     ->fit(Fit::Contain, 500, 500)
                     ->format('webp')
+                    ->nonQueued()  // ✅ ADD THIS
                     ->quality(90);
-            });
-
-        $this
-            ->addMediaCollection('favicon')
-            ->singleFile()
-            ->acceptsMimeTypes(['image/x-icon', 'image/png', 'image/svg+xml'])
-            ->registerMediaConversions(function (Media $media) {
-                $this
-                    ->addMediaConversion('ico')
-                    ->fit(Fit::Contain, 32, 32)
-                    ->format('png');
             });
 
         // PWA Icons - Multiple sizes for different devices
@@ -115,90 +106,99 @@ class Settings extends Model implements HasMedia
                 $this->addMediaConversion('icon-72x72')
                     ->fit(Fit::Contain, 72, 72)
                     ->format('png')
+                    ->nonQueued()  // ✅ ADD THIS TO ALL
                     ->quality(90);
 
                 $this->addMediaConversion('icon-96x96')
                     ->fit(Fit::Contain, 96, 96)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-128x128')
                     ->fit(Fit::Contain, 128, 128)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-144x144')
                     ->fit(Fit::Contain, 144, 144)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-152x152')
                     ->fit(Fit::Contain, 152, 152)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-192x192')
                     ->fit(Fit::Contain, 192, 192)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-384x384')
                     ->fit(Fit::Contain, 384, 384)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 $this->addMediaConversion('icon-512x512')
                     ->fit(Fit::Contain, 512, 512)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
 
                 // iOS specific - Apple Touch Icon
                 $this->addMediaConversion('apple-touch-icon')
                     ->fit(Fit::Contain, 180, 180)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(90);
             });
 
-        // iOS Splash Screens
+        // Splash screens
         $this
             ->addMediaCollection('splash_screen')
             ->singleFile()
             ->acceptsMimeTypes(['image/png', 'image/jpeg'])
             ->registerMediaConversions(function (Media $media) {
-                // iPhone SE, 5s
                 $this->addMediaConversion('splash-640x1136')
                     ->fit(Fit::Contain, 640, 1136)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
 
-                // iPhone 6/7/8
                 $this->addMediaConversion('splash-750x1334')
                     ->fit(Fit::Contain, 750, 1334)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
 
-                // iPhone 6+/7+/8+
                 $this->addMediaConversion('splash-1242x2208')
                     ->fit(Fit::Contain, 1242, 2208)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
 
-                // iPhone X/XS/11 Pro
                 $this->addMediaConversion('splash-1125x2436')
                     ->fit(Fit::Contain, 1125, 2436)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
 
-                // iPhone XS Max/11 Pro Max
                 $this->addMediaConversion('splash-1242x2688')
                     ->fit(Fit::Contain, 1242, 2688)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
 
-                // iPhone XR/11
                 $this->addMediaConversion('splash-828x1792')
                     ->fit(Fit::Contain, 828, 1792)
                     ->format('png')
+                    ->nonQueued()
                     ->quality(85);
             });
     }

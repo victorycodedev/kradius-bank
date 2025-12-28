@@ -18,6 +18,8 @@
     @if ($configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon'))
         <link rel="apple-touch-icon"
             href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
+        {{-- favicon --}}
+        <link rel="icon" href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
     @endif
 
     <!-- iOS Splash Screens -->
