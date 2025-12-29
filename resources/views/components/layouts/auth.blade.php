@@ -191,6 +191,50 @@
 </head>
 
 <body>
+    @if (request()->routeIs('login') ||
+            request()->routeIs('register') ||
+            request()->routeIs('forgot-password') ||
+            request()->routeIs('twofactor.login'))
+        <script>
+            // Check device and PWA status for auth pages
+            function isPWA() {
+                return window.matchMedia('(display-mode: standalone)').matches ||
+                    window.navigator.standalone ||
+                    document.referrer.includes('android-app://');
+            }
+
+            function checkDeviceAuth() {
+                const isMobile = window.innerWidth <= 430;
+                const isInstalledPWA = isPWA();
+
+                // If not mobile device
+                if (!isMobile) {
+                    document.getElementById("mobile-only-message").style.display = "block";
+                    document.getElementById("pwa-required-message").style.display = "none";
+                    document.getElementById("app-wrapper").style.display = "none";
+                    document.body.style.background = "#fff";
+                    return;
+                }
+
+                // If mobile but not installed as PWA
+                if (isMobile && !isInstalledPWA) {
+                    document.getElementById("pwa-required-message").style.display = "block";
+                    document.getElementById("mobile-only-message").style.display = "none";
+                    document.getElementById("app-wrapper").style.display = "none";
+                    document.body.style.background = "#fff";
+                    return;
+                }
+
+                // Mobile and installed as PWA - show app
+                document.getElementById("mobile-only-message").style.display = "none";
+                document.getElementById("pwa-required-message").style.display = "none";
+                document.getElementById("app-wrapper").style.display = "block";
+            }
+
+            checkDeviceAuth();
+            window.addEventListener("resize", checkDeviceAuth);
+        </script>
+    @endif
     <!-- Desktop Warning -->
     <div id="mobile-only-message" style="display:none;">
         <div class="mobile-warning">
@@ -244,50 +288,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
 
-    @if (request()->routeIs('login') ||
-            request()->routeIs('register') ||
-            request()->routeIs('forgot-password') ||
-            request()->routeIs('twofactor.login'))
-        <script>
-            // Check device and PWA status for auth pages
-            function isPWA() {
-                return window.matchMedia('(display-mode: standalone)').matches ||
-                    window.navigator.standalone ||
-                    document.referrer.includes('android-app://');
-            }
 
-            function checkDeviceAuth() {
-                const isMobile = window.innerWidth <= 430;
-                const isInstalledPWA = isPWA();
-
-                // If not mobile device
-                if (!isMobile) {
-                    document.getElementById("mobile-only-message").style.display = "block";
-                    document.getElementById("pwa-required-message").style.display = "none";
-                    document.getElementById("app-wrapper").style.display = "none";
-                    document.body.style.background = "#fff";
-                    return;
-                }
-
-                // If mobile but not installed as PWA
-                if (isMobile && !isInstalledPWA) {
-                    document.getElementById("pwa-required-message").style.display = "block";
-                    document.getElementById("mobile-only-message").style.display = "none";
-                    document.getElementById("app-wrapper").style.display = "none";
-                    document.body.style.background = "#fff";
-                    return;
-                }
-
-                // Mobile and installed as PWA - show app
-                document.getElementById("mobile-only-message").style.display = "none";
-                document.getElementById("pwa-required-message").style.display = "none";
-                document.getElementById("app-wrapper").style.display = "block";
-            }
-
-            checkDeviceAuth();
-            window.addEventListener("resize", checkDeviceAuth);
-        </script>
-    @endif
 
 
     <script src="{{ asset('mobileui/scripts.js') }}"></script>

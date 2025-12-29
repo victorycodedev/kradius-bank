@@ -97,9 +97,13 @@ class AppServiceProvider extends ServiceProvider
             ];
         }
 
+        config([
+            'app.name' => $settings->app_name ?? config('app.name'),
+        ]);
+
         PWA::update([
             'name' => $settings->app_name ?? config('app.name'),
-            'short_name' => $settings->app_short_name ?? 'BankApp',
+            'short_name' => $settings->app_name ?? 'BankApp',
             'background_color' => $settings->primary_color ?? '#ffffff',
             'display' => 'standalone',
             'description' => $settings->app_slogan ?? 'Secure mobile banking',

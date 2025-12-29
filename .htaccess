@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent direct access to sensitive files
+    RewriteRule ^(\.env|composer\.json|composer\.lock|artisan|server\.php) - [F,L]
+
+    # Allow existing files & folders
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Redirect everything else to /public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

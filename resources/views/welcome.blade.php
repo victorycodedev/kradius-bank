@@ -17,8 +17,8 @@
     <!-- Apple Touch Icons -->
     @if ($configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon'))
         <link rel="apple-touch-icon"
-            href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
-        <link rel="shortcut icon" href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">
+            href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}">  
+         <link rel="shortcut icon" href="{{ $configuration->getFirstMediaUrl('mobile_app_icon', 'apple-touch-icon') }}"> 
     @endif
 
     <!-- Android Chrome Theme -->
