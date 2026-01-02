@@ -24,19 +24,14 @@ class CreateUser extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        // Create the user
-        $data['name'] = $data['first_name'] . ' ' . $data['last_name'];
         $user = static::getModel()::create($data);
 
         // Assign the 'User' role to the newly created user
         $user->assignRole('User');
 
-        // Optional: Send welcome email
-        // Mail::to($user->email)->send(new WelcomeEmail($user));
-
         // Use the trait method - customize as needed
         $this->createDefaultAccount($user, [
-            'currency' => 'NGN',
+            'currency' => 'USD',
             'account_tier' => 'basic',
         ]);
 
@@ -53,7 +48,7 @@ class CreateUser extends CreateRecord
         $data['login_attempts'] = 0;
         $data['kyc_status'] = $data['kyc_status'] ?? 'pending';
         $data['account_status'] = $data['account_status'] ?? 'active';
-
+        $data['name'] = $data['first_name'] . ' ' . $data['last_name'];
         return $data;
     }
 }

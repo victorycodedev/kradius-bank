@@ -93,6 +93,40 @@ class UserAccountsModal extends Component implements HasSchemas, HasActions
             ->requiresConfirmation();
     }
 
+    // public function editBalanceAction(): Action
+    // {
+    //     return Action::make('edit_balance')
+    //         ->label('Edit Balance')
+    //         ->icon('heroicon-o-currency-dollar')
+    //         ->color('gray')
+    //         ->size('sm')
+    //         ->fillForm(function (array $arguments): array {
+    //             $account = UserAccount::find($arguments['accountId']);
+    //             return [
+    //                 'balance' => $account->balance,
+    //             ];
+    //         })
+    //         ->schema([
+    //             TextInput::make('balance')
+    //                 ->label('Account Balance')
+    //                 ->numeric()
+    //                 ->required(),
+    //         ])
+    //         ->action(function (array $data): void {
+    //             // $account = UserAccount::findOrFail($arguments['accountId']);
+
+    //             // $account->update(['balance' => $data['balance']]);
+
+    //             // $this->loadAccounts();
+
+    //             // Notification::make()
+    //             //     ->success()
+    //             //     ->title('Account balance updated')
+    //             //     ->send();
+    //         })
+    //         ->requiresConfirmation();
+    // }
+
     public function editLimitsAction(): Action
     {
         return Action::make('editLimits')
@@ -115,21 +149,18 @@ class UserAccountsModal extends Component implements HasSchemas, HasActions
                             ->label('Daily Transfer Limit')
                             ->numeric()
                             ->required()
-                            ->prefix('₦')
                             ->minValue(0),
 
                         TextInput::make('daily_withdrawal_limit')
                             ->label('Daily Withdrawal Limit')
                             ->numeric()
                             ->required()
-                            ->prefix('₦')
                             ->minValue(0),
 
                         TextInput::make('single_transaction_limit')
                             ->label('Single Transaction Limit')
                             ->numeric()
                             ->required()
-                            ->prefix('₦')
                             ->minValue(0),
                     ]),
             ])

@@ -123,31 +123,33 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
             }
         });
 
-        //saved
-        static::saved(function (User $user) {
-            $settings = Settings::get();
-
+        // Set attributes BEFORE the save happens (no recursion)
+        static::updating(function (User $user) {
+            // Handle KYC verification timestamp
             if ($user->isDirty('kyc_status') && $user->kyc_status === 'verified') {
                 $user->kyc_verified_at = now();
-                $user->save();
-
-                if ($settings->notify_on_kyc_status) {
-                    $user->notify(new UserKycStatusUpdate('verified'));
-                }
             }
 
-            if ($user->isDirty('kyc_status') && $user->kyc_status === 'rejected') {
-                if ($settings->notify_on_kyc_status) {
-                    $user->notify(new UserKycStatusUpdate('rejected'));
-                }
-            }
-
-
-            // if account_status changed to active set locked_until to null
+            // Handle account reactivation
             if ($user->isDirty('account_status') && $user->account_status === 'active') {
                 $user->locked_until = null;
                 $user->login_attempts = 0;
-                $user->save();
+            }
+        });
+
+        // Send notifications AFTER the save completes
+        static::updated(function (User $user) {
+            $settings = Settings::get();
+
+            // Only notify if KYC status actually changed
+            if ($user->wasChanged('kyc_status') && $settings->notify_on_kyc_status) {
+                if ($user->kyc_status === 'verified') {
+                    $user->notify(new UserKycStatusUpdate('verified'));
+                }
+
+                if ($user->kyc_status === 'rejected') {
+                    $user->notify(new UserKycStatusUpdate('rejected'));
+                }
             }
         });
     }

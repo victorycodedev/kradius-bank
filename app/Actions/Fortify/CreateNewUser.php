@@ -3,6 +3,8 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Traits\CreatesUserAccount;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -10,6 +12,7 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
+    use CreatesUserAccount;
 
     /**
      * Validate and create a newly registered user.
@@ -38,10 +41,15 @@ class CreateNewUser implements CreatesNewUsers
             'last_name' => $input['last_name'],
             'name' => $name,
             'email' => $input['email'],
-            'password' => $input['password'],
+            'password' => Hash::make($input['password']), // $input['password'],
         ]);
 
         $user->assignRole('User');
+
+        $this->createDefaultAccount($user, [
+            'currency' => 'USD',
+            'account_tier' => 'basic',
+        ]);
 
         return $user;
     }

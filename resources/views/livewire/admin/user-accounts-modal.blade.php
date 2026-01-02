@@ -43,6 +43,9 @@
                             <p class="text-lg font-bold text-gray-950 dark:text-white">
                                 {{ $account->currency }} {{ number_format($account->balance, 2) }}
                             </p>
+                            {{-- <div class="mt-3">
+                                {{ ($this->editBalanceAction)(['accountId' => $account->id]) }}
+                            </div> --}}
                         </div>
                         <div class="space-y-1">
                             <p class="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
@@ -63,19 +66,22 @@
                                 <div class="space-y-1">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Daily Transfer</p>
                                     <p class="text-sm font-semibold text-gray-950 dark:text-white">
-                                        ₦{{ number_format($account->limits->daily_transfer_limit, 0) }}
+                                        {{ $account->currency }}
+                                        {{ number_format($account->limits->daily_transfer_limit, 0) }}
                                     </p>
                                 </div>
                                 <div class="space-y-1">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Daily Withdrawal</p>
                                     <p class="text-sm font-semibold text-gray-950 dark:text-white">
-                                        ₦{{ number_format($account->limits->daily_withdrawal_limit, 0) }}
+                                        {{ $account->currency }}
+                                        {{ number_format($account->limits->daily_withdrawal_limit, 0) }}
                                     </p>
                                 </div>
                                 <div class="space-y-1">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Single Transaction</p>
                                     <p class="text-sm font-semibold text-gray-950 dark:text-white">
-                                        ₦{{ number_format($account->limits->single_transaction_limit, 0) }}
+                                        {{ $account->currency }}
+                                        {{ number_format($account->limits->single_transaction_limit, 0) }}
                                     </p>
                                 </div>
                             </div>

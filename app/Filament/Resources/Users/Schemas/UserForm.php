@@ -270,6 +270,62 @@ class UserForm
                                     ]),
                             ])
                             ->visibleOn('edit'),
+                        Tab::make('Accounts')
+                            ->icon(Heroicon::CurrencyDollar)
+                            ->columnSpanFull()
+                            ->schema([
+                                Repeater::make('user_accounts')
+                                    ->relationship('accounts')
+                                    ->deletable(false)
+                                    ->columnSpanFull()
+                                    ->collapsible()
+                                    ->grid(2)
+                                    ->addable(false)
+                                    ->columns(2)
+                                    ->schema([
+                                        TextInput::make('balance')
+                                            ->label('Account Balance')
+                                            ->numeric()
+                                            ->required(),
+                                        Select::make('account_type')
+                                            ->label('Account Type')
+                                            ->options([
+                                                'savings' => 'Savings',
+                                                'current' => 'Current',
+                                                'fixed_deposit' => 'Fixed Deposit',
+                                            ])
+                                            ->required()
+                                            ->default('savings'),
+
+                                        Select::make('account_tier')
+                                            ->label('Account Tier')
+                                            ->options([
+                                                'basic' => 'Basic',
+                                                'premium' => 'Premium',
+                                                'gold' => 'Gold',
+                                            ])
+                                            ->required()
+                                            ->default('basic')
+                                            ->live(),
+                                        TextInput::make('currency')
+                                            ->label('Currency')
+                                            ->default('USD')
+                                            ->required()
+                                            ->maxLength(3),
+
+                                        TextInput::make('interest_rate')
+                                            ->label('Interest Rate (%)')
+                                            ->numeric()
+                                            ->default(2.5)
+                                            ->minValue(0)
+                                            ->maxValue(100)
+                                            ->suffix('%'),
+                                        Toggle::make('is_primary')
+                                            ->label('Set as Primary Account')
+                                            ->helperText('If checked, this will become the primary account'),
+                                    ])
+                            ])
+                            ->visibleOn('edit'),
                         // Tab 4: Cards Management
                         Tab::make('Cards')
                             ->icon(Heroicon::CreditCard)
