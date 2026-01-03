@@ -128,44 +128,8 @@ class UserForm
                                             ->password()
                                             ->revealable()
                                             ->maxLength(5)
-                                            ->placeholder('4-digit PIN')
-                                            ->formatStateUsing(fn(?string $state): ?string => filled($state) ? decrypt($state) : null)
-                                            ->dehydrateStateUsing(function (?string $state) {
-                                                return filled($state) ? encrypt($state) : null;
-                                            })
-                                            ->helperText('4-digit PIN for transactions'),
-
-                                        // Toggle::make('two_factor_enabled')
-                                        //     ->label('Two-Factor Authentication')
-                                        //     ->inline(false)
-                                        //     ->afterStateHydrated(function (Toggle $component, $record) {
-                                        //         if ($record) {
-                                        //             $component->state($record->two_factor_secret == null);
-                                        //         }
-                                        //     })
-                                        //     ->dehydrated(false) // Don't save to 'two_factor_enabled' column
-                                        //     ->disabled(fn($record) => $record && $record->two_factor_secret === null) // Disable if 2FA not set up
-                                        //     ->afterStateUpdated(function ($state, $record) {
-                                        //         if (!$state && $record) {
-                                        //             // Admin turning OFF 2FA - clear the secrets
-                                        //             $record->update([
-                                        //                 'two_factor_secret' => null,
-                                        //                 'two_factor_recovery_codes' => null,
-                                        //                 'two_factor_confirmed_at' => null, // If you have this column
-                                        //             ]);
-
-                                        //             Notification::make()
-                                        //                 ->title('Two-Factor Authentication Disabled')
-                                        //                 ->success()
-                                        //                 ->send();
-                                        //         }
-                                        //     })
-                                        //     ->helperText(
-                                        //         fn($record) =>
-                                        //         $record && $record->two_factor_secret == null
-                                        //             ? 'Admin can disable user\'s 2FA'
-                                        //             : 'User has not enabled 2FA yet'
-                                        //     ),
+                                            ->placeholder('5-digit PIN')
+                                            ->helperText('5-digit PIN for transactions'),
 
                                         Select::make('account_status')
                                             ->options([

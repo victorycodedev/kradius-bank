@@ -92,7 +92,6 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
             'two_factor_enabled' => 'boolean',
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
-            'pin' => 'encrypted',
             'use_default_deposit_details' => 'boolean',
             'more_bank_attributes' => 'array',
             'more_crypto_attributes' => 'array',
@@ -173,7 +172,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
 
     public function verifyTransactionPin($pin): bool
     {
-        return decrypt($this->pin) === $pin;
+        return $this->pin == $pin;
     }
 
     // Relationships

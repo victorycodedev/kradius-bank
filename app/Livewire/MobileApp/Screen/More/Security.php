@@ -89,25 +89,25 @@ class Security extends Component
         $user = Auth::user();
 
         $rules = [
-            'newPin' => 'required|digits:5|confirmed:newPinConfirmation',
+            'newPin' => ['required', 'digits:5', 'confirmed:newPinConfirmation']
         ];
 
         // If user already has a PIN, require current PIN
         if ($user->pin) {
-            $rules['currentPin'] = 'required|digits:5';
+            $rules['currentPin'] = ['required', 'digits:5'];
         }
 
         $this->validate($rules);
 
         // Verify current PIN if exists
-        if ($user->pin && !Hash::check($this->currentPin, $user->pin)) {
+        if ($user->pin && ! $this->currentPin) {
             $this->addError('currentPin', 'Current PIN is incorrect.');
             return;
         }
 
         try {
             $user->update([
-                'pin' => Hash::make($this->newPin),
+                'pin' => $this->newPin,
             ]);
 
             session()->flash('success', $user->pin ? 'Transaction PIN changed successfully!' : 'Transaction PIN set successfully!');
