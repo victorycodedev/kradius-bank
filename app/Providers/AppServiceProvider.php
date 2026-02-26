@@ -19,12 +19,13 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        if ($this->app->runningInConsole()) {
+            config(['cache.default' => 'array']);
+        }
     }
 
     public function boot(): void
     {
-
         Event::listen(
             Login::class,
             SendLoginSuccessNotification::class,
@@ -35,9 +36,17 @@ class AppServiceProvider extends ServiceProvider
             SendRegisterSuccessNotification::class,
         );
 
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Super Admin') ? true : null;
+        });
+
         $appInProduction = App::environment('production');
 
         Model::automaticallyEagerLoadRelationships();
+
+        if ($this->app->runningInConsole()) {
+            return;
+        }
 
         $settings = Settings::get();
 
@@ -115,9 +124,5 @@ class AppServiceProvider extends ServiceProvider
             'categories' => ['finance', 'banking'],
             'screenshots' => [], // Add screenshots if needed
         ]);
-
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('Super Admin') ? true : null;
-        });
     }
 }
