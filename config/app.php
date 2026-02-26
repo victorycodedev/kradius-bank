@@ -65,6 +65,9 @@ return [
     |
     */
 
+    //app demo
+    'in_demo' => env('APP_DEMO', false),
+
     'timezone' => 'UTC',
 
     /*

@@ -1,10 +1,10 @@
 {
-    "name": "kradius",
-    "short_name": "kradius",
-    "background_color": "#f46b10",
+    "name": "Kradius",
+    "short_name": "Kradius",
+    "background_color": "#165ea2",
     "display": "standalone",
     "description": "Growing your wealth, protecting your dreams, securing your tomorrow",
-    "theme_color": "#f46b10",
+    "theme_color": "#165ea2",
     "scope": "/onboarding",
     "orientation": "portrait-primary",
     "categories": [
@@ -15,61 +15,61 @@
     "start_url": "/",
     "icons": [
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-72x72.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-72x72.png",
             "sizes": "72x72",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-96x96.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-96x96.png",
             "sizes": "96x96",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-128x128.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-128x128.png",
             "sizes": "128x128",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-144x144.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-144x144.png",
             "sizes": "144x144",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-152x152.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-152x152.png",
             "sizes": "152x152",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-192x192.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-384x384.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-384x384.png",
             "sizes": "384x384",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-512x512.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-192x192.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "https://kradius.test/storage/7/conversions/01KDK473XTP2HYPXPJHPGG6S8C-icon-512x512.png",
+            "src": "https://kradius.test/storage/15/conversions/01KJDAFWKSKZDYB74G0V3AS4T2-icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
